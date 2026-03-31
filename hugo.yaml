@@ -81,23 +81,23 @@ params:
 
 menu:
   main:
-    - identifier: embedded
+    - identifier: nav-embedded
       name: Embedded
       url: /categories/embedded/
       weight: 10
-    - identifier: algorithm
+    - identifier: nav-algorithm
       name: Algorithm
       url: /categories/algorithm/
       weight: 20
-    - identifier: paper-review
+    - identifier: nav-paper-review
       name: Paper Review
       url: /categories/paper-review/
       weight: 30
-    - identifier: search
+    - identifier: nav-search
       name: Search
       url: /search/
       weight: 40
-
+      
 pygmentsUseClasses: true
 
 markup:
