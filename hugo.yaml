@@ -1,0 +1,110 @@
+baseURL: "https://bromine1997.github.io/"
+languageCode: "ko-KR"
+title: "bromine1997"
+theme: "PaperMod"
+paginate: 10
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON  # 검색 기능에 필요
+
+params:
+  env: production
+  title: bromine1997
+  description: "임베디드 / 펌웨어 개발자 서보민의 기술 블로그"
+  author: 서보민
+  defaultTheme: auto  # 다크모드 자동
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: false
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: false
+
+  assets:
+    favicon: "/favicon.ico"
+
+  label:
+    text: "bromine1997"
+
+  profileMode:
+    enabled: false
+
+  homeInfoParams:
+    Title: "안녕하세요, 서보민입니다 👋"
+    Content: >
+      하드웨어와 소프트웨어를 함께 다루는 임베디드 / 펌웨어 개발자입니다.
+      STM32, ESP32 기반 시스템 개발, 논문 리뷰, 알고리즘 공부를 기록합니다.
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/bromine1997"
+    - name: rss
+      url: "/index.xml"
+
+  cover:
+    hidden: false
+    hiddenInList: false
+    hiddenInSingle: false
+
+  editPost:
+    URL: "https://github.com/bromine1997/bromine1997.github.io/tree/main/content"
+    Text: "Edit"
+    appendFilePath: true
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    limit: 10
+    keys: ["title", "permalink", "summary", "content"]
+
+menu:
+  main:
+    - identifier: categories
+      name: Categories
+      url: /categories/
+      weight: 10
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 20
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 30
+    - identifier: archive
+      name: Archive
+      url: /archives/
+      weight: 40
+
+pygmentsUseClasses: true
+
+markup:
+  highlight:
+    noClasses: false
+    anchorLineNos: true
+    codeFences: true
+    guessSyntax: true
+    lineNos: true
+    style: monokai
