@@ -93,10 +93,14 @@ menu:
       name: Paper Review
       url: /categories/paper-review/
       weight: 30
+    - identifier: nav-notes
+      name: Notes
+      url: /categories/notes/
+      weight: 40
     - identifier: nav-search
       name: Search
       url: /search/
-      weight: 40
+      weight: 50
       
 pygmentsUseClasses: true
 
