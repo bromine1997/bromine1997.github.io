@@ -41,7 +41,7 @@ Low는 직접 drive할 수 있지만, High는 스스로 만들지 못한다.
 이때 외부에 연결된 Pull-up 저항이 핀을 High로 끌어올린다.
 
 <!-- 이미지 삽입 위치: Push-Pull / Open-Drain 회로 비교 그림 -->
-![Push-Pull과 Open-Drain 비교](/images/stm32/stm32-pushpull-open-drain.png)
+![Push-Pull과 Open-Drain 비교](/images/stm32/stm32-pushpull-open-drain.svg)
 
 ### 왜 Open-Drain을 사용할까?
 
@@ -68,7 +68,7 @@ IDR을 읽으면 0이 될지 1이 될지 예측할 수 없다.
 그래서 평상시에 핀을 **확실한 레벨로 고정**해두는 것이 Pull-up / Pull-down이다.
 
 <!-- 이미지 삽입 위치: Floating / Pull-up / Pull-down 회로 비교 그림 -->
-![Pull-up과 Pull-down 개념도](/images/stm32/stm32-pullup-pulldown-floating.png)
+![Pull-up과 Pull-down 개념도](/images/stm32/stm32-pullup-pulldown-floating.svg)
 
 | 설정 | 평상시 | 버튼 누를 때 |
 |---|---|---|
