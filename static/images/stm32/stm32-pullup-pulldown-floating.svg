@@ -1,0 +1,131 @@
+<svg width="1200" height="480" viewBox="0 0 1200 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .label { font: 12px 'Courier New', monospace; fill:#1a1aaa; }
+      .comp  { font: 12px 'Courier New', monospace; fill:#111; }
+      .title { font: 15px 'Arial', sans-serif; fill:#111; }
+      .desc  { font: 12px 'Arial', sans-serif; fill:#888; }
+      .warn  { font: 12px 'Arial', sans-serif; fill:#c62828; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="480" fill="#ffffff"/>
+
+  <!-- ==================== FLOATING ==================== -->
+  <!-- DIGITAL INPUT -->
+  <rect x="20" y="198" width="108" height="22" fill="none" stroke="#1a1aaa" stroke-width="1.2"/>
+  <text x="24" y="213" class="label">DIGITAL INPUT</text>
+  <polygon points="128,200 140,209 128,218" fill="none" stroke="#1a1aaa" stroke-width="1.2"/>
+  <!-- 와이어 → 노드 -->
+  <line x1="140" y1="209" x2="210" y2="209" stroke="#111" stroke-width="1.5"/>
+  <circle cx="210" cy="209" r="3.5" fill="#111"/>
+  <!-- 위로 버튼까지 -->
+  <line x1="210" y1="209" x2="210" y2="165" stroke="#111" stroke-width="1.5"/>
+  <!-- 버튼 심볼 -->
+  <circle cx="210" cy="158" r="3" fill="none" stroke="#111" stroke-width="1.2"/>
+  <line x1="210" y1="155" x2="234" y2="126" stroke="#111" stroke-width="1.5"/>
+  <circle cx="237" cy="122" r="3" fill="none" stroke="#111" stroke-width="1.2"/>
+  <!-- 위 끊김 -->
+  <line x1="237" y1="119" x2="237" y2="88" stroke="#111" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="229" y1="82" x2="245" y2="95" stroke="#c62828" stroke-width="2"/>
+  <line x1="245" y1="82" x2="229" y2="95" stroke="#c62828" stroke-width="2"/>
+  <text x="250" y="92" class="comp" fill="#c62828">N.C.</text>
+  <!-- S1 레이블 + 박스 -->
+  <text x="248" y="142" class="comp">S1</text>
+  <rect x="196" y="112" width="66" height="58" fill="none" stroke="#c8a800" stroke-width="1.2" stroke-dasharray="6 3"/>
+  <!-- 아래 끊김 -->
+  <line x1="210" y1="209" x2="210" y2="255" stroke="#111" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="202" y1="255" x2="218" y2="268" stroke="#c62828" stroke-width="2"/>
+  <line x1="218" y1="255" x2="202" y2="268" stroke="#c62828" stroke-width="2"/>
+  <text x="222" y="267" class="comp" fill="#c62828">N.C.</text>
+  <!-- 타이틀 -->
+  <text x="190" y="320" text-anchor="middle" class="title">Floating</text>
+  <text x="190" y="340" text-anchor="middle" class="warn">입력값 불안정 (random)</text>
+
+  <!-- ==================== PULL-DOWN ==================== -->
+  <!-- DIGITAL INPUT -->
+  <rect x="420" y="198" width="108" height="22" fill="none" stroke="#1a1aaa" stroke-width="1.2"/>
+  <text x="424" y="213" class="label">DIGITAL INPUT</text>
+  <polygon points="528,200 540,209 528,218" fill="none" stroke="#1a1aaa" stroke-width="1.2"/>
+  <!-- 와이어 → R -->
+  <line x1="540" y1="209" x2="575" y2="209" stroke="#111" stroke-width="1.5"/>
+  <!-- 저항 R2 수평 -->
+  <polyline points="575,209 583,197 591,221 599,197 607,221 615,197 623,221 631,209" fill="none" stroke="#111" stroke-width="1.5"/>
+  <text x="586" y="240" class="comp">R2  10K</text>
+  <rect x="572" y="190" width="66" height="56" fill="none" stroke="#c8a800" stroke-width="1.2" stroke-dasharray="6 3"/>
+  <!-- R2 → 노드 -->
+  <line x1="631" y1="209" x2="680" y2="209" stroke="#111" stroke-width="1.5"/>
+  <circle cx="680" cy="209" r="3.5" fill="#111"/>
+  <!-- 위로 버튼 -->
+  <line x1="680" y1="209" x2="680" y2="165" stroke="#111" stroke-width="1.5"/>
+  <circle cx="680" cy="158" r="3" fill="none" stroke="#111" stroke-width="1.2"/>
+  <line x1="680" y1="155" x2="704" y2="126" stroke="#111" stroke-width="1.5"/>
+  <circle cx="707" cy="122" r="3" fill="none" stroke="#111" stroke-width="1.2"/>
+  <line x1="707" y1="119" x2="707" y2="88" stroke="#111" stroke-width="1.5"/>
+  <!-- VDD -->
+  <rect x="690" y="72" width="34" height="20" fill="none" stroke="#1a1aaa" stroke-width="1.2" stroke-dasharray="4 2"/>
+  <text x="693" y="86" class="label">+5V</text>
+  <line x1="707" y1="92" x2="707" y2="88" stroke="#111" stroke-width="1.5"/>
+  <polygon points="702,92 712,92 707,82" fill="#111"/>
+  <!-- S1 레이블 + 박스 -->
+  <text x="718" y="142" class="comp">S1</text>
+  <rect x="666" y="112" width="66" height="58" fill="none" stroke="#c8a800" stroke-width="1.2" stroke-dasharray="6 3"/>
+  <!-- 아래 → R1 → GND -->
+  <line x1="680" y1="209" x2="680" y2="250" stroke="#111" stroke-width="1.5"/>
+  <!-- 저항 R1 수직 -->
+  <polyline points="680,250 668,258 692,266 668,274 692,282 668,290 692,298 680,306" fill="none" stroke="#111" stroke-width="1.5"/>
+  <text x="698" y="280" class="comp">R1</text>
+  <text x="698" y="294" class="comp">10K</text>
+  <rect x="660" y="244" width="66" height="68" fill="none" stroke="#c8a800" stroke-width="1.2" stroke-dasharray="6 3"/>
+  <line x1="680" y1="306" x2="680" y2="330" stroke="#111" stroke-width="1.5"/>
+  <!-- GND 심볼 -->
+  <line x1="662" y1="330" x2="698" y2="330" stroke="#111" stroke-width="1.5"/>
+  <line x1="668" y1="338" x2="692" y2="338" stroke="#111" stroke-width="1.5"/>
+  <line x1="674" y1="346" x2="686" y2="346" stroke="#111" stroke-width="1.5"/>
+  <!-- 타이틀 -->
+  <text x="660" y="390" text-anchor="middle" class="title">Pull Down</text>
+  <text x="660" y="410" text-anchor="middle" class="desc">평상시 LOW / 버튼 누르면 HIGH</text>
+
+  <!-- ==================== PULL-UP ==================== -->
+  <!-- DIGITAL INPUT -->
+  <rect x="820" y="198" width="108" height="22" fill="none" stroke="#1a1aaa" stroke-width="1.2"/>
+  <text x="824" y="213" class="label">DIGITAL INPUT</text>
+  <polygon points="928,200 940,209 928,218" fill="none" stroke="#1a1aaa" stroke-width="1.2"/>
+  <!-- 와이어 → R4 -->
+  <line x1="940" y1="209" x2="975" y2="209" stroke="#111" stroke-width="1.5"/>
+  <!-- 저항 R4 수평 -->
+  <polyline points="975,209 983,197 991,221 999,197 1007,221 1015,197 1023,221 1031,209" fill="none" stroke="#111" stroke-width="1.5"/>
+  <text x="986" y="240" class="comp">R4  10K</text>
+  <rect x="972" y="190" width="66" height="56" fill="none" stroke="#c8a800" stroke-width="1.2" stroke-dasharray="6 3"/>
+  <!-- R4 → 노드 -->
+  <line x1="1031" y1="209" x2="1080" y2="209" stroke="#111" stroke-width="1.5"/>
+  <circle cx="1080" cy="209" r="3.5" fill="#111"/>
+  <!-- 아래 버튼 → GND -->
+  <line x1="1080" y1="209" x2="1080" y2="248" stroke="#111" stroke-width="1.5"/>
+  <circle cx="1080" cy="255" r="3" fill="none" stroke="#111" stroke-width="1.2"/>
+  <line x1="1080" y1="258" x2="1104" y2="287" stroke="#111" stroke-width="1.5"/>
+  <circle cx="1107" cy="291" r="3" fill="none" stroke="#111" stroke-width="1.2"/>
+  <line x1="1107" y1="294" x2="1107" y2="330" stroke="#111" stroke-width="1.5"/>
+  <!-- GND 심볼 -->
+  <line x1="1089" y1="330" x2="1125" y2="330" stroke="#111" stroke-width="1.5"/>
+  <line x1="1095" y1="338" x2="1119" y2="338" stroke="#111" stroke-width="1.5"/>
+  <line x1="1101" y1="346" x2="1113" y2="346" stroke="#111" stroke-width="1.5"/>
+  <!-- S3 레이블 + 박스 -->
+  <text x="1118" y="272" class="comp">S3</text>
+  <rect x="1066" y="244" width="66" height="58" fill="none" stroke="#c8a800" stroke-width="1.2" stroke-dasharray="6 3"/>
+  <!-- 위 → R3 → VDD -->
+  <line x1="1080" y1="209" x2="1080" y2="168" stroke="#111" stroke-width="1.5"/>
+  <!-- 저항 R3 수직 -->
+  <polyline points="1080,168 1068,160 1092,152 1068,144 1092,136 1068,128 1092,120 1080,112" fill="none" stroke="#111" stroke-width="1.5"/>
+  <text x="1098" y="148" class="comp">R3</text>
+  <text x="1098" y="162" class="comp">10K</text>
+  <rect x="1060" y="106" width="66" height="68" fill="none" stroke="#c8a800" stroke-width="1.2" stroke-dasharray="6 3"/>
+  <line x1="1080" y1="112" x2="1080" y2="88" stroke="#111" stroke-width="1.5"/>
+  <!-- VDD -->
+  <rect x="1063" y="72" width="34" height="20" fill="none" stroke="#1a1aaa" stroke-width="1.2" stroke-dasharray="4 2"/>
+  <text x="1066" y="86" class="label">+5V</text>
+  <polygon points="1075,92 1085,92 1080,82" fill="#111"/>
+  <!-- 타이틀 -->
+  <text x="1080" y="390" text-anchor="middle" class="title">Pull Up</text>
+  <text x="1080" y="410" text-anchor="middle" class="desc">평상시 HIGH / 버튼 누르면 LOW</text>
+</svg>
