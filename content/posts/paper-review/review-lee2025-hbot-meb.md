@@ -92,7 +92,7 @@ Video otoscope(INSIGHT-I, MEDIANA)로 치료 전후 TM(Tympanic Membrane) 상태
 
 **MEB 발생 현황**
 
-- 전체 MEB 발생률: **56.1%** (166명)
+- 전체 MEB 발생률: <mark style="background-color: #a8f0c6;">**56.1%** (166명)</mark>
 - Video otoscopy 이상 소견: 58.8% (174명) — Grade 1: 56.4%, Grade 2: 2.4%
 
 **세션 수에 따른 MEB 발생 확률**
@@ -118,8 +118,8 @@ Video otoscope(INSIGHT-I, MEDIANA)로 치료 전후 TM(Tympanic Membrane) 상태
 
 | 독립적 위험 인자 | OR | 95% CI | p값 |
 |---|---|---|---|
-| Altered mental status | **2.50** | 1.13–5.51 | 0.023 |
-| 응급 치료군 A | **6.75** | 1.33–34.20 | 0.021 |
+| <mark style="background-color: #a8f0c6;">Altered mental status</mark> | <mark style="background-color: #a8f0c6;">**2.50**</mark> | 1.13–5.51 | 0.023 |
+| <mark style="background-color: #a8f0c6;">응급 치료군 A</mark> | <mark style="background-color: #a8f0c6;">**6.75**</mark> | 1.33–34.20 | 0.021 |
 
 > **참고**: Compression 속도(4 FSW/min)는 univariable에서 유의했지만(p=0.006), multivariable에서는 유의성을 잃었다(p=0.105). 빠른 가압이 MEB에 영향을 미치는 경향은 있었지만, 응급 여부나 altered mental status 같은 다른 변수와 교란(confounding)되어 있을 가능성이 있다. 이 연구만으로 느린 가압이 MEB를 직접 줄인다고 단정하기는 어렵다.
 
@@ -146,11 +146,11 @@ Video otoscope(INSIGHT-I, MEDIANA)로 치료 전후 TM(Tympanic Membrane) 상태
 
 석사 논문 주제가 HBOT 챔버 제어 시스템이었기 때문에, 이 논문의 임상 데이터가 특히 와닿았다.
 
-1. **Compression 속도와 MEB**: 펌웨어에서 압력 센서 피드백으로 compression 속도를 제어하는 로직을 짰는데, 그 파라미터가 임상적으로 이렇게 직결된다는 걸 데이터로 확인하니 흥미롭다. Multivariable에서 유의성을 잃었다는 점이 오히려 더 현실적인 메시지인 것 같다. 속도보다 환자 상태가 더 중요한 변수라는 뜻이기도 하니까.
+1. **Compression 속도와 MEB**: <mark>펌웨어에서 압력 센서 피드백으로 compression 속도를 제어하는 로직을 짰는데, 그 파라미터가 임상적으로 이렇게 직결된다는 걸 데이터로 확인하니 흥미롭다.</mark> Multivariable에서 유의성을 잃었다는 점이 오히려 더 현실적인 메시지인 것 같다. 속도보다 환자 상태가 더 중요한 변수라는 뜻이기도 하니까.
 
-2. **Altered mental status 환자 대응**: 능동적으로 pressure equalization을 수행할 수 없는 환자라면, 시스템 레벨에서 보완이 필요하다는 생각이 든다. 단순히 "몇 ATA, 몇 분"으로 고정된 프로토콜이 아니라, 환자 의식 상태에 따라 compression 속도를 자동으로 조절하거나 운영자에게 알림을 주는 방식이 임상적으로 의미 있을 것 같다.
+2. **Altered mental status 환자 대응**: <mark>능동적으로 pressure equalization을 수행할 수 없는 환자라면, 시스템 레벨에서 보완이 필요하다는 생각이 든다. 단순히 "몇 ATA, 몇 분"으로 고정된 프로토콜이 아니라, 환자 의식 상태에 따라 compression 속도를 자동으로 조절하거나 운영자에게 알림을 주는 방식이 임상적으로 의미 있을 것 같다.</mark>
 
-3. **세션 반복 효과**: 18회차 이후 MEB 0%라는 결과가 인상적이지만, 그 시점에서의 환자 수(전체의 5.7%)를 감안하면 그대로 받아들이기보다는 경향성 정도로 이해하는 게 맞을 것 같다.
+3. **세션 반복 효과**: <mark>18회차 이후 MEB 0%라는 결과가 인상적이지만, 그 시점에서의 환자 수(전체의 5.7%)를 감안하면 그대로 받아들이기보다는 경향성 정도로 이해하는 게 맞을 것 같다.</mark>
 
 ---
 
