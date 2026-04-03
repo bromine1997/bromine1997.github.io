@@ -97,6 +97,10 @@ menu:
       name: Notes
       url: /categories/notes/
       weight: 40
+    - identifier: nav-projects
+      name: Projects
+      url: /projects/
+      weight: 45
     - identifier: nav-search
       name: Search
       url: /search/
