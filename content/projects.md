@@ -154,7 +154,7 @@ comments: false
 
   <!-- HBOT Chamber -->
   <div class="project-card">
-    <img class="project-thumb" src="/images/projects/hbot-chamber.jpg" alt="HBOT Chamber" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <img class="project-thumb" src="/images/projects/hbot-chamber.png" alt="HBOT Chamber" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
     <div class="project-thumb-placeholder" style="display:none;">🫁</div>
     <div class="project-body">
       <div class="project-name">IoT 고압산소챔버 시스템</div>
@@ -185,7 +185,7 @@ comments: false
 
   <!-- ESP32 재활자전거 -->
   <div class="project-card">
-    <img class="project-thumb" src="/images/projects/rehab-bicycle.jpg" alt="재활 자전거" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <img class="project-thumb" src="/images/projects/rehab-bicycle.png" alt="재활 자전거" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
     <div class="project-thumb-placeholder" style="display:none;">🚲</div>
     <div class="project-body">
       <div class="project-name">재활 자전거 실시간 측정 시스템</div>
