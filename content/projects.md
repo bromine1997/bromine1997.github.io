@@ -189,7 +189,7 @@ comments: false
     <div class="project-thumb-placeholder" style="display:none;">🚲</div>
     <div class="project-body">
       <div class="project-name">재활 자전거 실시간 측정 시스템</div>
-      <div class="project-period">2024 ~ 2025 · 학부연구 / 석사</div>
+      <div class="project-period">2022 ~ 2023 · 학부연구 / 석사</div>
       <div class="project-desc">
         ESP32 Feather V2 기반 4채널 로드셀 동기화 수집 시스템.
         ADS1232를 4개 병렬 운용해 팔·다리 페달의 힘을 동시에 측정하고,
