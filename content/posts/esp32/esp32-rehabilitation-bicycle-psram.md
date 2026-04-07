@@ -1,5 +1,5 @@
 ---
-title: "[ESP32] PSRAM 버퍼링과 데이터 수집 파이프라인"
+title: "[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조"
 date: 2026-04-03T01:00:00+09:00
 draft: false
 categories:
@@ -11,10 +11,10 @@ tags:
   - 데이터수집
   - 임베디드
   - 재활자전거
-summary: "40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 청크 전송, 실시간 표시 분리까지 정리했다."
+summary: "40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다."
 ---
 
-하드웨어 편에서 ADS1232 4개로 로드셀을 동시에 샘플링하는 구조를 설명했다. 이번에는 그 데이터를 어떻게 저장하고 관리하는지, 소프트웨어 파이프라인을 정리해보겠다.
+하드웨어 편에서 ADS1232 4개로 로드셀을 동시에 샘플링하는 구조를 설명했다. 이번에는 그 데이터를 어떻게 저장하고 관리하는지, PSRAM 버퍼 구조부터 분할 전송까지 정리해보겠다.
 
 ## 왜 Flash가 아닌 PSRAM인가
 
@@ -30,7 +30,7 @@ SPIFFS 기준으로 단순 쓰기도 수 ms가 걸린다. 40 SPS로 샘플링 �
 
 ESP32 내부 SRAM은 약 520KB다. 여기에 Wi-Fi 스택이 100~200KB를 점유하고, AsyncWebServer와 WebSocket 라이브러리까지 올라가면 여유가 거의 없다. 1.65MB짜리 버퍼를 내부 SRAM에 올리는 건 처음부터 불가능하다. `malloc` 대신 `ps_calloc`을 쓴 이유가 바로 이것이다.
 
-**셋째, Wi-Fi 스택과 메모리를 두고 경쟁하면 크래시가 난다.**
+**셋째, Wi-Fi 스택과 메모리를 두고 경쟁하면 crash가 난다.**
 
 Wi-Fi는 내부 SRAM에서 동작한다. 데이터 버퍼까지 같은 공간을 쓰면 메모리 단편화가 쌓이다가 어느 순간 Wi-Fi 재연결 중 OOM으로 재부팅된다. 이 버그는 재현도 불규칙하고 로그만 봐서는 원인을 잡기 어렵다. PSRAM은 내부 SRAM과 완전히 별도 영역이라 이 경쟁 자체를 피할 수 있다.
 
@@ -98,7 +98,7 @@ struct sensors *workingPointer;  // 현재 쓰기 위치 (이동)
 
 `loop()`의 핵심은 DRDY 핀의 **Falling Edge** 감지다.
 
-ADS1232는 새 데이터가 준비되면 DRDY/DOUT 핀을 HIGH → LOW로 내린다. 이걸 소프트웨어 폴링으로 감지한다.
+ADS1232는 새 데이터가 준비되면 DRDY/DOUT 핀을 HIGH → LOW로 내린다. 이걸 소프트웨어 polling으로 감지한다.
 
 ```cpp
 void loop() {
@@ -228,8 +228,8 @@ SAVE → save = true  (전송 시작)
 
 PSRAM [샘플0][샘플1]...[샘플N]
          ↓ 5분치(12,000 샘플)씩
-      청크1 전송 → 500ms 대기
-      청크2 전송 → 500ms 대기
+      1구간 전송 → 500ms 대기
+      2구간 전송 → 500ms 대기
       ...
       나머지 전송
       1바이트 종료 신호
@@ -240,7 +240,7 @@ PSRAM [샘플0][샘플1]...[샘플N]
 
 workingPointer = packetPointer;  // 포인터를 처음으로 되돌림
 
-int pn = packetCounter / PACKET_LENGTH;  // 완전한 청크 수
+int pn = packetCounter / PACKET_LENGTH;  // 완전한 구간 수
 int pr = packetCounter % PACKET_LENGTH;  // 나머지
 
 for (int p = 0; p < pn; p++) {
@@ -254,11 +254,11 @@ if (pr) {
 ws.binary(client_id, (uint8_t*)workingPointer, 1);  // 종료 신호
 ```
 
-한 번에 전부 보내지 않고 5분치씩 나눠 보내는 이유는 WebSocket이 결국 TCP 위에서 동작하기 때문이다. ESP32의 TCP 송신 버퍼는 작아서 1.65MB를 한 번에 큐에 넣으면 버퍼가 넘친다. 청크 하나를 보내고 500ms를 기다리는 동안 TCP 스택이 실제로 데이터를 전송할 시간을 주는 것이다.
+한 번에 전부 보내지 않고 5분치씩 나눠 보내는 이유는 WebSocket이 결국 TCP 위에서 동작하기 때문이다. ESP32의 TCP 송신 버퍼는 작아서 1.65MB를 한 번에 큐에 넣으면 버퍼가 넘친다. 5분치를 보내고 500ms를 기다리는 동안 TCP 스택이 실제로 데이터를 전송할 시간을 주는 것이다.
 
 `delay(500)` 동안 `loop()`가 멈추기 때문에 이 시간에 Falling Edge가 와도 샘플을 놓친다. 그래서 SAVE는 반드시 STOP 이후에만 의미가 있고, 코드에서도 `quit && save` 조건일 때만 전송 로직이 실행된다.
 
-브라우저 쪽에서는 청크를 받을 때마다 `ArrayBuffer`에 이어 붙이다가, 마지막 1바이트 종료 신호가 오면 파일로 저장한다.
+브라우저 쪽에서는 데이터를 받을 때마다 `ArrayBuffer`에 이어 붙이다가, 마지막 1바이트 종료 신호가 오면 파일로 저장한다.
 
 ## 상태 플래그 관리
 
@@ -297,8 +297,8 @@ if (packetCounter == PACKET_SIZE) quit = true;
 - **왜 PSRAM**: Flash 쓰기 지연, 내부 SRAM 용량 한계, Wi-Fi 스택과의 메모리 경쟁 세 가지를 동시에 해결
 - **데이터 구조**: `struct sensors` 20 bytes × 86,400 샘플 = 1.65 MB
 - **40 SPS**: `DataSubSamplePoint = 2`로 80 SPS를 절반만 처리
-- **저장 방식**: `*workingPointer++ = Sensors`로 구조체를 순서대로 적재
+- **저장 방식**: `*workingPointer++ = Sensors`로 구조체를 순서대로 저장
 - **화면 표시와 저장 분리**: `WebSampleIdx`는 항상 증가, 0.4초마다 JSON 전송
-- **SAVE 전송**: 5분치 청크로 나눠 전송, 1바이트 종료 신호로 완료 통보
+- **SAVE 전송**: 5분 단위로 나눠 전송, 1바이트 종료 신호로 완료 통보
 
 다음 글에서는 측정 전 반드시 해야 하는 영점 보정(캘리브레이션) 로직과 EEPROM 레이아웃, 그리고 AS5600 각도 센서 연동 방법을 자세히 설명하겠다.
