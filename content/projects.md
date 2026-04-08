@@ -206,7 +206,7 @@ comments: false
         <span class="project-tag">JavaScript</span>
       </div>
       <div class="project-links">
-        <a class="project-link primary-link" href="https://github.com/bromine1997/esp32_RehabilitationBicycle" target="_blank">GitHub</a>
+        <a class="project-link primary-link" href="https://github.com/bromine1997/esp32-RehabilitationBicycle" target="_blank">GitHub</a>
       </div>
     </div>
   </div>
@@ -237,7 +237,7 @@ comments: false
         <span class="project-tag">AVR</span>
       </div>
       <div class="project-links">
-        <a class="project-link primary-link" href="https://github.com/bromine1997/atmega4809_project" target="_blank">GitHub</a>
+        <a class="project-link primary-link" href="https://github.com/bromine1997/atmega4809-project" target="_blank">GitHub</a>
       </div>
     </div>
   </div>
