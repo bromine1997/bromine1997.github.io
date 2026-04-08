@@ -21,7 +21,7 @@ summary: "연세대학교 마이크로컴퓨터시스템 수업 실습 프로젝
 | 기간 | 학부 재학 중 |
 | 소속 | 연세대학교 의공학부 수업 |
 | 역할 | PCB 납땜 + 펌웨어 전체 구현 |
-| GitHub | [atmega4809_project](https://github.com/bromine1997/atmega4809_project) |
+| GitHub | [atmega4809-project](https://github.com/bromine1997/atmega4809-project) |
 
 ---
 

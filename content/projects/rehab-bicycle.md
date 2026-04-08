@@ -28,35 +28,13 @@ cover:
 | 역할 | 하드웨어 설계 및 펌웨어 개발 (단독) |
 | 샘플링 속도 | 40 SPS (4채널 동시) |
 | 최대 기록 시간 | 36분 |
-| GitHub | [esp32_RehabilitationBicycle](https://github.com/bromine1997/esp32_RehabilitationBicycle) |
+| GitHub | [RehabilitationBicycle](https://github.com/bromine1997/RehabilitationBicycle) |
 
 ---
 
 ## 시스템 구성
 
-```
-[상하지 재활 자전거]
-  ├─ 팔 페달 좌  (로드셀 + ADS1232)
-  ├─ 팔 페달 우  (로드셀 + ADS1232)
-  ├─ 다리 페달 좌 (로드셀 + ADS1232)
-  ├─ 다리 페달 우 (로드셀 + ADS1232)
-  └─ 크랭크      (AS5600 magnetic encoder, I2C)
-       │
-       │ SPI (DRDY 동기화, 40 SPS)
-       ▼
-[ESP32 Feather V2]
-  ├─ SPIFFS  : HTML / CSS / JavaScript 호스팅
-  ├─ PSRAM   : 최대 36분 데이터 버퍼 (~1.65 MB)
-  └─ Wi-Fi + WebSocket (/ws)
-       │
-       ▼
-[브라우저 Web UI]
-  ├─ 실시간 4채널 힘 차트 + 크랭크 각도
-  └─ 측정 완료 후 CSV 다운로드
-```
 
-<!-- 📌 이미지 추가: 시스템 다이어그램 → 발표자료 8페이지 캡처 -->
-<!-- 저장 경로: /images/projects/rehab/system-diagram.png -->
 ![시스템 구성도](/images/projects/rehab/system-diagram.png)
 
 ---
