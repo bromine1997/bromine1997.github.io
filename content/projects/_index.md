@@ -177,7 +177,8 @@ comments: false
         <span class="project-tag">WebSocket</span>
       </div>
       <div class="project-links">
-        <a class="project-link primary-link" href="https://github.com/bromine1997/HBOTChamber" target="_blank">GitHub (App)</a>
+        <a class="project-link primary-link" href="/projects/hbot-chamber/">Overview</a>
+        <a class="project-link" href="https://github.com/bromine1997/HBOTChamber" target="_blank">GitHub (App)</a>
         <a class="project-link" href="https://github.com/bromine1997/tinkerboard-test" target="_blank">GitHub (Server)</a>
       </div>
     </div>
@@ -206,7 +207,8 @@ comments: false
         <span class="project-tag">JavaScript</span>
       </div>
       <div class="project-links">
-        <a class="project-link primary-link" href="https://github.com/bromine1997/esp32-RehabilitationBicycle" target="_blank">GitHub</a>
+        <a class="project-link primary-link" href="/projects/rehab-bicycle/">Overview</a>
+        <a class="project-link" href="https://github.com/bromine1997/esp32_RehabilitationBicycle" target="_blank">GitHub</a>
       </div>
     </div>
   </div>
@@ -237,7 +239,8 @@ comments: false
         <span class="project-tag">AVR</span>
       </div>
       <div class="project-links">
-        <a class="project-link primary-link" href="https://github.com/bromine1997/atmega4809-project" target="_blank">GitHub</a>
+        <a class="project-link primary-link" href="/projects/atmega4809/">Overview</a>
+        <a class="project-link" href="https://github.com/bromine1997/atmega4809_project" target="_blank">GitHub</a>
       </div>
     </div>
   </div>
