@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 160" width="580" height="160" font-family="'Courier New', monospace">
+
+  <!-- Background -->
+  <rect width="580" height="160" fill="#0d1117" rx="12"/>
+
+  <!-- Section label -->
+  <text x="24" y="28" fill="#8b949e" font-size="12" font-weight="bold" letter-spacing="1">Stack Memory</text>
+  <line x1="24" y1="34" x2="556" y2="34" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Pointer label above -->
+  <text x="80" y="52" fill="#58a6ff" font-size="11" text-anchor="middle">arr</text>
+  <line x1="80" y1="55" x2="80" y2="62" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arr-arrow)"/>
+
+  <defs>
+    <marker id="arr-arrow" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <polygon points="0 0, 7 3.5, 0 7" fill="#58a6ff"/>
+    </marker>
+  </defs>
+
+  <!-- Cell 0 -->
+  <rect x="24"  y="64" width="100" height="48" fill="#1a2e1a" stroke="#238636" stroke-width="1.5" rx="4"/>
+  <text x="74"  y="94" fill="#3fb950" font-size="20" text-anchor="middle" font-weight="bold">10</text>
+
+  <!-- Cell 1 -->
+  <rect x="128" y="64" width="100" height="48" fill="#1a2e1a" stroke="#238636" stroke-width="1.5" rx="4"/>
+  <text x="178" y="94" fill="#3fb950" font-size="20" text-anchor="middle" font-weight="bold">20</text>
+
+  <!-- Cell 2 -->
+  <rect x="232" y="64" width="100" height="48" fill="#1a2e1a" stroke="#238636" stroke-width="1.5" rx="4"/>
+  <text x="282" y="94" fill="#3fb950" font-size="20" text-anchor="middle" font-weight="bold">30</text>
+
+  <!-- Cell 3 -->
+  <rect x="336" y="64" width="100" height="48" fill="#1a2e1a" stroke="#238636" stroke-width="1.5" rx="4"/>
+  <text x="386" y="94" fill="#3fb950" font-size="20" text-anchor="middle" font-weight="bold">40</text>
+
+  <!-- Cell 4 -->
+  <rect x="440" y="64" width="100" height="48" fill="#1a2e1a" stroke="#238636" stroke-width="1.5" rx="4"/>
+  <text x="490" y="94" fill="#3fb950" font-size="20" text-anchor="middle" font-weight="bold">50</text>
+
+  <!-- Index labels -->
+  <text x="74"  y="128" fill="#6e7681" font-size="11" text-anchor="middle">arr[0]</text>
+  <text x="178" y="128" fill="#6e7681" font-size="11" text-anchor="middle">arr[1]</text>
+  <text x="282" y="128" fill="#6e7681" font-size="11" text-anchor="middle">arr[2]</text>
+  <text x="386" y="128" fill="#6e7681" font-size="11" text-anchor="middle">arr[3]</text>
+  <text x="490" y="128" fill="#6e7681" font-size="11" text-anchor="middle">arr[4]</text>
+
+  <!-- Address labels -->
+  <text x="74"  y="146" fill="#484f58" font-size="10" text-anchor="middle">0x1000</text>
+  <text x="178" y="146" fill="#484f58" font-size="10" text-anchor="middle">0x1004</text>
+  <text x="282" y="146" fill="#484f58" font-size="10" text-anchor="middle">0x1008</text>
+  <text x="386" y="146" fill="#484f58" font-size="10" text-anchor="middle">0x100C</text>
+  <text x="490" y="146" fill="#484f58" font-size="10" text-anchor="middle">0x1010</text>
+
+</svg>
