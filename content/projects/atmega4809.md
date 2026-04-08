@@ -45,5 +45,5 @@ summary: "연세대학교 마이크로컴퓨터시스템 수업 실습 프로젝
 - MCU: ATmega4809 (AVR, 8-bit, 48MHz)
 - 보드: 커스텀 PCB (직접 납땜)
 - 개발 환경: Microchip Studio
-- 언어: C (Bare-metal)
-- 제어 방식: 레지스터 직접 접근 (HAL 없음)
+- 언어: C 
+- 제어 방식: 레지스터 직접 제어
