@@ -55,6 +55,10 @@ cover:
   └─ 측정 완료 후 CSV 다운로드
 ```
 
+<!-- 📌 이미지 추가: 시스템 다이어그램 → 발표자료 8페이지 캡처 -->
+<!-- 저장 경로: /images/projects/rehab/system-diagram.png -->
+![시스템 구성도](/images/projects/rehab/system-diagram.png)
+
 ---
 
 ## 주요 기능
@@ -79,23 +83,46 @@ cover:
 | 각도 센서 | AS5600 (12-bit magnetic encoder, I2C) |
 | 피드백 | NeoPixel LED |
 | 개발 환경 | Arduino IDE |
-| 파일시스템 | SPIFFS (웹 UI 호스팅) |
+| Filesystem | SPIFFS (웹 UI 호스팅) |
 | 메모리 | PSRAM 8 MB (데이터 버퍼) |
 | 통신 | Wi-Fi + WebSocket |
 | 프론트엔드 | HTML / CSS / JavaScript |
 
+<!-- 📌 이미지 추가: 하드웨어 사진 (제작된 보드 + 로드셀 + magnetic encoder) → 발표자료 9페이지 캡처 -->
+<!-- 저장 경로: /images/projects/rehab/hardware-photo.png -->
+![하드웨어 구성](/images/projects/rehab/hardware-photo.png)
+
+<!-- 📌 이미지 추가: 웹 UI 소프트웨어 화면 → 발표자료 11페이지 캡처 -->
+<!-- 저장 경로: /images/projects/rehab/web-ui.png -->
+![Web UI 화면](/images/projects/rehab/web-ui.png)
+
 ---
 
-## 기술적 도전
+## Design Rationale
 
-**ESP32 내장 ADC 대신 ADS1232를 쓴 이유**
+**ESP32 내장 ADC 대신 ADS1232를 선택한 이유**
 
 ESP32 내장 ADC는 12-bit 해상도에 비선형성 문제가 있어 로드셀의 미세한 힘 변화를 정확히 측정하기 어렵다. 24-bit 해상도의 ADS1232를 채널별로 독립 운용하고, DataSubSamplePoint 설정으로 80 SPS → 40 SPS로 운용해 노이즈를 줄이면서 충분한 해상도를 확보했다.
 
-**4채널 동기화 문제**
+**4채널 동기화 전략**
 
-채널을 순차적으로 읽으면 최대 25 ms 위상 오차가 발생한다. 각 ADS1232의 DRDY 핀을 모니터링해 모든 채널이 data-ready 상태일 때만 simultaneous read를 수행해 동기화 오차를 최소화했다.
+채널을 순차적으로 읽으면 최대 25 ms 위상 오차가 발생해 채널 간 비교가 무의미해진다. 각 ADS1232의 DRDY 핀을 모니터링해 모든 채널이 data-ready 상태일 때만 simultaneous read를 수행하는 방식으로 동기화 오차를 최소화했다.
 
-**메모리 설계**
+**PSRAM 기반 버퍼 설계**
 
 기본 SRAM만으로는 36분 분량 데이터를 담을 수 없다. ESP32 Feather V2에 탑재된 외장 PSRAM (8 MB)을 버퍼로 활용해 `86,400 샘플 × 20 bytes ≈ 1.65 MB` 를 안정적으로 수용하고, SAVE 요청 시 패킷 단위로 클라이언트에 전송하는 구조를 구현했다.
+
+---
+
+## Discussion
+
+본 시스템은 재활 치료 현장의 두 가지 핵심 문제를 해결하는 것을 목표로 했다. 첫째, 치료사가 직접 상주하지 않아도 운동 상태를 원격으로 모니터링할 수 있어 **인력 의존도를 줄일 수 있다**. 둘째, 4채널 힘 데이터와 크랭크 각도를 함께 수집함으로써 **환자 개인별 운동 특성을 정량적으로 파악**하고 맞춤형 재활 계획 수립에 활용할 수 있다.
+
+브라우저 기반 Web UI를 채택해 별도의 앱 설치 없이 어떤 디바이스에서도 접속 가능하도록 했고, CSV 다운로드로 수집된 데이터를 외부 분석 도구와 연계할 수 있다.
+
+**한계 및 향후 과제**
+
+- 현재는 데이터 수집·저장에 집중되어 있으며, 수집된 데이터를 기반으로 한 분석 알고리즘은 미구현
+- 실제 임상 환경에서의 사용성 검증 필요
+- 장시간 사용 시 로드셀 드리프트에 대한 실시간 보정 기능 추가 고려
+- 향후 클라우드 연동을 통해 다기관 데이터 비교 및 장기 추적 연구로 확장 가능
