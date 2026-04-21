@@ -7,6 +7,7 @@ description: "PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소�
 ShowToc: true
 TocOpen: false
 draft: false
+math: true
 ---
 
 ## 📌 논문 정보
