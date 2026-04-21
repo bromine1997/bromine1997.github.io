@@ -1,5 +1,5 @@
 ---
-title: "[Paper Review] PID Control System Analysis, Design, and Technology"
+title: "[논문 리뷰] PID Control System Analysis, Design, and Technology"
 date: 2025-04-15
 categories: ["Paper Review"]
 tags: ["PID", "control", "embedded", "firmware"]
@@ -7,12 +7,18 @@ description: "PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소�
 ShowToc: true
 TocOpen: false
 draft: false
-math: true
 ---
 
-> **서지 정보**
-> Kiam Heong Ang, Gregory Chong, Yun Li
-> *IEEE Transactions on Control Systems Technology*, Vol. 13, No. 4, July 2005
+## 📌 논문 정보
+
+| 항목 | 내용 |
+|------|------|
+| 제목 | PID Control System Analysis, Design, and Technology |
+| 저자 | Kiam Heong Ang, Gregory Chong, Yun Li |
+| 저널 / 학회 | IEEE Transactions on Control Systems Technology |
+| 연도 | 2005 |
+| DOI / 링크 | https://doi.org/10.1109/TCST.2005.847331 |
+| 분야 | `control` `embedded` |
 
 ---
 
@@ -24,10 +30,13 @@ math: true
 
 ## 🎯 읽게 된 이유
 
-HBOT 챔버 논문을 쓰면서 4–20mA 비례 밸브 제어에 PID를 직접 구현했다.
-비례 이득 $K_P$는 감으로 맞췄고, 미분 항 $K_D$는 노이즈가 튀어서 그냥 disabled 처리했다.
-나중에 "왜 $K_D$를 비활성화하는 게 맞는 선택이었나?"를 제대로 이해하고 싶어서 이 논문을 찾았다.
-실제로 **산업 현장의 80% PID 구현에서 derivative 항이 비활성화 상태**라는 사실을 이 논문에서 확인했다.
+석사 연구 중에 HBOT 챔버 회사에 재직 중인 선배님께 조언을 구할 기회가 있었다. 그때 선배님이 짧게 한마디 하셨다. *"미분항은 실제로 잘 안 써요."*
+
+그 말을 듣고 당시 나는 그냥 넘겼다. 왜인지를 파고들 여유가 없었다. 솔직히 말하면, 그 시점의 나는 제어 이론보다 졸업이 더 급했다. 챔버 압력 제어 로직을 어떻게든 돌아가게 만드는 것이 목표였고, $K_D$는 노이즈가 튀어서 disabled 처리하고 넘어갔다.
+
+그런데 졸업 이후에도 그 말이 계속 머릿속에 남았다. *현장에서 수십 년 일한 엔지니어가 왜 그렇게 말했을까.* 단순히 "노이즈 때문에"라는 설명만으로는 뭔가 부족한 느낌이었다. 이 논문을 읽고 나서야 그 이유를 수식으로 이해했다. Dead time이 있는 플랜트에서 $K_D$를 올리면 오히려 시스템이 불안정해질 수 있다는 것, 그래서 산업 현장의 80%가 derivative 항을 비활성화 상태로 운용한다는 것.
+
+선배님의 그 한마디가 이론적으로 근거가 있었다는 걸, 조금 늦게 확인한 셈이다.
 
 ---
 
