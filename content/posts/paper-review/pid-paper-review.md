@@ -1,5 +1,5 @@
 ---
-title: "[논문 리뷰] PID Control System Analysis, Design, and Technology"
+title: "[Paper Review] PID Control System Analysis, Design, and Technology"
 date: 2025-04-15
 categories: ["Paper Review"]
 tags: ["PID", "control", "embedded", "firmware"]
@@ -165,6 +165,8 @@ IMC는 플랜트를 $\frac{K}{1+Ts}e^{-Ls}$ 로 근사하고, 원하는 closed-l
 - **표준화 부재가 현장의 가장 큰 문제다.** ABB, Foxboro, Honeywell, Yokogawa 각각의 PID 구조와 튜닝 규칙이 달라서, 학계에서 제안한 튜닝 공식이 특정 하드웨어에서 동작하지 않는 이유가 여기 있다. 논문은 이를 해결하기 위해 표준 PID 구조 위에서 "plug-and-play" 방식의 자동 튜닝을 지향하는 PIDeasy를 제안하는 것으로 마무리된다.
 
 ---
+
+## 💬 내 생각 / 인사이트
 
 > 🔖 **개인적 메모**: 다음에 STM32에서 PID 루프를 다시 구현한다면, (1) anti-windup을 반드시 포함하고, (2) D항은 low-pass filter를 직렬 연결해서 $\beta = 10$ 정도로 고주파 차단, (3) 초기 $K_P$ 는 Z-N으로 추정하고 IMC 공식으로 전환하는 순서로 접근할 것이다.
 
