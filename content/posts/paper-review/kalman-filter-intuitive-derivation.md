@@ -75,7 +75,7 @@ $$K = \frac{\sigma_1^2}{\sigma_1^2 + \sigma_2^2}$$
 
 측정 좌표계 변환 행렬 $H$를 일반화하면:
 
-$$K_t = P_{t|t-1} H_t^T \left(H_t P_{t|t-1} H_t^T + R_t\right)^{-1}$$
+$$K_t = P_{t \mid t-1} H_t^T \left(H_t P_{t \mid t-1} H_t^T + R_t\right)^{-1}$$
 
 ---
 
@@ -83,17 +83,17 @@ $$K_t = P_{t|t-1} H_t^T \left(H_t P_{t|t-1} H_t^T + R_t\right)^{-1}$$
 
 **예측 단계 (Predict):**
 
-$$\hat{x}_{t|t-1} = F_t \hat{x}_{t-1|t-1} + B_t u_t$$
+$$\hat{x}_{t \mid t-1} = F_t \hat{x}_{t-1 \mid t-1} + B_t u_t$$
 
-$$P_{t|t-1} = F_t P_{t-1|t-1} F_t^T + Q_t$$
+$$P_{t \mid t-1} = F_t P_{t-1 \mid t-1} F_t^T + Q_t$$
 
 **측정 업데이트 단계 (Update):**
 
-$$K_t = P_{t|t-1} H_t^T \left(H_t P_{t|t-1} H_t^T + R_t\right)^{-1}$$
+$$K_t = P_{t \mid t-1} H_t^T \left(H_t P_{t \mid t-1} H_t^T + R_t\right)^{-1}$$
 
-$$\hat{x}_{t|t} = \hat{x}_{t|t-1} + K_t\left(z_t - H_t \hat{x}_{t|t-1}\right)$$
+$$\hat{x}_{t \mid t} = \hat{x}_{t \mid t-1} + K_t\left(z_t - H_t \hat{x}_{t \mid t-1}\right)$$
 
-$$P_{t|t} = P_{t|t-1} - K_t H_t P_{t|t-1}$$
+$$P_{t \mid t} = P_{t \mid t-1} - K_t H_t P_{t \mid t-1}$$
 
 ---
 
@@ -178,10 +178,10 @@ while (1) {
 
 | 기호 | 역할 | 스칼라 대응 | 실무 의미 |
 | --- | --- | --- | --- |
-| $\hat{x}_{t\|t-1}$ | 사전 상태 추정 | $\mu_1$ | 모델 기반 예측값 |
-| $\hat{x}_{t\|t}$ | 사후 상태 추정 | $\mu_{\text{fused}}$ | 센서 퓨전 후 최적 추정값 |
-| $P_{t\|t-1}$ | 사전 공분산 | $\sigma_1^2$ | 예측 불확실성 |
-| $P_{t\|t}$ | 사후 공분산 | $\sigma_{\text{fused}}^2$ | 업데이트 후 불확실성 |
+| $\hat{x}_{t \mid t-1}$ | 사전 상태 추정 | $\mu_1$ | 모델 기반 예측값 |
+| $\hat{x}_{t \mid t}$ | 사후 상태 추정 | $\mu_{\text{fused}}$ | 센서 퓨전 후 최적 추정값 |
+| $P_{t \mid t-1}$ | 사전 공분산 | $\sigma_1^2$ | 예측 불확실성 |
+| $P_{t \mid t}$ | 사후 공분산 | $\sigma_{\text{fused}}^2$ | 업데이트 후 불확실성 |
 | $Q_t$ | 프로세스 노이즈 공분산 | $q$ | 모델 오차 크기 |
 | $R_t$ | 측정 노이즈 공분산 | $r$ | 센서 노이즈 크기 |
 | $K_t$ | 칼만 이득 | $K$ | 예측 vs 측정 신뢰 비율 |
@@ -211,7 +211,7 @@ while (1) {
 
 ### 이노베이션(Innovation)의 의미
 
-측정 업데이트 방정식에서 $z_t - H_t \hat{x}_{t|t-1}$ 항을 **이노베이션(Innovation)** 또는 잔차(Residual)라 부른다. 이 값이 0에 가깝다면 예측이 정확했다는 의미이고, 크다면 모델과 현실 사이의 괴리가 크다는 신호다.
+측정 업데이트 방정식에서 $z_t - H_t \hat{x}_{t \mid t-1}$ 항을 **이노베이션(Innovation)** 또는 잔차(Residual)라 부른다. 이 값이 0에 가깝다면 예측이 정확했다는 의미이고, 크다면 모델과 현실 사이의 괴리가 크다는 신호다.
 
 실무에서 이노베이션을 모니터링하면 센서 고장(innovation이 갑자기 폭증) 또는 모델 열화를 조기에 탐지할 수 있다.
 
@@ -228,7 +228,7 @@ $P$의 대각 원소는 각 상태 변수의 **추정 분산**이다. 이 값이
 | 핵심 수학 | 두 가우시안 PDF의 곱 → 가우시안 (재귀성의 근거) |
 | 예측 단계 | 상태 전이 모델로 사전 추정값과 공분산 전파 |
 | 업데이트 단계 | 칼만 이득으로 예측과 측정을 가중 평균 |
-| 칼만 이득 | $K = P_{t\|t-1}H^T(HP_{t\|t-1}H^T + R)^{-1}$ |
+| 칼만 이득 | $K = P_{t \mid t-1}H^T(HP_{t \mid t-1}H^T + R)^{-1}$ |
 | 최적성 조건 | 선형 시스템 + 가우시안 노이즈 → MMSE 의미에서 최적 |
 | 변형 | 비선형 시스템: EKF(Extended), UKF(Unscented) |
 
