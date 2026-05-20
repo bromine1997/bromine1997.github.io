@@ -121,6 +121,7 @@ markup:
       unsafe: true
     extensions:
       passthrough:
+        enable: true
         delimiters:
           block:
             - - $$
