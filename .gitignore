@@ -1,0 +1,15 @@
+# Hugo build output
+public/
+
+# Local agent system (Claude Code 전용 - git 업로드 안 함)
+CLAUDE.md
+agents/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
