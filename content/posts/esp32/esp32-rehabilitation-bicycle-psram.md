@@ -32,7 +32,7 @@ ESP32 내부 SRAM은 약 520KB다. 여기에 Wi-Fi 스택이 100~200KB를 점유
 
 **셋째, Wi-Fi 스택과 메모리를 두고 경쟁하면 crash가 난다.**
 
-Wi-Fi는 내부 SRAM에서 동작한다. 데이터 버퍼까지 같은 공간을 쓰면 메모리 단편화가 쌓이다가 어느 순간 Wi-Fi 재연결 중 OOM으로 재부팅된다. 이 버그는 재현도 불규칙하고 로그만 봐서는 원인을 잡기 어렵다. PSRAM은 내부 SRAM과 완전히 별도 영역이라 이 경쟁 자체를 피할 수 있다.
+Wi-Fi는 내부 SRAM에서 동작한다. 데이터 버퍼까지 같은 공간을 쓰면 메모리 단편화가 쌓이다가 어느 순간 Wi-Fi 재연결 중 OOM(Out of Memory)으로 재부팅된다. 이 버그는 재현도 불규칙하고 로그만 봐서는 원인을 잡기 어렵다. PSRAM은 내부 SRAM과 완전히 별도 영역이라 이 경쟁 자체를 피할 수 있다.
 
 반면 PSRAM은 ns 단위로 읽고 쓴다. 메인 루프에서 포인터 대입 한 번이면 끝이다. ESP32 Feather V2에는 **2MB PSRAM**이 탑재되어 있어 이걸 전부 측정 버퍼로 쓰기로 했다.
 
@@ -92,7 +92,7 @@ struct sensors *packetPointer;   // 버퍼 시작 주소 (고정)
 struct sensors *workingPointer;  // 현재 쓰기 위치 (이동)
 ```
 
-`packetPointer`는 버퍼의 시작점을 가리키며 절대 바뀌지 않는다. `workingPointer`는 데이터를 쓸 때마다 앞으로 이동한다. 나중에 SAVE 명령이 오면 `workingPointer`를 다시 `packetPointer`로 돌려 처음부터 전송한다.
+`packetPointer`는 버퍼의 시작점을 가리키며 절대 바뀌지 않는다. `workingPointer`는 데이터를 쓸 때마다 앞으로 이동한다. 나중에 SAVE 명령이 오면 `workingPointer`를 `packetPointer`로 되돌려 처음부터 순서대로 전송한다.
 
 ## 메인 루프와 40 SPS
 
@@ -258,7 +258,7 @@ ws.binary(client_id, (uint8_t*)workingPointer, 1);  // 종료 신호
 
 `delay(500)` 동안 `loop()`가 멈추기 때문에 이 시간에 Falling Edge가 와도 샘플을 놓친다. 그래서 SAVE는 반드시 STOP 이후에만 의미가 있고, 코드에서도 `quit && save` 조건일 때만 전송 로직이 실행된다.
 
-브라우저 쪽에서는 데이터를 받을 때마다 `ArrayBuffer`에 이어 붙이다가, 마지막 1바이트 종료 신호가 오면 파일로 저장한다.
+브라우저 쪽에서는 데이터를 받을 때마다 `ArrayBuffer`에 누적하다가, 마지막 1바이트 종료 신호가 오면 파일로 저장한다.
 
 ## 상태 플래그 관리
 

@@ -19,7 +19,7 @@ GPIO(General Purpose Input/Output)는 MCU가 외부 세계와 신호를 주고�
 크게 두 가지 역할이 있다.
 
 - **Input**: 외부 신호(버튼, 센서 등)를 MCU가 읽어들임
-- **Output**: MCU가 외부 장치(LED, 모터 드라이버 등)에 신호를 인가함
+- **Output**: MCU가 외부 장치(LED, 모터 드라이버 등)에 신호를 출력함
 
 ## 출력 모드: Push-Pull vs Open-Drain
 
@@ -27,7 +27,7 @@ GPIO(General Purpose Input/Output)는 MCU가 외부 세계와 신호를 주고�
 
 MCU가 핀을 **High와 Low 모두 직접 drive**하는 방식이다.
 내부에 PMOS와 NMOS 트랜지스터가 한 쌍으로 연결되어 있어서,
-High 명령이 오면 PMOS가 켜져 핀을 VDD에 연결하고,
+High로 설정하면 PMOS가 켜져 핀을 VDD에 연결하고,
 Low 명령이 오면 NMOS가 켜져 핀을 GND에 연결한다.
 
 외부 저항 없이도 원하는 레벨을 정확하게 출력할 수 있어서,
@@ -62,7 +62,7 @@ Open-Drain은 Pull-up 저항의 전압을 MCU VDD와 다르게 설정할 수도 
 버튼을 GPIO 입력으로 읽는다고 해보자.
 버튼이 눌리지 않은 상태에서 핀이 아무 데도 연결되지 않으면 **Floating 상태**가 된다.
 
-이 상태에서는 공중에 떠 있는 핀이 주변 noise를 그대로 받아들여서
+이 상태에서는 Floating 상태의 핀이 주변 noise를 그대로 받아들여서
 IDR을 읽으면 0이 될지 1이 될지 예측할 수 없다.
 
 그래서 평상시에 핀을 **확실한 레벨로 고정**해두는 것이 Pull-up / Pull-down이다.
@@ -100,7 +100,7 @@ GPIO를 이해할 때 가장 중요한 그림 중 하나라서, 한 번 제대�
 핀 신호는 **TTL Schmitt Trigger**를 거쳐 **Input Data Register(IDR)** 로 들어간다.
 
 Schmitt Trigger가 있는 이유는 noise 때문이다.  
-신호가 천천히 변하거나 noise가 섞여 있어도, hysteresis 특성을 통해 보다 명확하게 0과 1로 해석할 수 있다.
+신호가 천천히 변하거나 noise가 섞여 있어도, hysteresis 특성을 통해 더 명확하게 0과 1로 해석할 수 있다.
 
 Analog 모드에서는 이 디지털 입력 경로 자체를 끄기도 한다.
 

@@ -15,7 +15,7 @@ tags:
 summary: "ASUS Tinker Board 2S에서 SPI 통신 파형이 왜곡되는 문제를 겪었다. 원인은 하드웨어가 아닌 Digital Isolator의 주파수 제한이었다."
 ---
 
-최근 ASUS Tinker Board 2S를 이용해서 개발을 진행하고 있다. 그 과정에서 SPI 통신 파형이 이상하게 나오는 문제가 발생해서 이 부분을 기록으로 남겨두려 한다.
+최근 ASUS Tinker Board 2S를 이용해서 개발을 진행하고 있다. 그 과정에서 SPI 통신 파형이 이상하게 나오는 문제가 발생해서 이를 정리해두려 한다.
 
 ## 개발 환경
 
@@ -35,7 +35,7 @@ MRAA에서는 위 그림처럼 index를 설정해주면 SPI1과 SPI5를 각각 �
 
 ## 문제 상황
 
-AD5420과 MAX1032 클래스를 이용해 SPI를 초기화하고 디버깅 목적으로 `SPI.write()`를 호출해 오실로스코프로 파형을 확인해봤다.
+SPI를 초기화한 뒤, 파형 확인을 위해 `SPI.write()`를 호출하고 오실로스코프로 측정해봤다.
 
 <!-- 이미지: Android Studio SPI Initialize 코드 -->
 ![SPI Initialize 코드](/images/tinkerboard/android-spi-init.png)
@@ -95,4 +95,4 @@ AD5420과 MAX1032 클래스를 이용해 SPI를 초기화하고 디버깅 목적
 | SPI5 Frequency | 20MHz | 50kHz |
 | SPI5 파형 | 오실레이션 | 정상 사각파 |
 
-Digital Isolator를 사용할 때는 반드시 **해당 소자의 Maximum pulse width(최대 동작 주파수)를 확인**해야 한다는 걸 이번에 직접 경험으로 배웠다. 하드웨어를 먼저 의심하다가 시간을 꽤 날렸는데, 데이터시트를 먼저 꼼꼼히 읽는 습관의 중요성을 다시 한번 느꼈다.
+Digital Isolator를 사용할 때는 반드시 **해당 소자의 Maximum pulse width(최대 동작 주파수)를 확인**해야 한다는 걸 이번에 직접 겪으며 배웠다. 하드웨어를 먼저 의심하다가 시간을 꽤 날렸는데, 데이터시트를 먼저 제대로 읽었다면 시간을 훨씬 아꼈을 것이다.
