@@ -1,17 +1,413 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta name=generator content="Hugo 0.159.1"><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>bromine1997</title><meta name=description content="임베디드 / 펌웨어 개발자 서보민의 기술 블로그"><meta name=author content="서보민"><link rel=canonical href=https://bromine1997.github.io/><link crossorigin=anonymous href=/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as=style><link rel=icon href=https://bromine1997.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://bromine1997.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://bromine1997.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://bromine1997.github.io/apple-touch-icon.png><link rel=mask-icon href=https://bromine1997.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://bromine1997.github.io/index.xml title=rss><link rel=alternate type=application/json href=https://bromine1997.github.io/index.json title=json><link rel=alternate hreflang=en href=https://bromine1997.github.io/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}@media(prefers-color-scheme:light){.list::-webkit-scrollbar-thumb{border-color:var(--code-bg)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://bromine1997.github.io/"><meta property="og:site_name" content="bromine1997"><meta property="og:title" content="bromine1997"><meta property="og:description" content="임베디드 / 펌웨어 개발자 서보민의 기술 블로그"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="bromine1997"><meta name=twitter:description content="임베디드 / 펌웨어 개발자 서보민의 기술 블로그"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"bromine1997","url":"https://bromine1997.github.io/","description":"임베디드 / 펌웨어 개발자 서보민의 기술 블로그","logo":"https://bromine1997.github.io/favicon.ico","sameAs":["https://github.com/bromine1997","/index.xml"]}</script></head><body class=list id=top><header class=header><nav class=nav><div class=logo><a href=https://bromine1997.github.io/ accesskey=h title="bromine1997 (Alt + H)">bromine1997</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://bromine1997.github.io/categories/embedded/ title=Embedded><span>Embedded</span></a></li><li><a href=https://bromine1997.github.io/categories/algorithm/ title=Algorithm><span>Algorithm</span></a></li><li><a href=https://bromine1997.github.io/categories/paper-review/ title="Paper Review"><span>Paper Review</span></a></li><li><a href=https://bromine1997.github.io/categories/notes/ title=Notes><span>Notes</span></a></li><li><a href=https://bromine1997.github.io/projects/ title=Projects><span>Projects</span></a></li><li><a href=https://bromine1997.github.io/search/ title=Search><span>Search</span></a></li></ul></nav></header><main class=main><article class="first-entry home-info"><header class=entry-header><h1>안녕하세요, 서보민입니다 👋</h1></header><div class=entry-content>하드웨어와 소프트웨어를 함께 다루는 임베디드 / 펌웨어 개발자입니다. STM32, ESP32 기반 시스템 개발, 논문 리뷰, 알고리즘 공부를 기록합니다.</div><footer class=entry-footer><div class=social-icons><a href=https://github.com/bromine1997 target=_blank rel="noopener noreferrer me" title=Github><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
-</a><a href=/index.xml target=_blank rel="noopener noreferrer me" title=Rss><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></div></footer></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[임베디드 기초] 1편 - 임베디드 시스템과 펌웨어란 무엇인가</h2></header><div class=entry-content><p>들어가며 학부 때 ESP32로 재활 자전거 IoT 모니터링 시스템을 만들고, 석사에서는 Tinker Board 2S와 STM32를 써서 HBOT 챔버 제어 시스템을 구축했다. 그 과정에서 꽤 다양한 것들을 다뤘다.
-근데 기술 스택을 쌓는 데 집중하다 보면 정작 가장 기본적인 개념들이 흐릿해지기 마련이다.
-그래서 지금까지 해온 것들의 기반이 되는 기초 개념들을 처음부터 다시 정리해보기로 했다. 당연하게 써왔던 것들의 의미를 되짚어보는 시리즈다.
-임베디드 시스템이란? 임베디드 시스템(Embedded System) 은 특수한 목적을 위해 설계된 컴퓨터 시스템이다.
-...</p></div><footer class=entry-footer><span title='2026-04-07 00:00:00 +0000 UTC'>April 7, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [임베디드 기초] 1편 - 임베디드 시스템과 펌웨어란 무엇인가" href=https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[임베디드 기초] 2편 - 메모리 구조와 변수 저장 원리</h2></header><div class=entry-content><p>들어가며 1편에서 펌웨어가 플래시에 저장되고, 변수는 RAM에서 동작한다고 정리했다. 그런데 막상 “전역변수는 어디 저장돼요?”, “const는요?” 라는 질문을 받으면 정확하게 대답하기가 쉽지 않다.
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.159.1"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>bromine1997</title>
+
+<meta name="description" content="임베디드 / 펌웨어 개발자 서보민의 기술 블로그">
+<meta name="author" content="서보민">
+<link rel="canonical" href="http://localhost:1313/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
+<link rel="alternate" type="application/json" href="http://localhost:1313/index.json" title="json">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<meta property="og:url" content="http://localhost:1313/">
+  <meta property="og:site_name" content="bromine1997">
+  <meta property="og:title" content="bromine1997">
+  <meta property="og:description" content="임베디드 / 펌웨어 개발자 서보민의 기술 블로그">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="bromine1997">
+  <meta name="twitter:description" content="임베디드 / 펌웨어 개발자 서보민의 기술 블로그">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "bromine1997",
+  "url": "http://localhost:1313/",
+  "description": "임베디드 / 펌웨어 개발자 서보민의 기술 블로그",
+  "logo": "http://localhost:1313/favicon.ico",
+  "sameAs": [
+      "https://github.com/bromine1997", "/index.xml"
+  ]
+}
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                    <span>Embedded</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                    <span>Algorithm</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                    <span>Paper Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/notes/" title="Notes">
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<article class="first-entry home-info">
+    <header class="entry-header">
+        <h1>안녕하세요, 서보민입니다 👋</h1>
+    </header>
+    <div class="entry-content">
+        하드웨어와 소프트웨어를 함께 다루는 임베디드 / 펌웨어 개발자입니다. STM32, ESP32 기반 시스템 개발, 논문 리뷰, 알고리즘 공부를 기록합니다.
+    </div>
+    <footer class="entry-footer">
+        <div class="social-icons" >
+    <a href="https://github.com/bromine1997" target="_blank" rel="noopener noreferrer me"
+        title="Github">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path
+        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+    </path>
+</svg>
+    </a>
+    <a href="/index.xml" target="_blank" rel="noopener noreferrer me"
+        title="Rss">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 11a9 9 0 0 1 9 9" />
+    <path d="M4 4a16 16 0 0 1 16 16" />
+    <circle cx="5" cy="19" r="1" />
+</svg>
+    </a>
+</div>
+
+    </footer>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[임베디드 기초] 2편 - 메모리 구조와 변수 저장 원리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>들어가며 1편에서 펌웨어가 플래시에 저장되고, 변수는 RAM에서 동작한다고 정리했다. 그런데 막상 “전역변수는 어디 저장돼요?”, “const는요?” 라는 질문을 받으면 정확하게 대답하기가 쉽지 않다.
 2편에서는 STM32 메모리 구조를 조금 더 깊이 들어가본다. 내가 선언한 변수 하나가 어느 메모리 영역에 올라가는지, 링커가 이걸 어떻게 결정하는지까지 정리한다.
 Flash vs RAM 다시 짚기 STM32에는 크게 두 가지 메모리가 있다.
 Flash (플래시)
 non-volatile — 전원을 꺼도 데이터가 유지된다 읽기는 자유롭지만, 쓰기는 Erase → Write 순서로 페이지/섹터 단위로만 가능하다 속도가 RAM보다 느리다 코드(명령어), 상수, 전역변수 초기값이 저장된다 RAM
-...</p></div><footer class=entry-footer><span title='2026-04-07 00:00:00 +0000 UTC'>April 7, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [임베디드 기초] 2편 - 메모리 구조와 변수 저장 원리" href=https://bromine1997.github.io/posts/basics/embedded-02-memory-structure/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조</h2></header><div class=entry-content><p>40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.</p></div><footer class=entry-footer><span title='2026-04-03 01:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>7 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조" href=https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[ESP32] 4개의 로드셀을 동시에 측정하기 - 하드웨어</h2></header><div class=entry-content><p>ESP32 내장 ADC 대신 ADS1232를 4개 사용해 로드셀 4채널을 동시에 측정한 이유, 그리고 크랭크 각도를 측정하는 AS5600까지. 하드웨어 설계 과정을 정리했다.</p></div><footer class=entry-footer><span title='2026-04-03 00:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [ESP32] 4개의 로드셀을 동시에 측정하기 - 하드웨어" href=https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-hardware/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[ESP32] setup()과 loop()는 어떻게 실행되는가</h2></header><div class=entry-content><p>ESP32를 Arduino IDE로 개발하면 setup()과 loop()만 보인다. 그런데 실제로 전원이 켜진 순간부터 loop()가 돌기까지, 내부에서는 어떤 일이 일어날까.</p></div><footer class=entry-footer><span title='2026-04-03 00:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [ESP32] setup()과 loop()는 어떻게 실행되는가" href=https://bromine1997.github.io/posts/esp32/esp32-setup-loop-internals/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한</h2></header><div class=entry-content><p>ASUS Tinker Board 2S에서 SPI 통신 파형이 왜곡되는 문제를 겪었다. 원인은 하드웨어가 아닌 Digital Isolator의 주파수 제한이었다.</p></div><footer class=entry-footer><span title='2026-04-03 00:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한" href=https://bromine1997.github.io/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[ATMEGA4809] MCU 소개 및 개발환경 설정</h2></header><div class=entry-content><p>본격적인 코드리뷰에 앞서 제가 사용한 ATmega4809 MCU와 Microchip Studio 개발환경을 간단하게 소개합니다.</p></div><footer class=entry-footer><span title='2026-04-02 01:00:00 +0900 KST'>April 2, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [ATMEGA4809] MCU 소개 및 개발환경 설정" href=https://bromine1997.github.io/posts/atmega/atmega-code-review-01-environment/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[ATMEGA4809] 시작하며</h2></header><div class=entry-content><p>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작합니다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정입니다.</p></div><footer class=entry-footer><span title='2026-04-02 00:00:00 +0900 KST'>April 2, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [ATMEGA4809] 시작하며" href=https://bromine1997.github.io/posts/atmega/atmega-code-review-intro/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</h2></header><div class=entry-content><p>HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글</p></div><footer class=entry-footer><span title='2026-03-31 12:00:00 +0900 KST'>March 31, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to [STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어" href=https://bromine1997.github.io/posts/stm32/stm32-hal-gpio-internals/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>첫 번째 Notes 글</h2></header><div class=entry-content><p>블로그에 Notes 카테고리를 만들기 위한 첫 글</p></div><footer class=entry-footer><span title='2026-03-31 12:00:00 +0900 KST'>March 31, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>서보민</span></footer><a class=entry-link aria-label="post link to 첫 번째 Notes 글" href=https://bromine1997.github.io/posts/notes/first-note/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://bromine1997.github.io/page/2/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://bromine1997.github.io/>bromine1997</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-08 00:00:00 +0000 UTC'>April 8, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [임베디드 기초] 2편 - 메모리 구조와 변수 저장 원리" href="http://localhost:1313/posts/basics/embedded-02-memory-structure/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[자료구조] 1편 - 배열과 동적 배열: 메모리를 직접 다루다
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>들어가며 많은 이들이 자료구조를 Java나 Python으로 입문한다. ArrayList나 list.append() 한 줄이면 복잡한 메모리 관리 없이도 데이터를 손쉽게 다룰 수 있기 때문이다.
+하지만 임베디드/펌웨어 개발 환경에서는 이야기가 다르다. 가용 RAM이 바이트 단위로 제한적인 환경에서 ‘알아서 관리해 주는 메모리’란 존재하지 않는다. 포인터로 주소에 직접 접근하고, 스택과 데이터 영역의 크기를 설계 단계부터 고민해야 한다. 특히 안정성이 최우선인 환경에서는 메모리 파편화(Fragmentation) 위험 때문에 힙(Heap) 할당조차 지양하며, 모든 데이터를 예측 가능한 범위 안에서 관리한다.
+이 시리즈는 단순한 구현을 넘어, C언어를 통해 데이터가 메모리에 어떻게 배치되는지, 그리고 왜 펌웨어 개발에서 메모리를 ‘예측 가능하게’ 설계해야 하는지 그 이유를 함께 파헤친다. 첫 번째 주제는 모든 자료구조의 출발점, **배열(Array)**이다.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-08 00:00:00 +0000 UTC'>April 8, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [자료구조] 1편 - 배열과 동적 배열: 메모리를 직접 다루다" href="http://localhost:1313/posts/algorithm/algorithm-01-array/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[임베디드 기초] 1편 - 임베디드 시스템과 펌웨어란 무엇인가
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>들어가며 학부 때 ESP32로 재활 자전거 IoT 모니터링 시스템을 만들고, 석사에서는 Tinker Board 2S와 STM32를 써서 HBOT 챔버 제어 시스템을 구축했다. 그 과정에서 꽤 다양한 것들을 다뤘다.
+근데 기술 스택을 쌓는 데 집중하다 보면 정작 가장 기본적인 개념들이 흐릿해지기 마련이다.
+그래서 지금까지 해온 것들의 기반이 되는 기초 개념들을 처음부터 다시 정리해보기로 했다. 당연하게 써왔던 것들의 의미를 되짚어보는 시리즈다.
+임베디드 시스템이란? 임베디드 시스템(Embedded System) 은 특수한 목적을 위해 설계된 컴퓨터 시스템이다.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-07 00:00:00 +0000 UTC'>April 7, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [임베디드 기초] 1편 - 임베디드 시스템과 펌웨어란 무엇인가" href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[ESP32] 4개의 로드셀을 동시에 측정하기 - 소프트웨어
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>ADS1232 4채널을 왜 Hardware SPI 대신 GPIO 인터럽트로 읽었는가. IRAM_ATTR가 필요한 이유, 4채널 동시 비트 수집 구조, 24비트 2의 보수 부호 처리까지 정리했다.</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-03 02:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>7 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [ESP32] 4개의 로드셀을 동시에 측정하기 - 소프트웨어" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-03 01:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>7 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[ESP32] 4개의 로드셀을 동시에 측정하기 - 하드웨어
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>ESP32 내장 ADC 대신 ADS1232를 4개 사용해 로드셀 4채널을 동시에 측정한 이유, 그리고 크랭크 각도를 측정하는 AS5600까지. 하드웨어 설계 과정을 정리했다.</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-03 00:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [ESP32] 4개의 로드셀을 동시에 측정하기 - 하드웨어" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[ESP32] setup()과 loop()는 어떻게 실행되는가
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>ESP32를 Arduino IDE로 개발하면 setup()과 loop()만 보인다. 그런데 실제로 전원이 켜진 순간부터 loop()가 돌기까지, 내부에서는 어떤 일이 일어날까.</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-03 00:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [ESP32] setup()과 loop()는 어떻게 실행되는가" href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>ASUS Tinker Board 2S에서 SPI 통신 파형이 왜곡되는 문제를 겪었다. 원인은 하드웨어가 아닌 Digital Isolator의 주파수 제한이었다.</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-03 00:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한" href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[ATMEGA4809] MCU 소개 및 개발환경 설정
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>본격적인 코드리뷰에 앞서 제가 사용한 ATmega4809 MCU와 Microchip Studio 개발환경을 간단하게 소개합니다.</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-02 01:00:00 +0900 KST'>April 2, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [ATMEGA4809] MCU 소개 및 개발환경 설정" href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[ATMEGA4809] 시작하며
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작합니다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정입니다.</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-02 00:00:00 +0900 KST'>April 2, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>서보민</span></footer>
+  <a class="entry-link" aria-label="post link to [ATMEGA4809] 시작하며" href="http://localhost:1313/posts/atmega/atmega-code-review-intro/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="http://localhost:1313/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

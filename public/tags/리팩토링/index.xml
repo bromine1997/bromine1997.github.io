@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>리팩토링 on bromine1997</title><link>https://bromine1997.github.io/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/</link><description>Recent content in 리팩토링 on bromine1997</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Thu, 02 Apr 2026 00:00:00 +0900</lastBuildDate><atom:link href="https://bromine1997.github.io/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/index.xml" rel="self" type="application/rss+xml"/><item><title>[ATMEGA4809] 시작하며</title><link>https://bromine1997.github.io/posts/atmega/atmega-code-review-intro/</link><pubDate>Thu, 02 Apr 2026 00:00:00 +0900</pubDate><guid>https://bromine1997.github.io/posts/atmega/atmega-code-review-intro/</guid><description>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작합니다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정입니다.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>리팩토링 on bromine1997</title>
+    <link>http://localhost:1313/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/</link>
+    <description>Recent content in 리팩토링 on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Thu, 02 Apr 2026 00:00:00 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[ATMEGA4809] 시작하며</title>
+      <link>http://localhost:1313/posts/atmega/atmega-code-review-intro/</link>
+      <pubDate>Thu, 02 Apr 2026 00:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/atmega/atmega-code-review-intro/</guid>
+      <description>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작합니다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정입니다.</description>
+    </item>
+  </channel>
+</rss>

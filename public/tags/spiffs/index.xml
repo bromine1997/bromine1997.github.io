@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>SPIFFS on bromine1997</title><link>https://bromine1997.github.io/tags/spiffs/</link><description>Recent content in SPIFFS on bromine1997</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Mon, 23 Feb 2026 02:06:00 +0900</lastBuildDate><atom:link href="https://bromine1997.github.io/tags/spiffs/index.xml" rel="self" type="application/rss+xml"/><item><title>[ESP32] ESP32가 뭐길래?</title><link>https://bromine1997.github.io/posts/esp32/esp32-intro-feather-v2/</link><pubDate>Mon, 23 Feb 2026 02:06:00 +0900</pubDate><guid>https://bromine1997.github.io/posts/esp32/esp32-intro-feather-v2/</guid><description>코끼리 재활자전거 IoT 프로젝트의 핵심이었던 ESP32, 그 중에서도 ESP32 Feather V2를 선택한 이유와 실제로 써보면서 느낀 장단점을 정리했다.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>SPIFFS on bromine1997</title>
+    <link>http://localhost:1313/tags/spiffs/</link>
+    <description>Recent content in SPIFFS on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 23 Feb 2026 02:06:00 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/spiffs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[ESP32] ESP32가 뭐길래?</title>
+      <link>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</link>
+      <pubDate>Mon, 23 Feb 2026 02:06:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</guid>
+      <description>코끼리 재활자전거 IoT 프로젝트의 핵심이었던 ESP32, 그 중에서도 ESP32 Feather V2를 선택한 이유와 실제로 써보면서 느낀 장단점을 정리했다.</description>
+    </item>
+  </channel>
+</rss>

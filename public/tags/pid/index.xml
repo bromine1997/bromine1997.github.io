@@ -1,1 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>PID on bromine1997</title><link>https://bromine1997.github.io/tags/pid/</link><description>Recent content in PID on bromine1997</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Tue, 31 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://bromine1997.github.io/tags/pid/index.xml" rel="self" type="application/rss+xml"/><item><title>[Paper Review] Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</title><link>https://bromine1997.github.io/posts/paper-review/review-naaji2026-hbot/</link><pubDate>Tue, 31 Mar 2026 00:00:00 +0000</pubDate><guid>https://bromine1997.github.io/posts/paper-review/review-naaji2026-hbot/</guid><description>HBOT 챔버 내 유체 거동을 수학적으로 모델링하고, 축소 실험 챔버 + MCU 기반 압력 제어 시스템으로 검증한 연구</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>PID on bromine1997</title>
+    <link>http://localhost:1313/tags/pid/</link>
+    <description>Recent content in PID on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 31 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/pid/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[Paper Review] Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</title>
+      <link>http://localhost:1313/posts/paper-review/review-naaji2026-hbot/</link>
+      <pubDate>Tue, 31 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/paper-review/review-naaji2026-hbot/</guid>
+      <description>HBOT 챔버 내 유체 거동을 수학적으로 모델링하고, 축소 실험 챔버 &#43; MCU 기반 압력 제어 시스템으로 검증한 연구</description>
+    </item>
+    <item>
+      <title>[Paper Review] Optimum Settings for Automatic Controllers</title>
+      <link>http://localhost:1313/posts/paper-review/zn-paper-review/</link>
+      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/paper-review/zn-paper-review/</guid>
+      <description>PID 제어기의 최적 파라미터를 실험적으로 결정하는 Z-N 튜닝 방법을 제안한 1942년 고전 논문. Ultimate sensitivity와 process reaction curve 두 가지 방법을 통해 현장에서 빠르게 최적 설정을 도출하는 절차를 제시한다.</description>
+    </item>
+    <item>
+      <title>[Paper Review] PID Control System Analysis, Design, and Technology</title>
+      <link>http://localhost:1313/posts/paper-review/pid-paper-review/</link>
+      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/paper-review/pid-paper-review/</guid>
+      <description>PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리.</description>
+    </item>
+  </channel>
+</rss>

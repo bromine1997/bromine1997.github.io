@@ -1,277 +1,845 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조 | bromine1997</title><meta name=keywords content="ESP32,PSRAM,로드셀,데이터수집,임베디드,재활자전거"><meta name=description content="40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다."><meta name=author content="서보민"><link rel=canonical href=https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/><link crossorigin=anonymous href=/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as=style><link rel=icon href=https://bromine1997.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://bromine1997.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://bromine1997.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://bromine1997.github.io/apple-touch-icon.png><link rel=mask-icon href=https://bromine1997.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}@media(prefers-color-scheme:light){.list::-webkit-scrollbar-thumb{border-color:var(--code-bg)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/"><meta property="og:site_name" content="bromine1997"><meta property="og:title" content="[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조"><meta property="og:description" content="40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다."><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-04-03T01:00:00+09:00"><meta property="article:modified_time" content="2026-04-03T01:00:00+09:00"><meta property="article:tag" content="ESP32"><meta property="article:tag" content="PSRAM"><meta property="article:tag" content="로드셀"><meta property="article:tag" content="데이터수집"><meta property="article:tag" content="임베디드"><meta property="article:tag" content="재활자전거"><meta name=twitter:card content="summary"><meta name=twitter:title content="[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조"><meta name=twitter:description content="40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://bromine1997.github.io/posts/"},{"@type":"ListItem","position":2,"name":"[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조","item":"https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조","name":"[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조","description":"40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.","keywords":["ESP32","PSRAM","로드셀","데이터수집","임베디드","재활자전거"],"articleBody":"하드웨어 편에서 ADS1232 4개로 로드셀을 동시에 샘플링하는 구조를 설명했다. 이번에는 그 데이터를 어떻게 저장하고 관리하는지, PSRAM 버퍼 구조부터 분할 전송까지 정리해보겠다.\n왜 Flash가 아닌 PSRAM인가 처음에는 측정 데이터를 SD카드나 SPIFFS(Flash)에 직접 저장하는 방식을 생각했다.\n세 가지 문제가 있었다.\n첫째, Flash 쓰기는 느리다.\nSPIFFS 기준으로 단순 쓰기도 수 ms가 걸린다. 40 SPS로 샘플링 중이라면 한 샘플마다 25ms 안에 모든 처리를 끝내야 하는데, Flash 쓰기가 이 시간을 잡아먹으면 샘플을 놓친다.\n둘째, 내부 SRAM이 부족하다.\nESP32 내부 SRAM은 약 520KB다. 여기에 Wi-Fi 스택이 100~200KB를 점유하고, AsyncWebServer와 WebSocket 라이브러리까지 올라가면 여유가 거의 없다. 1.65MB짜리 버퍼를 내부 SRAM에 올리는 건 처음부터 불가능하다. malloc 대신 ps_calloc을 쓴 이유가 바로 이것이다.\n셋째, Wi-Fi 스택과 메모리를 두고 경쟁하면 crash가 난다.\nWi-Fi는 내부 SRAM에서 동작한다. 데이터 버퍼까지 같은 공간을 쓰면 메모리 단편화가 쌓이다가 어느 순간 Wi-Fi 재연결 중 OOM으로 재부팅된다. 이 버그는 재현도 불규칙하고 로그만 봐서는 원인을 잡기 어렵다. PSRAM은 내부 SRAM과 완전히 별도 영역이라 이 경쟁 자체를 피할 수 있다.\n반면 PSRAM은 ns 단위로 읽고 쓴다. 메인 루프에서 포인터 대입 한 번이면 끝이다. ESP32 Feather V2에는 2MB PSRAM이 탑재되어 있어 이걸 전부 측정 버퍼로 쓰기로 했다.\n데이터 구조 설계 저장 단위는 한 번의 샘플, 즉 로드셀 4채널 + 각도 1채널이다.\n1 2 3 4 5 6 7 8 struct sensors { volatile long DATA1; // 우측 팔 (4 bytes) volatile long DATA2; // 좌측 팔 (4 bytes) volatile long DATA3; // 우측 다리 (4 bytes) volatile long DATA4; // 좌측 다리 (4 bytes) unsigned long encoderAngle; // 크랭크 각도 (4 bytes) }; // 총 20 bytes / 샘플 volatile은 ISR 안에서 값이 바뀌기 때문에 컴파일러 최적화를 막기 위해 붙였다. 이게 없으면 컴파일러가 “이 값은 여기서 안 바뀌네\"라고 판단하고 레지스터에 캐시해버려서 ISR이 업데이트한 최신 값을 못 읽을 수 있다.\n최대 기록 시간을 36분으로 잡았을 때 필요한 샘플 수와 메모리는:\n1 2 3 #define PACKET_SIZE (36 * 60 * 40) // 86,400 샘플 // 86,400 샘플 × 20 bytes = 1,728,000 bytes ≈ 1.65 MB 2MB PSRAM 안에 들어온다.\nPSRAM 초기화 setup() 안에서 PSRAM을 확인하고 메모리를 할당한다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 Serial.print(\"PSRAM found : \"); Serial.println(isPsram = psramFound()); if (isPsram) { if (psramInit()) { Serial.println((String)\"Memory available in PSRAM : \" + ESP.getFreePsram()); workingPointer = packetPointer = (struct sensors *)ps_calloc(PACKET_SIZE, sizeof(struct sensors)); } else { Serial.println(\"PSRAM initilization failed\"); isPsram = false; } } ps_calloc은 PSRAM에서 메모리를 할당하는 함수다. 일반 malloc을 쓰면 내부 SRAM에서 할당을 시도하는데, 앞서 말했듯 1.65MB는 처음부터 들어가지 않는다. calloc이기 때문에 할당과 동시에 0으로 초기화된다.\n포인터는 두 개를 사용한다.\n1 2 struct sensors *packetPointer; // 버퍼 시작 주소 (고정) struct sensors *workingPointer; // 현재 쓰기 위치 (이동) packetPointer는 버퍼의 시작점을 가리키며 절대 바뀌지 않는다. workingPointer는 데이터를 쓸 때마다 앞으로 이동한다. 나중에 SAVE 명령이 오면 workingPointer를 다시 packetPointer로 돌려 처음부터 전송한다.\n메인 루프와 40 SPS loop()의 핵심은 DRDY 핀의 Falling Edge 감지다.\nADS1232는 새 데이터가 준비되면 DRDY/DOUT 핀을 HIGH → LOW로 내린다. 이걸 소프트웨어 polling으로 감지한다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 void loop() { c = digitalRead(pin_ADC_DRDY_DOUT_1); if ((t == HIGH) \u0026\u0026 (c == LOW)) { // Falling Edge 감지 DatSampleIdx++; WebSampleIdx++; if (DatSampleIdx \u003e= DataSubSamplePoint) { // 2번마다 1번 처리 DatSampleIdx = 0; // 데이터 처리 } } t = c; } ADS1232는 최대 80 SPS로 동작한다. DataSubSamplePoint = 2로 설정해두었기 때문에 Falling Edge 2번 중 1번만 실제로 처리한다. 결과적으로 40 SPS가 된다.\n1 #define DataSubSamplePoint 2 // 80 / 2 = 40 SPS 80 SPS를 전부 쓰지 않은 이유는, 40 SPS면 재활 운동 데이터 수집에 충분하고 처리 시간과 저장 용량이 절반으로 줄기 때문이다. 80 SPS를 그대로 쓰면 36분이 아니라 18분 제한이 된다.\nFalling Edge마다 일어나는 일 Falling Edge를 감지하고 DatSampleIdx가 조건을 만족하면 다음 순서로 처리된다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 // 1. 클럭 펄스 24회 발생 → ISR이 4채널 데이터 수집 idx = 0; for (int i = 0; i \u003c 24; i++) { digitalWrite(pin_SCLK_OUT, HIGH); delayMicroseconds(10); digitalWrite(pin_SCLK_OUT, LOW); delayMicroseconds(10); } // 2. 각도 읽기 (I2C) if (isWire) { Sensors.encoderAngle = as5600.readAngle(); } else { Sensors.encoderAngle = 8192; // 미연결 표시 } // 3. NeoPixel로 실시간 시각화 (디버깅용) pixel.setPixelColor(0, Sensors.DATA1 \u003c\u003c 8); pixel.show(); // 4. PSRAM에 저장 (START 명령 이후에만) if (isPsram) { if (!quit \u0026\u0026 packetCounter \u003c PACKET_SIZE) { *workingPointer++ = Sensors; packetCounter++; } } 1번에서 SCLK_OUT으로 24개의 클럭 펄스를 직접 발생시킨다. 이 펄스마다 SCLK_IN 핀에 인터럽트가 걸려 SPI_ISR()이 실행되고, 4채널 데이터가 1비트씩 수집된다. 24클럭이 끝나면 Sensors.DATA1~4에 최종 값이 들어있다.\n2번에서 AS5600 각도를 I2C로 읽는다. 미연결 상태면 8192라는 예약값을 넣어 웹 UI에서 “N.C.“로 표시하게 했다.\n3번은 디버깅 용도다. NeoPixel의 G채널에 DATA1 값을 매핑하면 오른팔에 힘이 들어갈수록 LED가 밝아진다. 오실로스코프 없이 센서 동작을 육안으로 확인할 수 있어서 개발 중에 유용했다.\nPSRAM 저장 핵심 한 줄 1 *workingPointer++ = Sensors; C 포인터 문법이 익숙하지 않으면 낯설어 보이지만, 풀어쓰면 이렇다.\n1 2 *workingPointer = Sensors; // workingPointer가 가리키는 주소에 Sensors 구조체 복사 workingPointer++; // 포인터를 다음 구조체 위치로 이동 ++는 바이트 단위가 아니라 타입 크기 단위로 이동한다. struct sensors가 20 bytes이므로 workingPointer++는 주소를 20 증가시킨다. 이렇게 하면 배열처럼 PSRAM에 구조체가 순서대로 쌓인다.\n1 2 3 4 5 6 PSRAM ┌──────────────────────────────────────────────┐ │ Sensors[0] │ Sensors[1] │ ... │ Sensors[N] │ └──────────────────────────────────────────────┘ ↑ ↑ packetPointer workingPointer 실시간 화면 표시와 PSRAM 저장은 분리되어 있다 여기서 한 가지 흥미로운 점이 있다. 웹 화면을 열면 START를 누르지 않아도 센서 값이 실시간으로 표시된다. PSRAM에 저장하는 것과 화면에 보여주는 것이 완전히 분리된 구조이기 때문이다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 if ((t == HIGH) \u0026\u0026 (c == LOW)) { DatSampleIdx++; WebSampleIdx++; // quit 상태와 무관하게 항상 증가 if (DatSampleIdx \u003e= DataSubSamplePoint) { // PSRAM 저장: quit = false (START 이후)일 때만 if (!quit \u0026\u0026 packetCounter \u003c PACKET_SIZE) { *workingPointer++ = Sensors; } } // 화면 전송: 항상 동작, 16샘플(0.4초)마다 JSON 전송 if (!NoNetwork \u0026\u0026 (WebSampleIdx \u003e= 16)) { WebSampleIdx = 0; sendSensorsWs(null); } } WebSampleIdx는 quit 여부와 상관없이 Falling Edge마다 계속 증가한다. 16샘플(= 0.4초)마다 현재 Sensors 구조체 값을 JSON으로 브라우저에 보낸다. ISR은 항상 돌고 있으니 Sensors에는 항상 최신 값이 들어있다.\n정리하면:\nPSRAM 저장 → START 버튼을 눌러야 시작 (quit = false) 화면 실시간 표시 → 항상 동작, 0.4초마다 갱신 STOP 후 SAVE: 데이터 전송 흐름 측정을 마치고 SAVE 버튼을 누르면 PSRAM에 쌓인 데이터를 처음부터 끝까지 브라우저로 전송한다.\n1 2 3 4 5 6 7 8 9 10 STOP → quit = true (측정 중단) SAVE → save = true (전송 시작) PSRAM [샘플0][샘플1]...[샘플N] ↓ 5분치(12,000 샘플)씩 1구간 전송 → 500ms 대기 2구간 전송 → 500ms 대기 ... 나머지 전송 1바이트 종료 신호 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 #define PACKET_LENGTH (5 * 60 * 40) // 5분치 = 12,000 샘플 = 240 KB workingPointer = packetPointer; // 포인터를 처음으로 되돌림 int pn = packetCounter / PACKET_LENGTH; // 완전한 구간 수 int pr = packetCounter % PACKET_LENGTH; // 나머지 for (int p = 0; p \u003c pn; p++) { ws.binary(client_id, (uint8_t*)workingPointer, PACKET_LENGTH * sizeof(struct sensors)); workingPointer += PACKET_LENGTH; delay(500); } if (pr) { ws.binary(client_id, (uint8_t*)workingPointer, pr * sizeof(struct sensors)); } ws.binary(client_id, (uint8_t*)workingPointer, 1); // 종료 신호 한 번에 전부 보내지 않고 5분치씩 나눠 보내는 이유는 WebSocket이 결국 TCP 위에서 동작하기 때문이다. ESP32의 TCP 송신 버퍼는 작아서 1.65MB를 한 번에 큐에 넣으면 버퍼가 넘친다. 5분치를 보내고 500ms를 기다리는 동안 TCP 스택이 실제로 데이터를 전송할 시간을 주는 것이다.\ndelay(500) 동안 loop()가 멈추기 때문에 이 시간에 Falling Edge가 와도 샘플을 놓친다. 그래서 SAVE는 반드시 STOP 이후에만 의미가 있고, 코드에서도 quit \u0026\u0026 save 조건일 때만 전송 로직이 실행된다.\n브라우저 쪽에서는 데이터를 받을 때마다 ArrayBuffer에 이어 붙이다가, 마지막 1바이트 종료 신호가 오면 파일로 저장한다.\n상태 플래그 관리 1 2 bool quit = true; // 초기 상태: 측정 안 함 bool save = false; // 저장 명령 플래그 WebSocket 명령에 따라 상태가 바뀐다.\n1 2 3 4 5 6 7 8 9 10 11 12 if (strcmp((char*)data, \"START\") == 0) { workingPointer = packetPointer; // 포인터를 처음으로 packetCounter = 0; quit = false; // 측정 시작 } else if (strcmp((char*)data, \"STOP\") == 0) { quit = true; } else if (strcmp((char*)data, \"SAVE\") == 0) { client_id = client-\u003eid(); save = true; } START 명령을 받으면 workingPointer를 packetPointer로 되돌리고 packetCounter를 0으로 리셋한다. 버퍼를 따로 초기화하지 않아도 이전 데이터는 논리적으로 없는 것과 같다. 36분이 지나 버퍼가 꽉 차면 자동으로 측정을 중단한다.\n1 if (packetCounter == PACKET_SIZE) quit = true; 마무리 이번 글에서 다룬 내용을 정리하면:\n왜 PSRAM: Flash 쓰기 지연, 내부 SRAM 용량 한계, Wi-Fi 스택과의 메모리 경쟁 세 가지를 동시에 해결 데이터 구조: struct sensors 20 bytes × 86,400 샘플 = 1.65 MB 40 SPS: DataSubSamplePoint = 2로 80 SPS를 절반만 처리 저장 방식: *workingPointer++ = Sensors로 구조체를 순서대로 저장 화면 표시와 저장 분리: WebSampleIdx는 항상 증가, 0.4초마다 JSON 전송 SAVE 전송: 5분 단위로 나눠 전송, 1바이트 종료 신호로 완료 통보 다음 글에서는 측정 전 반드시 해야 하는 영점 보정(캘리브레이션) 로직과 EEPROM 레이아웃, 그리고 AS5600 각도 센서 연동 방법을 자세히 설명하겠다.\n","wordCount":"1476","inLanguage":"en","datePublished":"2026-04-03T01:00:00+09:00","dateModified":"2026-04-03T01:00:00+09:00","author":{"@type":"Person","name":"서보민"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/"},"publisher":{"@type":"Organization","name":"bromine1997","logo":{"@type":"ImageObject","url":"https://bromine1997.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=nav><div class=logo><a href=https://bromine1997.github.io/ accesskey=h title="bromine1997 (Alt + H)">bromine1997</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://bromine1997.github.io/categories/embedded/ title=Embedded><span>Embedded</span></a></li><li><a href=https://bromine1997.github.io/categories/algorithm/ title=Algorithm><span>Algorithm</span></a></li><li><a href=https://bromine1997.github.io/categories/paper-review/ title="Paper Review"><span>Paper Review</span></a></li><li><a href=https://bromine1997.github.io/categories/notes/ title=Notes><span>Notes</span></a></li><li><a href=https://bromine1997.github.io/projects/ title=Projects><span>Projects</span></a></li><li><a href=https://bromine1997.github.io/search/ title=Search><span>Search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://bromine1997.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://bromine1997.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조</h1><div class=post-meta><span title='2026-04-03 01:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>7 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
-<a href=https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/esp32/esp32-rehabilitation-bicycle-psram.md rel="noopener noreferrer edit" target=_blank>Edit</a></span></div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#왜-flash가-아닌-psram인가>왜 Flash가 아닌 PSRAM인가</a></li><li><a href=#데이터-구조-설계>데이터 구조 설계</a></li><li><a href=#psram-초기화>PSRAM 초기화</a></li><li><a href=#메인-루프와-40-sps>메인 루프와 40 SPS</a></li><li><a href=#falling-edge마다-일어나는-일>Falling Edge마다 일어나는 일</a></li><li><a href=#psram-저장-핵심-한-줄>PSRAM 저장 핵심 한 줄</a></li><li><a href=#실시간-화면-표시와-psram-저장은-분리되어-있다>실시간 화면 표시와 PSRAM 저장은 분리되어 있다</a></li><li><a href=#stop-후-save-데이터-전송-흐름>STOP 후 SAVE: 데이터 전송 흐름</a></li><li><a href=#상태-플래그-관리>상태 플래그 관리</a></li><li><a href=#마무리>마무리</a></li></ul></nav></div></details></div><div class=post-content><p>하드웨어 편에서 ADS1232 4개로 로드셀을 동시에 샘플링하는 구조를 설명했다. 이번에는 그 데이터를 어떻게 저장하고 관리하는지, PSRAM 버퍼 구조부터 분할 전송까지 정리해보겠다.</p><h2 id=왜-flash가-아닌-psram인가>왜 Flash가 아닌 PSRAM인가<a hidden class=anchor aria-hidden=true href=#왜-flash가-아닌-psram인가>#</a></h2><p>처음에는 측정 데이터를 SD카드나 SPIFFS(Flash)에 직접 저장하는 방식을 생각했다.</p><p>세 가지 문제가 있었다.</p><p><strong>첫째, Flash 쓰기는 느리다.</strong></p><p>SPIFFS 기준으로 단순 쓰기도 수 ms가 걸린다. 40 SPS로 샘플링 중이라면 한 샘플마다 25ms 안에 모든 처리를 끝내야 하는데, Flash 쓰기가 이 시간을 잡아먹으면 샘플을 놓친다.</p><p><strong>둘째, 내부 SRAM이 부족하다.</strong></p><p>ESP32 내부 SRAM은 약 520KB다. 여기에 Wi-Fi 스택이 100~200KB를 점유하고, AsyncWebServer와 WebSocket 라이브러리까지 올라가면 여유가 거의 없다. 1.65MB짜리 버퍼를 내부 SRAM에 올리는 건 처음부터 불가능하다. <code>malloc</code> 대신 <code>ps_calloc</code>을 쓴 이유가 바로 이것이다.</p><p><strong>셋째, Wi-Fi 스택과 메모리를 두고 경쟁하면 crash가 난다.</strong></p><p>Wi-Fi는 내부 SRAM에서 동작한다. 데이터 버퍼까지 같은 공간을 쓰면 메모리 단편화가 쌓이다가 어느 순간 Wi-Fi 재연결 중 OOM으로 재부팅된다. 이 버그는 재현도 불규칙하고 로그만 봐서는 원인을 잡기 어렵다. PSRAM은 내부 SRAM과 완전히 별도 영역이라 이 경쟁 자체를 피할 수 있다.</p><p>반면 PSRAM은 ns 단위로 읽고 쓴다. 메인 루프에서 포인터 대입 한 번이면 끝이다. ESP32 Feather V2에는 <strong>2MB PSRAM</strong>이 탑재되어 있어 이걸 전부 측정 버퍼로 쓰기로 했다.</p><h2 id=데이터-구조-설계>데이터 구조 설계<a hidden class=anchor aria-hidden=true href=#데이터-구조-설계>#</a></h2><p>저장 단위는 한 번의 샘플, 즉 로드셀 4채널 + 각도 1채널이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-0-1><a class=lnlinks href=#hl-0-1>1</a>
-</span><span class=lnt id=hl-0-2><a class=lnlinks href=#hl-0-2>2</a>
-</span><span class=lnt id=hl-0-3><a class=lnlinks href=#hl-0-3>3</a>
-</span><span class=lnt id=hl-0-4><a class=lnlinks href=#hl-0-4>4</a>
-</span><span class=lnt id=hl-0-5><a class=lnlinks href=#hl-0-5>5</a>
-</span><span class=lnt id=hl-0-6><a class=lnlinks href=#hl-0-6>6</a>
-</span><span class=lnt id=hl-0-7><a class=lnlinks href=#hl-0-7>7</a>
-</span><span class=lnt id=hl-0-8><a class=lnlinks href=#hl-0-8>8</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>struct</span> <span class=nc>sensors</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>volatile</span> <span class=kt>long</span> <span class=n>DATA1</span><span class=p>;</span>        <span class=c1>// 우측 팔 (4 bytes)
-</span></span></span><span class=line><span class=cl>  <span class=k>volatile</span> <span class=kt>long</span> <span class=n>DATA2</span><span class=p>;</span>        <span class=c1>// 좌측 팔 (4 bytes)
-</span></span></span><span class=line><span class=cl>  <span class=k>volatile</span> <span class=kt>long</span> <span class=n>DATA3</span><span class=p>;</span>        <span class=c1>// 우측 다리 (4 bytes)
-</span></span></span><span class=line><span class=cl>  <span class=k>volatile</span> <span class=kt>long</span> <span class=n>DATA4</span><span class=p>;</span>        <span class=c1>// 좌측 다리 (4 bytes)
-</span></span></span><span class=line><span class=cl>  <span class=kt>unsigned</span> <span class=kt>long</span> <span class=n>encoderAngle</span><span class=p>;</span> <span class=c1>// 크랭크 각도 (4 bytes)
-</span></span></span><span class=line><span class=cl><span class=p>};</span>
-</span></span><span class=line><span class=cl><span class=c1>// 총 20 bytes / 샘플
-</span></span></span></code></pre></td></tr></table></div></div><p><code>volatile</code>은 ISR 안에서 값이 바뀌기 때문에 컴파일러 최적화를 막기 위해 붙였다. 이게 없으면 컴파일러가 &ldquo;이 값은 여기서 안 바뀌네"라고 판단하고 레지스터에 캐시해버려서 ISR이 업데이트한 최신 값을 못 읽을 수 있다.</p><p>최대 기록 시간을 36분으로 잡았을 때 필요한 샘플 수와 메모리는:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-1-1><a class=lnlinks href=#hl-1-1>1</a>
-</span><span class=lnt id=hl-1-2><a class=lnlinks href=#hl-1-2>2</a>
-</span><span class=lnt id=hl-1-3><a class=lnlinks href=#hl-1-3>3</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#define PACKET_SIZE (36 * 60 * 40)  </span><span class=c1>// 86,400 샘플
-</span></span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=c1>// 86,400 샘플 × 20 bytes = 1,728,000 bytes ≈ 1.65 MB
-</span></span></span></code></pre></td></tr></table></div></div><p>2MB PSRAM 안에 들어온다.</p><h2 id=psram-초기화>PSRAM 초기화<a hidden class=anchor aria-hidden=true href=#psram-초기화>#</a></h2><p><code>setup()</code> 안에서 PSRAM을 확인하고 메모리를 할당한다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-2-1><a class=lnlinks href=#hl-2-1> 1</a>
-</span><span class=lnt id=hl-2-2><a class=lnlinks href=#hl-2-2> 2</a>
-</span><span class=lnt id=hl-2-3><a class=lnlinks href=#hl-2-3> 3</a>
-</span><span class=lnt id=hl-2-4><a class=lnlinks href=#hl-2-4> 4</a>
-</span><span class=lnt id=hl-2-5><a class=lnlinks href=#hl-2-5> 5</a>
-</span><span class=lnt id=hl-2-6><a class=lnlinks href=#hl-2-6> 6</a>
-</span><span class=lnt id=hl-2-7><a class=lnlinks href=#hl-2-7> 7</a>
-</span><span class=lnt id=hl-2-8><a class=lnlinks href=#hl-2-8> 8</a>
-</span><span class=lnt id=hl-2-9><a class=lnlinks href=#hl-2-9> 9</a>
-</span><span class=lnt id=hl-2-10><a class=lnlinks href=#hl-2-10>10</a>
-</span><span class=lnt id=hl-2-11><a class=lnlinks href=#hl-2-11>11</a>
-</span><span class=lnt id=hl-2-12><a class=lnlinks href=#hl-2-12>12</a>
-</span><span class=lnt id=hl-2-13><a class=lnlinks href=#hl-2-13>13</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>Serial</span><span class=p>.</span><span class=n>print</span><span class=p>(</span><span class=s>&#34;PSRAM found : &#34;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl><span class=n>Serial</span><span class=p>.</span><span class=n>println</span><span class=p>(</span><span class=n>isPsram</span> <span class=o>=</span> <span class=n>psramFound</span><span class=p>());</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>isPsram</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=n>psramInit</span><span class=p>())</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=n>Serial</span><span class=p>.</span><span class=n>println</span><span class=p>((</span><span class=n>String</span><span class=p>)</span><span class=s>&#34;Memory available in PSRAM : &#34;</span> <span class=o>+</span> <span class=n>ESP</span><span class=p>.</span><span class=n>getFreePsram</span><span class=p>());</span>
-</span></span><span class=line><span class=cl>    <span class=n>workingPointer</span> <span class=o>=</span> <span class=n>packetPointer</span> <span class=o>=</span>
-</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=k>struct</span> <span class=nc>sensors</span> <span class=o>*</span><span class=p>)</span><span class=n>ps_calloc</span><span class=p>(</span><span class=n>PACKET_SIZE</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=k>struct</span> <span class=nc>sensors</span><span class=p>));</span>
-</span></span><span class=line><span class=cl>  <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=n>Serial</span><span class=p>.</span><span class=n>println</span><span class=p>(</span><span class=s>&#34;PSRAM initilization failed&#34;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>    <span class=n>isPsram</span> <span class=o>=</span> <span class=nb>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></td></tr></table></div></div><p><code>ps_calloc</code>은 PSRAM에서 메모리를 할당하는 함수다. 일반 <code>malloc</code>을 쓰면 내부 SRAM에서 할당을 시도하는데, 앞서 말했듯 1.65MB는 처음부터 들어가지 않는다. <code>calloc</code>이기 때문에 할당과 동시에 0으로 초기화된다.</p><p>포인터는 두 개를 사용한다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-3-1><a class=lnlinks href=#hl-3-1>1</a>
-</span><span class=lnt id=hl-3-2><a class=lnlinks href=#hl-3-2>2</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>struct</span> <span class=nc>sensors</span> <span class=o>*</span><span class=n>packetPointer</span><span class=p>;</span>   <span class=c1>// 버퍼 시작 주소 (고정)
-</span></span></span><span class=line><span class=cl><span class=k>struct</span> <span class=nc>sensors</span> <span class=o>*</span><span class=n>workingPointer</span><span class=p>;</span>  <span class=c1>// 현재 쓰기 위치 (이동)
-</span></span></span></code></pre></td></tr></table></div></div><p><code>packetPointer</code>는 버퍼의 시작점을 가리키며 절대 바뀌지 않는다. <code>workingPointer</code>는 데이터를 쓸 때마다 앞으로 이동한다. 나중에 SAVE 명령이 오면 <code>workingPointer</code>를 다시 <code>packetPointer</code>로 돌려 처음부터 전송한다.</p><h2 id=메인-루프와-40-sps>메인 루프와 40 SPS<a hidden class=anchor aria-hidden=true href=#메인-루프와-40-sps>#</a></h2><p><code>loop()</code>의 핵심은 DRDY 핀의 <strong>Falling Edge</strong> 감지다.</p><p>ADS1232는 새 데이터가 준비되면 DRDY/DOUT 핀을 HIGH → LOW로 내린다. 이걸 소프트웨어 polling으로 감지한다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-4-1><a class=lnlinks href=#hl-4-1> 1</a>
-</span><span class=lnt id=hl-4-2><a class=lnlinks href=#hl-4-2> 2</a>
-</span><span class=lnt id=hl-4-3><a class=lnlinks href=#hl-4-3> 3</a>
-</span><span class=lnt id=hl-4-4><a class=lnlinks href=#hl-4-4> 4</a>
-</span><span class=lnt id=hl-4-5><a class=lnlinks href=#hl-4-5> 5</a>
-</span><span class=lnt id=hl-4-6><a class=lnlinks href=#hl-4-6> 6</a>
-</span><span class=lnt id=hl-4-7><a class=lnlinks href=#hl-4-7> 7</a>
-</span><span class=lnt id=hl-4-8><a class=lnlinks href=#hl-4-8> 8</a>
-</span><span class=lnt id=hl-4-9><a class=lnlinks href=#hl-4-9> 9</a>
-</span><span class=lnt id=hl-4-10><a class=lnlinks href=#hl-4-10>10</a>
-</span><span class=lnt id=hl-4-11><a class=lnlinks href=#hl-4-11>11</a>
-</span><span class=lnt id=hl-4-12><a class=lnlinks href=#hl-4-12>12</a>
-</span><span class=lnt id=hl-4-13><a class=lnlinks href=#hl-4-13>13</a>
-</span><span class=lnt id=hl-4-14><a class=lnlinks href=#hl-4-14>14</a>
-</span><span class=lnt id=hl-4-15><a class=lnlinks href=#hl-4-15>15</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=kt>void</span> <span class=nf>loop</span><span class=p>()</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>c</span> <span class=o>=</span> <span class=n>digitalRead</span><span class=p>(</span><span class=n>pin_ADC_DRDY_DOUT_1</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>((</span><span class=n>t</span> <span class=o>==</span> <span class=n>HIGH</span><span class=p>)</span> <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>c</span> <span class=o>==</span> <span class=n>LOW</span><span class=p>))</span> <span class=p>{</span>   <span class=c1>// Falling Edge 감지
-</span></span></span><span class=line><span class=cl>    <span class=n>DatSampleIdx</span><span class=o>++</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=n>WebSampleIdx</span><span class=o>++</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>DatSampleIdx</span> <span class=o>&gt;=</span> <span class=n>DataSubSamplePoint</span><span class=p>)</span> <span class=p>{</span>  <span class=c1>// 2번마다 1번 처리
-</span></span></span><span class=line><span class=cl>      <span class=n>DatSampleIdx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>      <span class=c1>// 데이터 처리
-</span></span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl>  <span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>  <span class=n>t</span> <span class=o>=</span> <span class=n>c</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></td></tr></table></div></div><p>ADS1232는 최대 80 SPS로 동작한다. <code>DataSubSamplePoint = 2</code>로 설정해두었기 때문에 Falling Edge 2번 중 1번만 실제로 처리한다. 결과적으로 40 SPS가 된다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-5-1><a class=lnlinks href=#hl-5-1>1</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#define DataSubSamplePoint 2   </span><span class=c1>// 80 / 2 = 40 SPS
-</span></span></span></code></pre></td></tr></table></div></div><p>80 SPS를 전부 쓰지 않은 이유는, 40 SPS면 재활 운동 데이터 수집에 충분하고 처리 시간과 저장 용량이 절반으로 줄기 때문이다. 80 SPS를 그대로 쓰면 36분이 아니라 18분 제한이 된다.</p><h2 id=falling-edge마다-일어나는-일>Falling Edge마다 일어나는 일<a hidden class=anchor aria-hidden=true href=#falling-edge마다-일어나는-일>#</a></h2><p>Falling Edge를 감지하고 <code>DatSampleIdx</code>가 조건을 만족하면 다음 순서로 처리된다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-6-1><a class=lnlinks href=#hl-6-1> 1</a>
-</span><span class=lnt id=hl-6-2><a class=lnlinks href=#hl-6-2> 2</a>
-</span><span class=lnt id=hl-6-3><a class=lnlinks href=#hl-6-3> 3</a>
-</span><span class=lnt id=hl-6-4><a class=lnlinks href=#hl-6-4> 4</a>
-</span><span class=lnt id=hl-6-5><a class=lnlinks href=#hl-6-5> 5</a>
-</span><span class=lnt id=hl-6-6><a class=lnlinks href=#hl-6-6> 6</a>
-</span><span class=lnt id=hl-6-7><a class=lnlinks href=#hl-6-7> 7</a>
-</span><span class=lnt id=hl-6-8><a class=lnlinks href=#hl-6-8> 8</a>
-</span><span class=lnt id=hl-6-9><a class=lnlinks href=#hl-6-9> 9</a>
-</span><span class=lnt id=hl-6-10><a class=lnlinks href=#hl-6-10>10</a>
-</span><span class=lnt id=hl-6-11><a class=lnlinks href=#hl-6-11>11</a>
-</span><span class=lnt id=hl-6-12><a class=lnlinks href=#hl-6-12>12</a>
-</span><span class=lnt id=hl-6-13><a class=lnlinks href=#hl-6-13>13</a>
-</span><span class=lnt id=hl-6-14><a class=lnlinks href=#hl-6-14>14</a>
-</span><span class=lnt id=hl-6-15><a class=lnlinks href=#hl-6-15>15</a>
-</span><span class=lnt id=hl-6-16><a class=lnlinks href=#hl-6-16>16</a>
-</span><span class=lnt id=hl-6-17><a class=lnlinks href=#hl-6-17>17</a>
-</span><span class=lnt id=hl-6-18><a class=lnlinks href=#hl-6-18>18</a>
-</span><span class=lnt id=hl-6-19><a class=lnlinks href=#hl-6-19>19</a>
-</span><span class=lnt id=hl-6-20><a class=lnlinks href=#hl-6-20>20</a>
-</span><span class=lnt id=hl-6-21><a class=lnlinks href=#hl-6-21>21</a>
-</span><span class=lnt id=hl-6-22><a class=lnlinks href=#hl-6-22>22</a>
-</span><span class=lnt id=hl-6-23><a class=lnlinks href=#hl-6-23>23</a>
-</span><span class=lnt id=hl-6-24><a class=lnlinks href=#hl-6-24>24</a>
-</span><span class=lnt id=hl-6-25><a class=lnlinks href=#hl-6-25>25</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// 1. 클럭 펄스 24회 발생 → ISR이 4채널 데이터 수집
-</span></span></span><span class=line><span class=cl><span class=n>idx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>24</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>digitalWrite</span><span class=p>(</span><span class=n>pin_SCLK_OUT</span><span class=p>,</span> <span class=n>HIGH</span><span class=p>);</span>  <span class=n>delayMicroseconds</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>  <span class=n>digitalWrite</span><span class=p>(</span><span class=n>pin_SCLK_OUT</span><span class=p>,</span> <span class=n>LOW</span><span class=p>);</span>   <span class=n>delayMicroseconds</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=c1>// 2. 각도 읽기 (I2C)
-</span></span></span><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>isWire</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>Sensors</span><span class=p>.</span><span class=n>encoderAngle</span> <span class=o>=</span> <span class=n>as5600</span><span class=p>.</span><span class=n>readAngle</span><span class=p>();</span>
-</span></span><span class=line><span class=cl><span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>Sensors</span><span class=p>.</span><span class=n>encoderAngle</span> <span class=o>=</span> <span class=mi>8192</span><span class=p>;</span>  <span class=c1>// 미연결 표시
-</span></span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=c1>// 3. NeoPixel로 실시간 시각화 (디버깅용)
-</span></span></span><span class=line><span class=cl><span class=n>pixel</span><span class=p>.</span><span class=n>setPixelColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>Sensors</span><span class=p>.</span><span class=n>DATA1</span> <span class=o>&lt;&lt;</span> <span class=mi>8</span><span class=p>);</span>
-</span></span><span class=line><span class=cl><span class=n>pixel</span><span class=p>.</span><span class=n>show</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=c1>// 4. PSRAM에 저장 (START 명령 이후에만)
-</span></span></span><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>isPsram</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>quit</span> <span class=o>&amp;&amp;</span> <span class=n>packetCounter</span> <span class=o>&lt;</span> <span class=n>PACKET_SIZE</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=o>*</span><span class=n>workingPointer</span><span class=o>++</span> <span class=o>=</span> <span class=n>Sensors</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=n>packetCounter</span><span class=o>++</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></td></tr></table></div></div><p>1번에서 SCLK_OUT으로 24개의 클럭 펄스를 직접 발생시킨다. 이 펄스마다 SCLK_IN 핀에 인터럽트가 걸려 <code>SPI_ISR()</code>이 실행되고, 4채널 데이터가 1비트씩 수집된다. 24클럭이 끝나면 <code>Sensors.DATA1~4</code>에 최종 값이 들어있다.</p><p>2번에서 AS5600 각도를 I2C로 읽는다. 미연결 상태면 <code>8192</code>라는 예약값을 넣어 웹 UI에서 &ldquo;N.C.&ldquo;로 표시하게 했다.</p><p>3번은 디버깅 용도다. NeoPixel의 G채널에 <code>DATA1</code> 값을 매핑하면 오른팔에 힘이 들어갈수록 LED가 밝아진다. 오실로스코프 없이 센서 동작을 육안으로 확인할 수 있어서 개발 중에 유용했다.</p><h2 id=psram-저장-핵심-한-줄>PSRAM 저장 핵심 한 줄<a hidden class=anchor aria-hidden=true href=#psram-저장-핵심-한-줄>#</a></h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-7-1><a class=lnlinks href=#hl-7-1>1</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=o>*</span><span class=n>workingPointer</span><span class=o>++</span> <span class=o>=</span> <span class=n>Sensors</span><span class=p>;</span>
-</span></span></code></pre></td></tr></table></div></div><p>C 포인터 문법이 익숙하지 않으면 낯설어 보이지만, 풀어쓰면 이렇다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-8-1><a class=lnlinks href=#hl-8-1>1</a>
-</span><span class=lnt id=hl-8-2><a class=lnlinks href=#hl-8-2>2</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=o>*</span><span class=n>workingPointer</span> <span class=o>=</span> <span class=n>Sensors</span><span class=p>;</span>   <span class=c1>// workingPointer가 가리키는 주소에 Sensors 구조체 복사
-</span></span></span><span class=line><span class=cl><span class=n>workingPointer</span><span class=o>++</span><span class=p>;</span>            <span class=c1>// 포인터를 다음 구조체 위치로 이동
-</span></span></span></code></pre></td></tr></table></div></div><p><code>++</code>는 바이트 단위가 아니라 <strong>타입 크기 단위</strong>로 이동한다. <code>struct sensors</code>가 20 bytes이므로 <code>workingPointer++</code>는 주소를 20 증가시킨다. 이렇게 하면 배열처럼 PSRAM에 구조체가 순서대로 쌓인다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-9-1><a class=lnlinks href=#hl-9-1>1</a>
-</span><span class=lnt id=hl-9-2><a class=lnlinks href=#hl-9-2>2</a>
-</span><span class=lnt id=hl-9-3><a class=lnlinks href=#hl-9-3>3</a>
-</span><span class=lnt id=hl-9-4><a class=lnlinks href=#hl-9-4>4</a>
-</span><span class=lnt id=hl-9-5><a class=lnlinks href=#hl-9-5>5</a>
-</span><span class=lnt id=hl-9-6><a class=lnlinks href=#hl-9-6>6</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>PSRAM
-</span></span><span class=line><span class=cl>┌──────────────────────────────────────────────┐
-</span></span><span class=line><span class=cl>│ Sensors[0] │ Sensors[1] │ ... │ Sensors[N]   │
-</span></span><span class=line><span class=cl>└──────────────────────────────────────────────┘
-</span></span><span class=line><span class=cl>↑                                              ↑
-</span></span><span class=line><span class=cl>packetPointer                       workingPointer
-</span></span></code></pre></td></tr></table></div></div><h2 id=실시간-화면-표시와-psram-저장은-분리되어-있다>실시간 화면 표시와 PSRAM 저장은 분리되어 있다<a hidden class=anchor aria-hidden=true href=#실시간-화면-표시와-psram-저장은-분리되어-있다>#</a></h2><p>여기서 한 가지 흥미로운 점이 있다. 웹 화면을 열면 START를 누르지 않아도 센서 값이 실시간으로 표시된다. PSRAM에 저장하는 것과 화면에 보여주는 것이 완전히 분리된 구조이기 때문이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-10-1><a class=lnlinks href=#hl-10-1> 1</a>
-</span><span class=lnt id=hl-10-2><a class=lnlinks href=#hl-10-2> 2</a>
-</span><span class=lnt id=hl-10-3><a class=lnlinks href=#hl-10-3> 3</a>
-</span><span class=lnt id=hl-10-4><a class=lnlinks href=#hl-10-4> 4</a>
-</span><span class=lnt id=hl-10-5><a class=lnlinks href=#hl-10-5> 5</a>
-</span><span class=lnt id=hl-10-6><a class=lnlinks href=#hl-10-6> 6</a>
-</span><span class=lnt id=hl-10-7><a class=lnlinks href=#hl-10-7> 7</a>
-</span><span class=lnt id=hl-10-8><a class=lnlinks href=#hl-10-8> 8</a>
-</span><span class=lnt id=hl-10-9><a class=lnlinks href=#hl-10-9> 9</a>
-</span><span class=lnt id=hl-10-10><a class=lnlinks href=#hl-10-10>10</a>
-</span><span class=lnt id=hl-10-11><a class=lnlinks href=#hl-10-11>11</a>
-</span><span class=lnt id=hl-10-12><a class=lnlinks href=#hl-10-12>12</a>
-</span><span class=lnt id=hl-10-13><a class=lnlinks href=#hl-10-13>13</a>
-</span><span class=lnt id=hl-10-14><a class=lnlinks href=#hl-10-14>14</a>
-</span><span class=lnt id=hl-10-15><a class=lnlinks href=#hl-10-15>15</a>
-</span><span class=lnt id=hl-10-16><a class=lnlinks href=#hl-10-16>16</a>
-</span><span class=lnt id=hl-10-17><a class=lnlinks href=#hl-10-17>17</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>if</span> <span class=p>((</span><span class=n>t</span> <span class=o>==</span> <span class=n>HIGH</span><span class=p>)</span> <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>c</span> <span class=o>==</span> <span class=n>LOW</span><span class=p>))</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>    <span class=n>DatSampleIdx</span><span class=o>++</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=n>WebSampleIdx</span><span class=o>++</span><span class=p>;</span>  <span class=c1>// quit 상태와 무관하게 항상 증가
-</span></span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>DatSampleIdx</span> <span class=o>&gt;=</span> <span class=n>DataSubSamplePoint</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// PSRAM 저장: quit = false (START 이후)일 때만
-</span></span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>quit</span> <span class=o>&amp;&amp;</span> <span class=n>packetCounter</span> <span class=o>&lt;</span> <span class=n>PACKET_SIZE</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>            <span class=o>*</span><span class=n>workingPointer</span><span class=o>++</span> <span class=o>=</span> <span class=n>Sensors</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=p>}</span>
-</span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1>// 화면 전송: 항상 동작, 16샘플(0.4초)마다 JSON 전송
-</span></span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>NoNetwork</span> <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>WebSampleIdx</span> <span class=o>&gt;=</span> <span class=mi>16</span><span class=p>))</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>WebSampleIdx</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>        <span class=n>sendSensorsWs</span><span class=p>(</span><span class=n>null</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></td></tr></table></div></div><p><code>WebSampleIdx</code>는 <code>quit</code> 여부와 상관없이 Falling Edge마다 계속 증가한다. 16샘플(= 0.4초)마다 현재 <code>Sensors</code> 구조체 값을 JSON으로 브라우저에 보낸다. ISR은 항상 돌고 있으니 <code>Sensors</code>에는 항상 최신 값이 들어있다.</p><p>정리하면:</p><ul><li><strong>PSRAM 저장</strong> → START 버튼을 눌러야 시작 (<code>quit = false</code>)</li><li><strong>화면 실시간 표시</strong> → 항상 동작, 0.4초마다 갱신</li></ul><h2 id=stop-후-save-데이터-전송-흐름>STOP 후 SAVE: 데이터 전송 흐름<a hidden class=anchor aria-hidden=true href=#stop-후-save-데이터-전송-흐름>#</a></h2><p>측정을 마치고 SAVE 버튼을 누르면 PSRAM에 쌓인 데이터를 처음부터 끝까지 브라우저로 전송한다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-11-1><a class=lnlinks href=#hl-11-1> 1</a>
-</span><span class=lnt id=hl-11-2><a class=lnlinks href=#hl-11-2> 2</a>
-</span><span class=lnt id=hl-11-3><a class=lnlinks href=#hl-11-3> 3</a>
-</span><span class=lnt id=hl-11-4><a class=lnlinks href=#hl-11-4> 4</a>
-</span><span class=lnt id=hl-11-5><a class=lnlinks href=#hl-11-5> 5</a>
-</span><span class=lnt id=hl-11-6><a class=lnlinks href=#hl-11-6> 6</a>
-</span><span class=lnt id=hl-11-7><a class=lnlinks href=#hl-11-7> 7</a>
-</span><span class=lnt id=hl-11-8><a class=lnlinks href=#hl-11-8> 8</a>
-</span><span class=lnt id=hl-11-9><a class=lnlinks href=#hl-11-9> 9</a>
-</span><span class=lnt id=hl-11-10><a class=lnlinks href=#hl-11-10>10</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>STOP → quit = true  (측정 중단)
-</span></span><span class=line><span class=cl>SAVE → save = true  (전송 시작)
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>PSRAM [샘플0][샘플1]...[샘플N]
-</span></span><span class=line><span class=cl>         ↓ 5분치(12,000 샘플)씩
-</span></span><span class=line><span class=cl>      1구간 전송 → 500ms 대기
-</span></span><span class=line><span class=cl>      2구간 전송 → 500ms 대기
-</span></span><span class=line><span class=cl>      ...
-</span></span><span class=line><span class=cl>      나머지 전송
-</span></span><span class=line><span class=cl>      1바이트 종료 신호
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-12-1><a class=lnlinks href=#hl-12-1> 1</a>
-</span><span class=lnt id=hl-12-2><a class=lnlinks href=#hl-12-2> 2</a>
-</span><span class=lnt id=hl-12-3><a class=lnlinks href=#hl-12-3> 3</a>
-</span><span class=lnt id=hl-12-4><a class=lnlinks href=#hl-12-4> 4</a>
-</span><span class=lnt id=hl-12-5><a class=lnlinks href=#hl-12-5> 5</a>
-</span><span class=lnt id=hl-12-6><a class=lnlinks href=#hl-12-6> 6</a>
-</span><span class=lnt id=hl-12-7><a class=lnlinks href=#hl-12-7> 7</a>
-</span><span class=lnt id=hl-12-8><a class=lnlinks href=#hl-12-8> 8</a>
-</span><span class=lnt id=hl-12-9><a class=lnlinks href=#hl-12-9> 9</a>
-</span><span class=lnt id=hl-12-10><a class=lnlinks href=#hl-12-10>10</a>
-</span><span class=lnt id=hl-12-11><a class=lnlinks href=#hl-12-11>11</a>
-</span><span class=lnt id=hl-12-12><a class=lnlinks href=#hl-12-12>12</a>
-</span><span class=lnt id=hl-12-13><a class=lnlinks href=#hl-12-13>13</a>
-</span><span class=lnt id=hl-12-14><a class=lnlinks href=#hl-12-14>14</a>
-</span><span class=lnt id=hl-12-15><a class=lnlinks href=#hl-12-15>15</a>
-</span><span class=lnt id=hl-12-16><a class=lnlinks href=#hl-12-16>16</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#define PACKET_LENGTH (5 * 60 * 40)  </span><span class=c1>// 5분치 = 12,000 샘플 = 240 KB
-</span></span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=n>workingPointer</span> <span class=o>=</span> <span class=n>packetPointer</span><span class=p>;</span>  <span class=c1>// 포인터를 처음으로 되돌림
-</span></span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=n>pn</span> <span class=o>=</span> <span class=n>packetCounter</span> <span class=o>/</span> <span class=n>PACKET_LENGTH</span><span class=p>;</span>  <span class=c1>// 완전한 구간 수
-</span></span></span><span class=line><span class=cl><span class=kt>int</span> <span class=n>pr</span> <span class=o>=</span> <span class=n>packetCounter</span> <span class=o>%</span> <span class=n>PACKET_LENGTH</span><span class=p>;</span>  <span class=c1>// 나머지
-</span></span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>p</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>p</span> <span class=o>&lt;</span> <span class=n>pn</span><span class=p>;</span> <span class=n>p</span><span class=o>++</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>ws</span><span class=p>.</span><span class=n>binary</span><span class=p>(</span><span class=n>client_id</span><span class=p>,</span> <span class=p>(</span><span class=kt>uint8_t</span><span class=o>*</span><span class=p>)</span><span class=n>workingPointer</span><span class=p>,</span> <span class=n>PACKET_LENGTH</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=k>struct</span> <span class=nc>sensors</span><span class=p>));</span>
-</span></span><span class=line><span class=cl>  <span class=n>workingPointer</span> <span class=o>+=</span> <span class=n>PACKET_LENGTH</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>delay</span><span class=p>(</span><span class=mi>500</span><span class=p>);</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>pr</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>ws</span><span class=p>.</span><span class=n>binary</span><span class=p>(</span><span class=n>client_id</span><span class=p>,</span> <span class=p>(</span><span class=kt>uint8_t</span><span class=o>*</span><span class=p>)</span><span class=n>workingPointer</span><span class=p>,</span> <span class=n>pr</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=k>struct</span> <span class=nc>sensors</span><span class=p>));</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=n>ws</span><span class=p>.</span><span class=n>binary</span><span class=p>(</span><span class=n>client_id</span><span class=p>,</span> <span class=p>(</span><span class=kt>uint8_t</span><span class=o>*</span><span class=p>)</span><span class=n>workingPointer</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>  <span class=c1>// 종료 신호
-</span></span></span></code></pre></td></tr></table></div></div><p>한 번에 전부 보내지 않고 5분치씩 나눠 보내는 이유는 WebSocket이 결국 TCP 위에서 동작하기 때문이다. ESP32의 TCP 송신 버퍼는 작아서 1.65MB를 한 번에 큐에 넣으면 버퍼가 넘친다. 5분치를 보내고 500ms를 기다리는 동안 TCP 스택이 실제로 데이터를 전송할 시간을 주는 것이다.</p><p><code>delay(500)</code> 동안 <code>loop()</code>가 멈추기 때문에 이 시간에 Falling Edge가 와도 샘플을 놓친다. 그래서 SAVE는 반드시 STOP 이후에만 의미가 있고, 코드에서도 <code>quit && save</code> 조건일 때만 전송 로직이 실행된다.</p><p>브라우저 쪽에서는 데이터를 받을 때마다 <code>ArrayBuffer</code>에 이어 붙이다가, 마지막 1바이트 종료 신호가 오면 파일로 저장한다.</p><h2 id=상태-플래그-관리>상태 플래그 관리<a hidden class=anchor aria-hidden=true href=#상태-플래그-관리>#</a></h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-13-1><a class=lnlinks href=#hl-13-1>1</a>
-</span><span class=lnt id=hl-13-2><a class=lnlinks href=#hl-13-2>2</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=kt>bool</span> <span class=n>quit</span> <span class=o>=</span> <span class=nb>true</span><span class=p>;</span>   <span class=c1>// 초기 상태: 측정 안 함
-</span></span></span><span class=line><span class=cl><span class=kt>bool</span> <span class=n>save</span> <span class=o>=</span> <span class=nb>false</span><span class=p>;</span>  <span class=c1>// 저장 명령 플래그
-</span></span></span></code></pre></td></tr></table></div></div><p>WebSocket 명령에 따라 상태가 바뀐다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-14-1><a class=lnlinks href=#hl-14-1> 1</a>
-</span><span class=lnt id=hl-14-2><a class=lnlinks href=#hl-14-2> 2</a>
-</span><span class=lnt id=hl-14-3><a class=lnlinks href=#hl-14-3> 3</a>
-</span><span class=lnt id=hl-14-4><a class=lnlinks href=#hl-14-4> 4</a>
-</span><span class=lnt id=hl-14-5><a class=lnlinks href=#hl-14-5> 5</a>
-</span><span class=lnt id=hl-14-6><a class=lnlinks href=#hl-14-6> 6</a>
-</span><span class=lnt id=hl-14-7><a class=lnlinks href=#hl-14-7> 7</a>
-</span><span class=lnt id=hl-14-8><a class=lnlinks href=#hl-14-8> 8</a>
-</span><span class=lnt id=hl-14-9><a class=lnlinks href=#hl-14-9> 9</a>
-</span><span class=lnt id=hl-14-10><a class=lnlinks href=#hl-14-10>10</a>
-</span><span class=lnt id=hl-14-11><a class=lnlinks href=#hl-14-11>11</a>
-</span><span class=lnt id=hl-14-12><a class=lnlinks href=#hl-14-12>12</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>strcmp</span><span class=p>((</span><span class=kt>char</span><span class=o>*</span><span class=p>)</span><span class=n>data</span><span class=p>,</span> <span class=s>&#34;START&#34;</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>workingPointer</span> <span class=o>=</span> <span class=n>packetPointer</span><span class=p>;</span>  <span class=c1>// 포인터를 처음으로
-</span></span></span><span class=line><span class=cl>  <span class=n>packetCounter</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  <span class=n>quit</span> <span class=o>=</span> <span class=nb>false</span><span class=p>;</span>                    <span class=c1>// 측정 시작
-</span></span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=k>else</span> <span class=nf>if</span> <span class=p>(</span><span class=n>strcmp</span><span class=p>((</span><span class=kt>char</span><span class=o>*</span><span class=p>)</span><span class=n>data</span><span class=p>,</span> <span class=s>&#34;STOP&#34;</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>quit</span> <span class=o>=</span> <span class=nb>true</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=k>else</span> <span class=nf>if</span> <span class=p>(</span><span class=n>strcmp</span><span class=p>((</span><span class=kt>char</span><span class=o>*</span><span class=p>)</span><span class=n>data</span><span class=p>,</span> <span class=s>&#34;SAVE&#34;</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>  <span class=n>client_id</span> <span class=o>=</span> <span class=n>client</span><span class=o>-&gt;</span><span class=n>id</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>  <span class=n>save</span> <span class=o>=</span> <span class=nb>true</span><span class=p>;</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></td></tr></table></div></div><p>START 명령을 받으면 <code>workingPointer</code>를 <code>packetPointer</code>로 되돌리고 <code>packetCounter</code>를 0으로 리셋한다. 버퍼를 따로 초기화하지 않아도 이전 데이터는 논리적으로 없는 것과 같다. 36분이 지나 버퍼가 꽉 차면 자동으로 측정을 중단한다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt id=hl-15-1><a class=lnlinks href=#hl-15-1>1</a>
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>packetCounter</span> <span class=o>==</span> <span class=n>PACKET_SIZE</span><span class=p>)</span> <span class=n>quit</span> <span class=o>=</span> <span class=nb>true</span><span class=p>;</span>
-</span></span></code></pre></td></tr></table></div></div><h2 id=마무리>마무리<a hidden class=anchor aria-hidden=true href=#마무리>#</a></h2><p>이번 글에서 다룬 내용을 정리하면:</p><ul><li><strong>왜 PSRAM</strong>: Flash 쓰기 지연, 내부 SRAM 용량 한계, Wi-Fi 스택과의 메모리 경쟁 세 가지를 동시에 해결</li><li><strong>데이터 구조</strong>: <code>struct sensors</code> 20 bytes × 86,400 샘플 = 1.65 MB</li><li><strong>40 SPS</strong>: <code>DataSubSamplePoint = 2</code>로 80 SPS를 절반만 처리</li><li><strong>저장 방식</strong>: <code>*workingPointer++ = Sensors</code>로 구조체를 순서대로 저장</li><li><strong>화면 표시와 저장 분리</strong>: <code>WebSampleIdx</code>는 항상 증가, 0.4초마다 JSON 전송</li><li><strong>SAVE 전송</strong>: 5분 단위로 나눠 전송, 1바이트 종료 신호로 완료 통보</li></ul><p>다음 글에서는 측정 전 반드시 해야 하는 영점 보정(캘리브레이션) 로직과 EEPROM 레이아웃, 그리고 AS5600 각도 센서 연동 방법을 자세히 설명하겠다.</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://bromine1997.github.io/tags/esp32/>ESP32</a></li><li><a href=https://bromine1997.github.io/tags/psram/>PSRAM</a></li><li><a href=https://bromine1997.github.io/tags/%EB%A1%9C%EB%93%9C%EC%85%80/>로드셀</a></li><li><a href=https://bromine1997.github.io/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%88%98%EC%A7%91/>데이터수집</a></li><li><a href=https://bromine1997.github.io/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/>임베디드</a></li><li><a href=https://bromine1997.github.io/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/>재활자전거</a></li></ul><nav class=paginav><a class=prev href=https://bromine1997.github.io/posts/basics/embedded-02-memory-structure/><span class=title>« Prev</span><br><span>[임베디드 기초] 2편 - 메모리 구조와 변수 저장 원리</span>
-</a><a class=next href=https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-hardware/><span class=title>Next »</span><br><span>[ESP32] 4개의 로드셀을 동시에 측정하기 - 하드웨어</span></a></nav></footer><div class=comments><script src=https://giscus.app/client.js data-repo=bromine1997/bromine1997.github.io data-repo-id=R_kgDOR1bAsg data-category=Announcements data-category-id=DIC_kwDOR1bAss4C52wg data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=preferred_color_scheme data-lang=ko data-loading=lazy crossorigin=anonymous async></script></div></article></main><footer class=footer><span>&copy; 2026 <a href=https://bromine1997.github.io/>bromine1997</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조 | bromine1997</title>
+<meta name="keywords" content="ESP32, PSRAM, 로드셀, 데이터수집, 임베디드, 재활자전거">
+<meta name="description" content="40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.">
+<meta name="author" content="서보민">
+<link rel="canonical" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<meta property="og:url" content="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/">
+  <meta property="og:site_name" content="bromine1997">
+  <meta property="og:title" content="[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조">
+  <meta property="og:description" content="40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-04-03T01:00:00+09:00">
+    <meta property="article:modified_time" content="2026-04-03T01:00:00+09:00">
+    <meta property="article:tag" content="ESP32">
+    <meta property="article:tag" content="PSRAM">
+    <meta property="article:tag" content="로드셀">
+    <meta property="article:tag" content="데이터수집">
+    <meta property="article:tag" content="임베디드">
+    <meta property="article:tag" content="재활자전거">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조">
+  <meta name="twitter:description" content="40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조",
+      "item": "http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조",
+  "name": "[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조",
+  "description": "40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.",
+  "keywords": [
+    "ESP32", "PSRAM", "로드셀", "데이터수집", "임베디드", "재활자전거"
+  ],
+  "articleBody": "하드웨어 편에서 ADS1232 4개로 로드셀을 동시에 샘플링하는 구조를 설명했다. 이번에는 그 데이터를 어떻게 저장하고 관리하는지, PSRAM 버퍼 구조부터 분할 전송까지 정리해보겠다.\n왜 Flash가 아닌 PSRAM인가 처음에는 측정 데이터를 SD카드나 SPIFFS(Flash)에 직접 저장하는 방식을 생각했다.\n세 가지 문제가 있었다.\n첫째, Flash 쓰기는 느리다.\nSPIFFS 기준으로 단순 쓰기도 수 ms가 걸린다. 40 SPS로 샘플링 중이라면 한 샘플마다 25ms 안에 모든 처리를 끝내야 하는데, Flash 쓰기가 이 시간을 잡아먹으면 샘플을 놓친다.\n둘째, 내부 SRAM이 부족하다.\nESP32 내부 SRAM은 약 520KB다. 여기에 Wi-Fi 스택이 100~200KB를 점유하고, AsyncWebServer와 WebSocket 라이브러리까지 올라가면 여유가 거의 없다. 1.65MB짜리 버퍼를 내부 SRAM에 올리는 건 처음부터 불가능하다. malloc 대신 ps_calloc을 쓴 이유가 바로 이것이다.\n셋째, Wi-Fi 스택과 메모리를 두고 경쟁하면 crash가 난다.\nWi-Fi는 내부 SRAM에서 동작한다. 데이터 버퍼까지 같은 공간을 쓰면 메모리 단편화가 쌓이다가 어느 순간 Wi-Fi 재연결 중 OOM으로 재부팅된다. 이 버그는 재현도 불규칙하고 로그만 봐서는 원인을 잡기 어렵다. PSRAM은 내부 SRAM과 완전히 별도 영역이라 이 경쟁 자체를 피할 수 있다.\n반면 PSRAM은 ns 단위로 읽고 쓴다. 메인 루프에서 포인터 대입 한 번이면 끝이다. ESP32 Feather V2에는 2MB PSRAM이 탑재되어 있어 이걸 전부 측정 버퍼로 쓰기로 했다.\n데이터 구조 설계 저장 단위는 한 번의 샘플, 즉 로드셀 4채널 + 각도 1채널이다.\n1 2 3 4 5 6 7 8 struct sensors { volatile long DATA1; // 우측 팔 (4 bytes) volatile long DATA2; // 좌측 팔 (4 bytes) volatile long DATA3; // 우측 다리 (4 bytes) volatile long DATA4; // 좌측 다리 (4 bytes) unsigned long encoderAngle; // 크랭크 각도 (4 bytes) }; // 총 20 bytes / 샘플 volatile은 ISR 안에서 값이 바뀌기 때문에 컴파일러 최적화를 막기 위해 붙였다. 이게 없으면 컴파일러가 “이 값은 여기서 안 바뀌네\"라고 판단하고 레지스터에 캐시해버려서 ISR이 업데이트한 최신 값을 못 읽을 수 있다.\n최대 기록 시간을 36분으로 잡았을 때 필요한 샘플 수와 메모리는:\n1 2 3 #define PACKET_SIZE (36 * 60 * 40) // 86,400 샘플 // 86,400 샘플 × 20 bytes = 1,728,000 bytes ≈ 1.65 MB 2MB PSRAM 안에 들어온다.\nPSRAM 초기화 setup() 안에서 PSRAM을 확인하고 메모리를 할당한다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 Serial.print(\"PSRAM found : \"); Serial.println(isPsram = psramFound()); if (isPsram) { if (psramInit()) { Serial.println((String)\"Memory available in PSRAM : \" + ESP.getFreePsram()); workingPointer = packetPointer = (struct sensors *)ps_calloc(PACKET_SIZE, sizeof(struct sensors)); } else { Serial.println(\"PSRAM initilization failed\"); isPsram = false; } } ps_calloc은 PSRAM에서 메모리를 할당하는 함수다. 일반 malloc을 쓰면 내부 SRAM에서 할당을 시도하는데, 앞서 말했듯 1.65MB는 처음부터 들어가지 않는다. calloc이기 때문에 할당과 동시에 0으로 초기화된다.\n포인터는 두 개를 사용한다.\n1 2 struct sensors *packetPointer; // 버퍼 시작 주소 (고정) struct sensors *workingPointer; // 현재 쓰기 위치 (이동) packetPointer는 버퍼의 시작점을 가리키며 절대 바뀌지 않는다. workingPointer는 데이터를 쓸 때마다 앞으로 이동한다. 나중에 SAVE 명령이 오면 workingPointer를 다시 packetPointer로 돌려 처음부터 전송한다.\n메인 루프와 40 SPS loop()의 핵심은 DRDY 핀의 Falling Edge 감지다.\nADS1232는 새 데이터가 준비되면 DRDY/DOUT 핀을 HIGH → LOW로 내린다. 이걸 소프트웨어 polling으로 감지한다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 void loop() { c = digitalRead(pin_ADC_DRDY_DOUT_1); if ((t == HIGH) \u0026\u0026 (c == LOW)) { // Falling Edge 감지 DatSampleIdx++; WebSampleIdx++; if (DatSampleIdx \u003e= DataSubSamplePoint) { // 2번마다 1번 처리 DatSampleIdx = 0; // 데이터 처리 } } t = c; } ADS1232는 최대 80 SPS로 동작한다. DataSubSamplePoint = 2로 설정해두었기 때문에 Falling Edge 2번 중 1번만 실제로 처리한다. 결과적으로 40 SPS가 된다.\n1 #define DataSubSamplePoint 2 // 80 / 2 = 40 SPS 80 SPS를 전부 쓰지 않은 이유는, 40 SPS면 재활 운동 데이터 수집에 충분하고 처리 시간과 저장 용량이 절반으로 줄기 때문이다. 80 SPS를 그대로 쓰면 36분이 아니라 18분 제한이 된다.\nFalling Edge마다 일어나는 일 Falling Edge를 감지하고 DatSampleIdx가 조건을 만족하면 다음 순서로 처리된다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 // 1. 클럭 펄스 24회 발생 → ISR이 4채널 데이터 수집 idx = 0; for (int i = 0; i \u003c 24; i++) { digitalWrite(pin_SCLK_OUT, HIGH); delayMicroseconds(10); digitalWrite(pin_SCLK_OUT, LOW); delayMicroseconds(10); } // 2. 각도 읽기 (I2C) if (isWire) { Sensors.encoderAngle = as5600.readAngle(); } else { Sensors.encoderAngle = 8192; // 미연결 표시 } // 3. NeoPixel로 실시간 시각화 (디버깅용) pixel.setPixelColor(0, Sensors.DATA1 \u003c\u003c 8); pixel.show(); // 4. PSRAM에 저장 (START 명령 이후에만) if (isPsram) { if (!quit \u0026\u0026 packetCounter \u003c PACKET_SIZE) { *workingPointer++ = Sensors; packetCounter++; } } 1번에서 SCLK_OUT으로 24개의 클럭 펄스를 직접 발생시킨다. 이 펄스마다 SCLK_IN 핀에 인터럽트가 걸려 SPI_ISR()이 실행되고, 4채널 데이터가 1비트씩 수집된다. 24클럭이 끝나면 Sensors.DATA1~4에 최종 값이 들어있다.\n2번에서 AS5600 각도를 I2C로 읽는다. 미연결 상태면 8192라는 예약값을 넣어 웹 UI에서 “N.C.“로 표시하게 했다.\n3번은 디버깅 용도다. NeoPixel의 G채널에 DATA1 값을 매핑하면 오른팔에 힘이 들어갈수록 LED가 밝아진다. 오실로스코프 없이 센서 동작을 육안으로 확인할 수 있어서 개발 중에 유용했다.\nPSRAM 저장 핵심 한 줄 1 *workingPointer++ = Sensors; C 포인터 문법이 익숙하지 않으면 낯설어 보이지만, 풀어쓰면 이렇다.\n1 2 *workingPointer = Sensors; // workingPointer가 가리키는 주소에 Sensors 구조체 복사 workingPointer++; // 포인터를 다음 구조체 위치로 이동 ++는 바이트 단위가 아니라 타입 크기 단위로 이동한다. struct sensors가 20 bytes이므로 workingPointer++는 주소를 20 증가시킨다. 이렇게 하면 배열처럼 PSRAM에 구조체가 순서대로 쌓인다.\n1 2 3 4 5 6 PSRAM ┌──────────────────────────────────────────────┐ │ Sensors[0] │ Sensors[1] │ ... │ Sensors[N] │ └──────────────────────────────────────────────┘ ↑ ↑ packetPointer workingPointer 실시간 화면 표시와 PSRAM 저장은 분리되어 있다 여기서 한 가지 흥미로운 점이 있다. 웹 화면을 열면 START를 누르지 않아도 센서 값이 실시간으로 표시된다. PSRAM에 저장하는 것과 화면에 보여주는 것이 완전히 분리된 구조이기 때문이다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 if ((t == HIGH) \u0026\u0026 (c == LOW)) { DatSampleIdx++; WebSampleIdx++; // quit 상태와 무관하게 항상 증가 if (DatSampleIdx \u003e= DataSubSamplePoint) { // PSRAM 저장: quit = false (START 이후)일 때만 if (!quit \u0026\u0026 packetCounter \u003c PACKET_SIZE) { *workingPointer++ = Sensors; } } // 화면 전송: 항상 동작, 16샘플(0.4초)마다 JSON 전송 if (!NoNetwork \u0026\u0026 (WebSampleIdx \u003e= 16)) { WebSampleIdx = 0; sendSensorsWs(null); } } WebSampleIdx는 quit 여부와 상관없이 Falling Edge마다 계속 증가한다. 16샘플(= 0.4초)마다 현재 Sensors 구조체 값을 JSON으로 브라우저에 보낸다. ISR은 항상 돌고 있으니 Sensors에는 항상 최신 값이 들어있다.\n정리하면:\nPSRAM 저장 → START 버튼을 눌러야 시작 (quit = false) 화면 실시간 표시 → 항상 동작, 0.4초마다 갱신 STOP 후 SAVE: 데이터 전송 흐름 측정을 마치고 SAVE 버튼을 누르면 PSRAM에 쌓인 데이터를 처음부터 끝까지 브라우저로 전송한다.\n1 2 3 4 5 6 7 8 9 10 STOP → quit = true (측정 중단) SAVE → save = true (전송 시작) PSRAM [샘플0][샘플1]...[샘플N] ↓ 5분치(12,000 샘플)씩 1구간 전송 → 500ms 대기 2구간 전송 → 500ms 대기 ... 나머지 전송 1바이트 종료 신호 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 #define PACKET_LENGTH (5 * 60 * 40) // 5분치 = 12,000 샘플 = 240 KB workingPointer = packetPointer; // 포인터를 처음으로 되돌림 int pn = packetCounter / PACKET_LENGTH; // 완전한 구간 수 int pr = packetCounter % PACKET_LENGTH; // 나머지 for (int p = 0; p \u003c pn; p++) { ws.binary(client_id, (uint8_t*)workingPointer, PACKET_LENGTH * sizeof(struct sensors)); workingPointer += PACKET_LENGTH; delay(500); } if (pr) { ws.binary(client_id, (uint8_t*)workingPointer, pr * sizeof(struct sensors)); } ws.binary(client_id, (uint8_t*)workingPointer, 1); // 종료 신호 한 번에 전부 보내지 않고 5분치씩 나눠 보내는 이유는 WebSocket이 결국 TCP 위에서 동작하기 때문이다. ESP32의 TCP 송신 버퍼는 작아서 1.65MB를 한 번에 큐에 넣으면 버퍼가 넘친다. 5분치를 보내고 500ms를 기다리는 동안 TCP 스택이 실제로 데이터를 전송할 시간을 주는 것이다.\ndelay(500) 동안 loop()가 멈추기 때문에 이 시간에 Falling Edge가 와도 샘플을 놓친다. 그래서 SAVE는 반드시 STOP 이후에만 의미가 있고, 코드에서도 quit \u0026\u0026 save 조건일 때만 전송 로직이 실행된다.\n브라우저 쪽에서는 데이터를 받을 때마다 ArrayBuffer에 이어 붙이다가, 마지막 1바이트 종료 신호가 오면 파일로 저장한다.\n상태 플래그 관리 1 2 bool quit = true; // 초기 상태: 측정 안 함 bool save = false; // 저장 명령 플래그 WebSocket 명령에 따라 상태가 바뀐다.\n1 2 3 4 5 6 7 8 9 10 11 12 if (strcmp((char*)data, \"START\") == 0) { workingPointer = packetPointer; // 포인터를 처음으로 packetCounter = 0; quit = false; // 측정 시작 } else if (strcmp((char*)data, \"STOP\") == 0) { quit = true; } else if (strcmp((char*)data, \"SAVE\") == 0) { client_id = client-\u003eid(); save = true; } START 명령을 받으면 workingPointer를 packetPointer로 되돌리고 packetCounter를 0으로 리셋한다. 버퍼를 따로 초기화하지 않아도 이전 데이터는 논리적으로 없는 것과 같다. 36분이 지나 버퍼가 꽉 차면 자동으로 측정을 중단한다.\n1 if (packetCounter == PACKET_SIZE) quit = true; 마무리 이번 글에서 다룬 내용을 정리하면:\n왜 PSRAM: Flash 쓰기 지연, 내부 SRAM 용량 한계, Wi-Fi 스택과의 메모리 경쟁 세 가지를 동시에 해결 데이터 구조: struct sensors 20 bytes × 86,400 샘플 = 1.65 MB 40 SPS: DataSubSamplePoint = 2로 80 SPS를 절반만 처리 저장 방식: *workingPointer++ = Sensors로 구조체를 순서대로 저장 화면 표시와 저장 분리: WebSampleIdx는 항상 증가, 0.4초마다 JSON 전송 SAVE 전송: 5분 단위로 나눠 전송, 1바이트 종료 신호로 완료 통보 다음 글에서는 측정 전 반드시 해야 하는 영점 보정(캘리브레이션) 로직과 EEPROM 레이아웃, 그리고 AS5600 각도 센서 연동 방법을 자세히 설명하겠다.\n",
+  "wordCount" : "1476",
+  "inLanguage": "en",
+  "datePublished": "2026-04-03T01:00:00+09:00",
+  "dateModified": "2026-04-03T01:00:00+09:00",
+  "author":{
+    "@type": "Person",
+    "name": "서보민"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "bromine1997",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                    <span>Embedded</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                    <span>Algorithm</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                    <span>Paper Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/notes/" title="Notes">
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      [ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조
+    </h1>
+    <div class="post-meta"><span title='2026-04-03 01:00:00 +0900 KST'>April 3, 2026</span>&nbsp;·&nbsp;<span>7 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/esp32/esp32-rehabilitation-bicycle-psram.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
+</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#왜-flash가-아닌-psram인가">왜 Flash가 아닌 PSRAM인가</a></li>
+    <li><a href="#데이터-구조-설계">데이터 구조 설계</a></li>
+    <li><a href="#psram-초기화">PSRAM 초기화</a></li>
+    <li><a href="#메인-루프와-40-sps">메인 루프와 40 SPS</a></li>
+    <li><a href="#falling-edge마다-일어나는-일">Falling Edge마다 일어나는 일</a></li>
+    <li><a href="#psram-저장-핵심-한-줄">PSRAM 저장 핵심 한 줄</a></li>
+    <li><a href="#실시간-화면-표시와-psram-저장은-분리되어-있다">실시간 화면 표시와 PSRAM 저장은 분리되어 있다</a></li>
+    <li><a href="#stop-후-save-데이터-전송-흐름">STOP 후 SAVE: 데이터 전송 흐름</a></li>
+    <li><a href="#상태-플래그-관리">상태 플래그 관리</a></li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>하드웨어 편에서 ADS1232 4개로 로드셀을 동시에 샘플링하는 구조를 설명했다. 이번에는 그 데이터를 어떻게 저장하고 관리하는지, PSRAM 버퍼 구조부터 분할 전송까지 정리해보겠다.</p>
+<h2 id="왜-flash가-아닌-psram인가">왜 Flash가 아닌 PSRAM인가<a hidden class="anchor" aria-hidden="true" href="#왜-flash가-아닌-psram인가">#</a></h2>
+<p>처음에는 측정 데이터를 SD카드나 SPIFFS(Flash)에 직접 저장하는 방식을 생각했다.</p>
+<p>세 가지 문제가 있었다.</p>
+<p><strong>첫째, Flash 쓰기는 느리다.</strong></p>
+<p>SPIFFS 기준으로 단순 쓰기도 수 ms가 걸린다. 40 SPS로 샘플링 중이라면 한 샘플마다 25ms 안에 모든 처리를 끝내야 하는데, Flash 쓰기가 이 시간을 잡아먹으면 샘플을 놓친다.</p>
+<p><strong>둘째, 내부 SRAM이 부족하다.</strong></p>
+<p>ESP32 내부 SRAM은 약 520KB다. 여기에 Wi-Fi 스택이 100~200KB를 점유하고, AsyncWebServer와 WebSocket 라이브러리까지 올라가면 여유가 거의 없다. 1.65MB짜리 버퍼를 내부 SRAM에 올리는 건 처음부터 불가능하다. <code>malloc</code> 대신 <code>ps_calloc</code>을 쓴 이유가 바로 이것이다.</p>
+<p><strong>셋째, Wi-Fi 스택과 메모리를 두고 경쟁하면 crash가 난다.</strong></p>
+<p>Wi-Fi는 내부 SRAM에서 동작한다. 데이터 버퍼까지 같은 공간을 쓰면 메모리 단편화가 쌓이다가 어느 순간 Wi-Fi 재연결 중 OOM으로 재부팅된다. 이 버그는 재현도 불규칙하고 로그만 봐서는 원인을 잡기 어렵다. PSRAM은 내부 SRAM과 완전히 별도 영역이라 이 경쟁 자체를 피할 수 있다.</p>
+<p>반면 PSRAM은 ns 단위로 읽고 쓴다. 메인 루프에서 포인터 대입 한 번이면 끝이다. ESP32 Feather V2에는 <strong>2MB PSRAM</strong>이 탑재되어 있어 이걸 전부 측정 버퍼로 쓰기로 했다.</p>
+<h2 id="데이터-구조-설계">데이터 구조 설계<a hidden class="anchor" aria-hidden="true" href="#데이터-구조-설계">#</a></h2>
+<p>저장 단위는 한 번의 샘플, 즉 로드셀 4채널 + 각도 1채널이다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-0-1"><a class="lnlinks" href="#hl-0-1">1</a>
+</span><span class="lnt" id="hl-0-2"><a class="lnlinks" href="#hl-0-2">2</a>
+</span><span class="lnt" id="hl-0-3"><a class="lnlinks" href="#hl-0-3">3</a>
+</span><span class="lnt" id="hl-0-4"><a class="lnlinks" href="#hl-0-4">4</a>
+</span><span class="lnt" id="hl-0-5"><a class="lnlinks" href="#hl-0-5">5</a>
+</span><span class="lnt" id="hl-0-6"><a class="lnlinks" href="#hl-0-6">6</a>
+</span><span class="lnt" id="hl-0-7"><a class="lnlinks" href="#hl-0-7">7</a>
+</span><span class="lnt" id="hl-0-8"><a class="lnlinks" href="#hl-0-8">8</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">sensors</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">volatile</span> <span class="kt">long</span> <span class="n">DATA1</span><span class="p">;</span>        <span class="c1">// 우측 팔 (4 bytes)
+</span></span></span><span class="line"><span class="cl">  <span class="k">volatile</span> <span class="kt">long</span> <span class="n">DATA2</span><span class="p">;</span>        <span class="c1">// 좌측 팔 (4 bytes)
+</span></span></span><span class="line"><span class="cl">  <span class="k">volatile</span> <span class="kt">long</span> <span class="n">DATA3</span><span class="p">;</span>        <span class="c1">// 우측 다리 (4 bytes)
+</span></span></span><span class="line"><span class="cl">  <span class="k">volatile</span> <span class="kt">long</span> <span class="n">DATA4</span><span class="p">;</span>        <span class="c1">// 좌측 다리 (4 bytes)
+</span></span></span><span class="line"><span class="cl">  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">encoderAngle</span><span class="p">;</span> <span class="c1">// 크랭크 각도 (4 bytes)
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 총 20 bytes / 샘플
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>volatile</code>은 ISR 안에서 값이 바뀌기 때문에 컴파일러 최적화를 막기 위해 붙였다. 이게 없으면 컴파일러가 &ldquo;이 값은 여기서 안 바뀌네&quot;라고 판단하고 레지스터에 캐시해버려서 ISR이 업데이트한 최신 값을 못 읽을 수 있다.</p>
+<p>최대 기록 시간을 36분으로 잡았을 때 필요한 샘플 수와 메모리는:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-1-1"><a class="lnlinks" href="#hl-1-1">1</a>
+</span><span class="lnt" id="hl-1-2"><a class="lnlinks" href="#hl-1-2">2</a>
+</span><span class="lnt" id="hl-1-3"><a class="lnlinks" href="#hl-1-3">3</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define PACKET_SIZE (36 * 60 * 40)  </span><span class="c1">// 86,400 샘플
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 86,400 샘플 × 20 bytes = 1,728,000 bytes ≈ 1.65 MB
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>2MB PSRAM 안에 들어온다.</p>
+<h2 id="psram-초기화">PSRAM 초기화<a hidden class="anchor" aria-hidden="true" href="#psram-초기화">#</a></h2>
+<p><code>setup()</code> 안에서 PSRAM을 확인하고 메모리를 할당한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-2-1"><a class="lnlinks" href="#hl-2-1"> 1</a>
+</span><span class="lnt" id="hl-2-2"><a class="lnlinks" href="#hl-2-2"> 2</a>
+</span><span class="lnt" id="hl-2-3"><a class="lnlinks" href="#hl-2-3"> 3</a>
+</span><span class="lnt" id="hl-2-4"><a class="lnlinks" href="#hl-2-4"> 4</a>
+</span><span class="lnt" id="hl-2-5"><a class="lnlinks" href="#hl-2-5"> 5</a>
+</span><span class="lnt" id="hl-2-6"><a class="lnlinks" href="#hl-2-6"> 6</a>
+</span><span class="lnt" id="hl-2-7"><a class="lnlinks" href="#hl-2-7"> 7</a>
+</span><span class="lnt" id="hl-2-8"><a class="lnlinks" href="#hl-2-8"> 8</a>
+</span><span class="lnt" id="hl-2-9"><a class="lnlinks" href="#hl-2-9"> 9</a>
+</span><span class="lnt" id="hl-2-10"><a class="lnlinks" href="#hl-2-10">10</a>
+</span><span class="lnt" id="hl-2-11"><a class="lnlinks" href="#hl-2-11">11</a>
+</span><span class="lnt" id="hl-2-12"><a class="lnlinks" href="#hl-2-12">12</a>
+</span><span class="lnt" id="hl-2-13"><a class="lnlinks" href="#hl-2-13">13</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;PSRAM found : &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">isPsram</span> <span class="o">=</span> <span class="n">psramFound</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">isPsram</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">psramInit</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">((</span><span class="n">String</span><span class="p">)</span><span class="s">&#34;Memory available in PSRAM : &#34;</span> <span class="o">+</span> <span class="n">ESP</span><span class="p">.</span><span class="n">getFreePsram</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">workingPointer</span> <span class="o">=</span> <span class="n">packetPointer</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="k">struct</span> <span class="nc">sensors</span> <span class="o">*</span><span class="p">)</span><span class="n">ps_calloc</span><span class="p">(</span><span class="n">PACKET_SIZE</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="nc">sensors</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;PSRAM initilization failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">isPsram</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>ps_calloc</code>은 PSRAM에서 메모리를 할당하는 함수다. 일반 <code>malloc</code>을 쓰면 내부 SRAM에서 할당을 시도하는데, 앞서 말했듯 1.65MB는 처음부터 들어가지 않는다. <code>calloc</code>이기 때문에 할당과 동시에 0으로 초기화된다.</p>
+<p>포인터는 두 개를 사용한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-3-1"><a class="lnlinks" href="#hl-3-1">1</a>
+</span><span class="lnt" id="hl-3-2"><a class="lnlinks" href="#hl-3-2">2</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">sensors</span> <span class="o">*</span><span class="n">packetPointer</span><span class="p">;</span>   <span class="c1">// 버퍼 시작 주소 (고정)
+</span></span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">sensors</span> <span class="o">*</span><span class="n">workingPointer</span><span class="p">;</span>  <span class="c1">// 현재 쓰기 위치 (이동)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>packetPointer</code>는 버퍼의 시작점을 가리키며 절대 바뀌지 않는다. <code>workingPointer</code>는 데이터를 쓸 때마다 앞으로 이동한다. 나중에 SAVE 명령이 오면 <code>workingPointer</code>를 다시 <code>packetPointer</code>로 돌려 처음부터 전송한다.</p>
+<h2 id="메인-루프와-40-sps">메인 루프와 40 SPS<a hidden class="anchor" aria-hidden="true" href="#메인-루프와-40-sps">#</a></h2>
+<p><code>loop()</code>의 핵심은 DRDY 핀의 <strong>Falling Edge</strong> 감지다.</p>
+<p>ADS1232는 새 데이터가 준비되면 DRDY/DOUT 핀을 HIGH → LOW로 내린다. 이걸 소프트웨어 polling으로 감지한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-4-1"><a class="lnlinks" href="#hl-4-1"> 1</a>
+</span><span class="lnt" id="hl-4-2"><a class="lnlinks" href="#hl-4-2"> 2</a>
+</span><span class="lnt" id="hl-4-3"><a class="lnlinks" href="#hl-4-3"> 3</a>
+</span><span class="lnt" id="hl-4-4"><a class="lnlinks" href="#hl-4-4"> 4</a>
+</span><span class="lnt" id="hl-4-5"><a class="lnlinks" href="#hl-4-5"> 5</a>
+</span><span class="lnt" id="hl-4-6"><a class="lnlinks" href="#hl-4-6"> 6</a>
+</span><span class="lnt" id="hl-4-7"><a class="lnlinks" href="#hl-4-7"> 7</a>
+</span><span class="lnt" id="hl-4-8"><a class="lnlinks" href="#hl-4-8"> 8</a>
+</span><span class="lnt" id="hl-4-9"><a class="lnlinks" href="#hl-4-9"> 9</a>
+</span><span class="lnt" id="hl-4-10"><a class="lnlinks" href="#hl-4-10">10</a>
+</span><span class="lnt" id="hl-4-11"><a class="lnlinks" href="#hl-4-11">11</a>
+</span><span class="lnt" id="hl-4-12"><a class="lnlinks" href="#hl-4-12">12</a>
+</span><span class="lnt" id="hl-4-13"><a class="lnlinks" href="#hl-4-13">13</a>
+</span><span class="lnt" id="hl-4-14"><a class="lnlinks" href="#hl-4-14">14</a>
+</span><span class="lnt" id="hl-4-15"><a class="lnlinks" href="#hl-4-15">15</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">c</span> <span class="o">=</span> <span class="n">digitalRead</span><span class="p">(</span><span class="n">pin_ADC_DRDY_DOUT_1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">((</span><span class="n">t</span> <span class="o">==</span> <span class="n">HIGH</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">LOW</span><span class="p">))</span> <span class="p">{</span>   <span class="c1">// Falling Edge 감지
+</span></span></span><span class="line"><span class="cl">    <span class="n">DatSampleIdx</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WebSampleIdx</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">DatSampleIdx</span> <span class="o">&gt;=</span> <span class="n">DataSubSamplePoint</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// 2번마다 1번 처리
+</span></span></span><span class="line"><span class="cl">      <span class="n">DatSampleIdx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 데이터 처리
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">t</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>ADS1232는 최대 80 SPS로 동작한다. <code>DataSubSamplePoint = 2</code>로 설정해두었기 때문에 Falling Edge 2번 중 1번만 실제로 처리한다. 결과적으로 40 SPS가 된다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-5-1"><a class="lnlinks" href="#hl-5-1">1</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DataSubSamplePoint 2   </span><span class="c1">// 80 / 2 = 40 SPS
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>80 SPS를 전부 쓰지 않은 이유는, 40 SPS면 재활 운동 데이터 수집에 충분하고 처리 시간과 저장 용량이 절반으로 줄기 때문이다. 80 SPS를 그대로 쓰면 36분이 아니라 18분 제한이 된다.</p>
+<h2 id="falling-edge마다-일어나는-일">Falling Edge마다 일어나는 일<a hidden class="anchor" aria-hidden="true" href="#falling-edge마다-일어나는-일">#</a></h2>
+<p>Falling Edge를 감지하고 <code>DatSampleIdx</code>가 조건을 만족하면 다음 순서로 처리된다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-6-1"><a class="lnlinks" href="#hl-6-1"> 1</a>
+</span><span class="lnt" id="hl-6-2"><a class="lnlinks" href="#hl-6-2"> 2</a>
+</span><span class="lnt" id="hl-6-3"><a class="lnlinks" href="#hl-6-3"> 3</a>
+</span><span class="lnt" id="hl-6-4"><a class="lnlinks" href="#hl-6-4"> 4</a>
+</span><span class="lnt" id="hl-6-5"><a class="lnlinks" href="#hl-6-5"> 5</a>
+</span><span class="lnt" id="hl-6-6"><a class="lnlinks" href="#hl-6-6"> 6</a>
+</span><span class="lnt" id="hl-6-7"><a class="lnlinks" href="#hl-6-7"> 7</a>
+</span><span class="lnt" id="hl-6-8"><a class="lnlinks" href="#hl-6-8"> 8</a>
+</span><span class="lnt" id="hl-6-9"><a class="lnlinks" href="#hl-6-9"> 9</a>
+</span><span class="lnt" id="hl-6-10"><a class="lnlinks" href="#hl-6-10">10</a>
+</span><span class="lnt" id="hl-6-11"><a class="lnlinks" href="#hl-6-11">11</a>
+</span><span class="lnt" id="hl-6-12"><a class="lnlinks" href="#hl-6-12">12</a>
+</span><span class="lnt" id="hl-6-13"><a class="lnlinks" href="#hl-6-13">13</a>
+</span><span class="lnt" id="hl-6-14"><a class="lnlinks" href="#hl-6-14">14</a>
+</span><span class="lnt" id="hl-6-15"><a class="lnlinks" href="#hl-6-15">15</a>
+</span><span class="lnt" id="hl-6-16"><a class="lnlinks" href="#hl-6-16">16</a>
+</span><span class="lnt" id="hl-6-17"><a class="lnlinks" href="#hl-6-17">17</a>
+</span><span class="lnt" id="hl-6-18"><a class="lnlinks" href="#hl-6-18">18</a>
+</span><span class="lnt" id="hl-6-19"><a class="lnlinks" href="#hl-6-19">19</a>
+</span><span class="lnt" id="hl-6-20"><a class="lnlinks" href="#hl-6-20">20</a>
+</span><span class="lnt" id="hl-6-21"><a class="lnlinks" href="#hl-6-21">21</a>
+</span><span class="lnt" id="hl-6-22"><a class="lnlinks" href="#hl-6-22">22</a>
+</span><span class="lnt" id="hl-6-23"><a class="lnlinks" href="#hl-6-23">23</a>
+</span><span class="lnt" id="hl-6-24"><a class="lnlinks" href="#hl-6-24">24</a>
+</span><span class="lnt" id="hl-6-25"><a class="lnlinks" href="#hl-6-25">25</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 1. 클럭 펄스 24회 발생 → ISR이 4채널 데이터 수집
+</span></span></span><span class="line"><span class="cl"><span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">24</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">pin_SCLK_OUT</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>  <span class="n">delayMicroseconds</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">pin_SCLK_OUT</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>   <span class="n">delayMicroseconds</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 2. 각도 읽기 (I2C)
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">isWire</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Sensors</span><span class="p">.</span><span class="n">encoderAngle</span> <span class="o">=</span> <span class="n">as5600</span><span class="p">.</span><span class="n">readAngle</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Sensors</span><span class="p">.</span><span class="n">encoderAngle</span> <span class="o">=</span> <span class="mi">8192</span><span class="p">;</span>  <span class="c1">// 미연결 표시
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 3. NeoPixel로 실시간 시각화 (디버깅용)
+</span></span></span><span class="line"><span class="cl"><span class="n">pixel</span><span class="p">.</span><span class="n">setPixelColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Sensors</span><span class="p">.</span><span class="n">DATA1</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pixel</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 4. PSRAM에 저장 (START 명령 이후에만)
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">isPsram</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">quit</span> <span class="o">&amp;&amp;</span> <span class="n">packetCounter</span> <span class="o">&lt;</span> <span class="n">PACKET_SIZE</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="n">workingPointer</span><span class="o">++</span> <span class="o">=</span> <span class="n">Sensors</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">packetCounter</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>1번에서 SCLK_OUT으로 24개의 클럭 펄스를 직접 발생시킨다. 이 펄스마다 SCLK_IN 핀에 인터럽트가 걸려 <code>SPI_ISR()</code>이 실행되고, 4채널 데이터가 1비트씩 수집된다. 24클럭이 끝나면 <code>Sensors.DATA1~4</code>에 최종 값이 들어있다.</p>
+<p>2번에서 AS5600 각도를 I2C로 읽는다. 미연결 상태면 <code>8192</code>라는 예약값을 넣어 웹 UI에서 &ldquo;N.C.&ldquo;로 표시하게 했다.</p>
+<p>3번은 디버깅 용도다. NeoPixel의 G채널에 <code>DATA1</code> 값을 매핑하면 오른팔에 힘이 들어갈수록 LED가 밝아진다. 오실로스코프 없이 센서 동작을 육안으로 확인할 수 있어서 개발 중에 유용했다.</p>
+<h2 id="psram-저장-핵심-한-줄">PSRAM 저장 핵심 한 줄<a hidden class="anchor" aria-hidden="true" href="#psram-저장-핵심-한-줄">#</a></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-7-1"><a class="lnlinks" href="#hl-7-1">1</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">*</span><span class="n">workingPointer</span><span class="o">++</span> <span class="o">=</span> <span class="n">Sensors</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>C 포인터 문법이 익숙하지 않으면 낯설어 보이지만, 풀어쓰면 이렇다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-8-1"><a class="lnlinks" href="#hl-8-1">1</a>
+</span><span class="lnt" id="hl-8-2"><a class="lnlinks" href="#hl-8-2">2</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">*</span><span class="n">workingPointer</span> <span class="o">=</span> <span class="n">Sensors</span><span class="p">;</span>   <span class="c1">// workingPointer가 가리키는 주소에 Sensors 구조체 복사
+</span></span></span><span class="line"><span class="cl"><span class="n">workingPointer</span><span class="o">++</span><span class="p">;</span>            <span class="c1">// 포인터를 다음 구조체 위치로 이동
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>++</code>는 바이트 단위가 아니라 <strong>타입 크기 단위</strong>로 이동한다. <code>struct sensors</code>가 20 bytes이므로 <code>workingPointer++</code>는 주소를 20 증가시킨다. 이렇게 하면 배열처럼 PSRAM에 구조체가 순서대로 쌓인다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-9-1"><a class="lnlinks" href="#hl-9-1">1</a>
+</span><span class="lnt" id="hl-9-2"><a class="lnlinks" href="#hl-9-2">2</a>
+</span><span class="lnt" id="hl-9-3"><a class="lnlinks" href="#hl-9-3">3</a>
+</span><span class="lnt" id="hl-9-4"><a class="lnlinks" href="#hl-9-4">4</a>
+</span><span class="lnt" id="hl-9-5"><a class="lnlinks" href="#hl-9-5">5</a>
+</span><span class="lnt" id="hl-9-6"><a class="lnlinks" href="#hl-9-6">6</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">PSRAM
+</span></span><span class="line"><span class="cl">┌──────────────────────────────────────────────┐
+</span></span><span class="line"><span class="cl">│ Sensors[0] │ Sensors[1] │ ... │ Sensors[N]   │
+</span></span><span class="line"><span class="cl">└──────────────────────────────────────────────┘
+</span></span><span class="line"><span class="cl">↑                                              ↑
+</span></span><span class="line"><span class="cl">packetPointer                       workingPointer
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="실시간-화면-표시와-psram-저장은-분리되어-있다">실시간 화면 표시와 PSRAM 저장은 분리되어 있다<a hidden class="anchor" aria-hidden="true" href="#실시간-화면-표시와-psram-저장은-분리되어-있다">#</a></h2>
+<p>여기서 한 가지 흥미로운 점이 있다. 웹 화면을 열면 START를 누르지 않아도 센서 값이 실시간으로 표시된다. PSRAM에 저장하는 것과 화면에 보여주는 것이 완전히 분리된 구조이기 때문이다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-10-1"><a class="lnlinks" href="#hl-10-1"> 1</a>
+</span><span class="lnt" id="hl-10-2"><a class="lnlinks" href="#hl-10-2"> 2</a>
+</span><span class="lnt" id="hl-10-3"><a class="lnlinks" href="#hl-10-3"> 3</a>
+</span><span class="lnt" id="hl-10-4"><a class="lnlinks" href="#hl-10-4"> 4</a>
+</span><span class="lnt" id="hl-10-5"><a class="lnlinks" href="#hl-10-5"> 5</a>
+</span><span class="lnt" id="hl-10-6"><a class="lnlinks" href="#hl-10-6"> 6</a>
+</span><span class="lnt" id="hl-10-7"><a class="lnlinks" href="#hl-10-7"> 7</a>
+</span><span class="lnt" id="hl-10-8"><a class="lnlinks" href="#hl-10-8"> 8</a>
+</span><span class="lnt" id="hl-10-9"><a class="lnlinks" href="#hl-10-9"> 9</a>
+</span><span class="lnt" id="hl-10-10"><a class="lnlinks" href="#hl-10-10">10</a>
+</span><span class="lnt" id="hl-10-11"><a class="lnlinks" href="#hl-10-11">11</a>
+</span><span class="lnt" id="hl-10-12"><a class="lnlinks" href="#hl-10-12">12</a>
+</span><span class="lnt" id="hl-10-13"><a class="lnlinks" href="#hl-10-13">13</a>
+</span><span class="lnt" id="hl-10-14"><a class="lnlinks" href="#hl-10-14">14</a>
+</span><span class="lnt" id="hl-10-15"><a class="lnlinks" href="#hl-10-15">15</a>
+</span><span class="lnt" id="hl-10-16"><a class="lnlinks" href="#hl-10-16">16</a>
+</span><span class="lnt" id="hl-10-17"><a class="lnlinks" href="#hl-10-17">17</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">((</span><span class="n">t</span> <span class="o">==</span> <span class="n">HIGH</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">LOW</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DatSampleIdx</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WebSampleIdx</span><span class="o">++</span><span class="p">;</span>  <span class="c1">// quit 상태와 무관하게 항상 증가
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">DatSampleIdx</span> <span class="o">&gt;=</span> <span class="n">DataSubSamplePoint</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// PSRAM 저장: quit = false (START 이후)일 때만
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">quit</span> <span class="o">&amp;&amp;</span> <span class="n">packetCounter</span> <span class="o">&lt;</span> <span class="n">PACKET_SIZE</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="o">*</span><span class="n">workingPointer</span><span class="o">++</span> <span class="o">=</span> <span class="n">Sensors</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 화면 전송: 항상 동작, 16샘플(0.4초)마다 JSON 전송
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">NoNetwork</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">WebSampleIdx</span> <span class="o">&gt;=</span> <span class="mi">16</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">WebSampleIdx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sendSensorsWs</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>WebSampleIdx</code>는 <code>quit</code> 여부와 상관없이 Falling Edge마다 계속 증가한다. 16샘플(= 0.4초)마다 현재 <code>Sensors</code> 구조체 값을 JSON으로 브라우저에 보낸다. ISR은 항상 돌고 있으니 <code>Sensors</code>에는 항상 최신 값이 들어있다.</p>
+<p>정리하면:</p>
+<ul>
+<li><strong>PSRAM 저장</strong> → START 버튼을 눌러야 시작 (<code>quit = false</code>)</li>
+<li><strong>화면 실시간 표시</strong> → 항상 동작, 0.4초마다 갱신</li>
+</ul>
+<h2 id="stop-후-save-데이터-전송-흐름">STOP 후 SAVE: 데이터 전송 흐름<a hidden class="anchor" aria-hidden="true" href="#stop-후-save-데이터-전송-흐름">#</a></h2>
+<p>측정을 마치고 SAVE 버튼을 누르면 PSRAM에 쌓인 데이터를 처음부터 끝까지 브라우저로 전송한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-11-1"><a class="lnlinks" href="#hl-11-1"> 1</a>
+</span><span class="lnt" id="hl-11-2"><a class="lnlinks" href="#hl-11-2"> 2</a>
+</span><span class="lnt" id="hl-11-3"><a class="lnlinks" href="#hl-11-3"> 3</a>
+</span><span class="lnt" id="hl-11-4"><a class="lnlinks" href="#hl-11-4"> 4</a>
+</span><span class="lnt" id="hl-11-5"><a class="lnlinks" href="#hl-11-5"> 5</a>
+</span><span class="lnt" id="hl-11-6"><a class="lnlinks" href="#hl-11-6"> 6</a>
+</span><span class="lnt" id="hl-11-7"><a class="lnlinks" href="#hl-11-7"> 7</a>
+</span><span class="lnt" id="hl-11-8"><a class="lnlinks" href="#hl-11-8"> 8</a>
+</span><span class="lnt" id="hl-11-9"><a class="lnlinks" href="#hl-11-9"> 9</a>
+</span><span class="lnt" id="hl-11-10"><a class="lnlinks" href="#hl-11-10">10</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">STOP → quit = true  (측정 중단)
+</span></span><span class="line"><span class="cl">SAVE → save = true  (전송 시작)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PSRAM [샘플0][샘플1]...[샘플N]
+</span></span><span class="line"><span class="cl">         ↓ 5분치(12,000 샘플)씩
+</span></span><span class="line"><span class="cl">      1구간 전송 → 500ms 대기
+</span></span><span class="line"><span class="cl">      2구간 전송 → 500ms 대기
+</span></span><span class="line"><span class="cl">      ...
+</span></span><span class="line"><span class="cl">      나머지 전송
+</span></span><span class="line"><span class="cl">      1바이트 종료 신호
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-12-1"><a class="lnlinks" href="#hl-12-1"> 1</a>
+</span><span class="lnt" id="hl-12-2"><a class="lnlinks" href="#hl-12-2"> 2</a>
+</span><span class="lnt" id="hl-12-3"><a class="lnlinks" href="#hl-12-3"> 3</a>
+</span><span class="lnt" id="hl-12-4"><a class="lnlinks" href="#hl-12-4"> 4</a>
+</span><span class="lnt" id="hl-12-5"><a class="lnlinks" href="#hl-12-5"> 5</a>
+</span><span class="lnt" id="hl-12-6"><a class="lnlinks" href="#hl-12-6"> 6</a>
+</span><span class="lnt" id="hl-12-7"><a class="lnlinks" href="#hl-12-7"> 7</a>
+</span><span class="lnt" id="hl-12-8"><a class="lnlinks" href="#hl-12-8"> 8</a>
+</span><span class="lnt" id="hl-12-9"><a class="lnlinks" href="#hl-12-9"> 9</a>
+</span><span class="lnt" id="hl-12-10"><a class="lnlinks" href="#hl-12-10">10</a>
+</span><span class="lnt" id="hl-12-11"><a class="lnlinks" href="#hl-12-11">11</a>
+</span><span class="lnt" id="hl-12-12"><a class="lnlinks" href="#hl-12-12">12</a>
+</span><span class="lnt" id="hl-12-13"><a class="lnlinks" href="#hl-12-13">13</a>
+</span><span class="lnt" id="hl-12-14"><a class="lnlinks" href="#hl-12-14">14</a>
+</span><span class="lnt" id="hl-12-15"><a class="lnlinks" href="#hl-12-15">15</a>
+</span><span class="lnt" id="hl-12-16"><a class="lnlinks" href="#hl-12-16">16</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define PACKET_LENGTH (5 * 60 * 40)  </span><span class="c1">// 5분치 = 12,000 샘플 = 240 KB
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">workingPointer</span> <span class="o">=</span> <span class="n">packetPointer</span><span class="p">;</span>  <span class="c1">// 포인터를 처음으로 되돌림
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">pn</span> <span class="o">=</span> <span class="n">packetCounter</span> <span class="o">/</span> <span class="n">PACKET_LENGTH</span><span class="p">;</span>  <span class="c1">// 완전한 구간 수
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">packetCounter</span> <span class="o">%</span> <span class="n">PACKET_LENGTH</span><span class="p">;</span>  <span class="c1">// 나머지
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">pn</span><span class="p">;</span> <span class="n">p</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">ws</span><span class="p">.</span><span class="n">binary</span><span class="p">(</span><span class="n">client_id</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">workingPointer</span><span class="p">,</span> <span class="n">PACKET_LENGTH</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="nc">sensors</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="n">workingPointer</span> <span class="o">+=</span> <span class="n">PACKET_LENGTH</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">pr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">ws</span><span class="p">.</span><span class="n">binary</span><span class="p">(</span><span class="n">client_id</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">workingPointer</span><span class="p">,</span> <span class="n">pr</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="nc">sensors</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">ws</span><span class="p">.</span><span class="n">binary</span><span class="p">(</span><span class="n">client_id</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">workingPointer</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// 종료 신호
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>한 번에 전부 보내지 않고 5분치씩 나눠 보내는 이유는 WebSocket이 결국 TCP 위에서 동작하기 때문이다. ESP32의 TCP 송신 버퍼는 작아서 1.65MB를 한 번에 큐에 넣으면 버퍼가 넘친다. 5분치를 보내고 500ms를 기다리는 동안 TCP 스택이 실제로 데이터를 전송할 시간을 주는 것이다.</p>
+<p><code>delay(500)</code> 동안 <code>loop()</code>가 멈추기 때문에 이 시간에 Falling Edge가 와도 샘플을 놓친다. 그래서 SAVE는 반드시 STOP 이후에만 의미가 있고, 코드에서도 <code>quit &amp;&amp; save</code> 조건일 때만 전송 로직이 실행된다.</p>
+<p>브라우저 쪽에서는 데이터를 받을 때마다 <code>ArrayBuffer</code>에 이어 붙이다가, 마지막 1바이트 종료 신호가 오면 파일로 저장한다.</p>
+<h2 id="상태-플래그-관리">상태 플래그 관리<a hidden class="anchor" aria-hidden="true" href="#상태-플래그-관리">#</a></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-13-1"><a class="lnlinks" href="#hl-13-1">1</a>
+</span><span class="lnt" id="hl-13-2"><a class="lnlinks" href="#hl-13-2">2</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">quit</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>   <span class="c1">// 초기 상태: 측정 안 함
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">save</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// 저장 명령 플래그
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>WebSocket 명령에 따라 상태가 바뀐다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-14-1"><a class="lnlinks" href="#hl-14-1"> 1</a>
+</span><span class="lnt" id="hl-14-2"><a class="lnlinks" href="#hl-14-2"> 2</a>
+</span><span class="lnt" id="hl-14-3"><a class="lnlinks" href="#hl-14-3"> 3</a>
+</span><span class="lnt" id="hl-14-4"><a class="lnlinks" href="#hl-14-4"> 4</a>
+</span><span class="lnt" id="hl-14-5"><a class="lnlinks" href="#hl-14-5"> 5</a>
+</span><span class="lnt" id="hl-14-6"><a class="lnlinks" href="#hl-14-6"> 6</a>
+</span><span class="lnt" id="hl-14-7"><a class="lnlinks" href="#hl-14-7"> 7</a>
+</span><span class="lnt" id="hl-14-8"><a class="lnlinks" href="#hl-14-8"> 8</a>
+</span><span class="lnt" id="hl-14-9"><a class="lnlinks" href="#hl-14-9"> 9</a>
+</span><span class="lnt" id="hl-14-10"><a class="lnlinks" href="#hl-14-10">10</a>
+</span><span class="lnt" id="hl-14-11"><a class="lnlinks" href="#hl-14-11">11</a>
+</span><span class="lnt" id="hl-14-12"><a class="lnlinks" href="#hl-14-12">12</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="s">&#34;START&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">workingPointer</span> <span class="o">=</span> <span class="n">packetPointer</span><span class="p">;</span>  <span class="c1">// 포인터를 처음으로
+</span></span></span><span class="line"><span class="cl">  <span class="n">packetCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">quit</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>                    <span class="c1">// 측정 시작
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="s">&#34;STOP&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">quit</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="s">&#34;SAVE&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">client_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="n">save</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>START 명령을 받으면 <code>workingPointer</code>를 <code>packetPointer</code>로 되돌리고 <code>packetCounter</code>를 0으로 리셋한다. 버퍼를 따로 초기화하지 않아도 이전 데이터는 논리적으로 없는 것과 같다. 36분이 지나 버퍼가 꽉 차면 자동으로 측정을 중단한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-15-1"><a class="lnlinks" href="#hl-15-1">1</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">packetCounter</span> <span class="o">==</span> <span class="n">PACKET_SIZE</span><span class="p">)</span> <span class="n">quit</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="마무리">마무리<a hidden class="anchor" aria-hidden="true" href="#마무리">#</a></h2>
+<p>이번 글에서 다룬 내용을 정리하면:</p>
+<ul>
+<li><strong>왜 PSRAM</strong>: Flash 쓰기 지연, 내부 SRAM 용량 한계, Wi-Fi 스택과의 메모리 경쟁 세 가지를 동시에 해결</li>
+<li><strong>데이터 구조</strong>: <code>struct sensors</code> 20 bytes × 86,400 샘플 = 1.65 MB</li>
+<li><strong>40 SPS</strong>: <code>DataSubSamplePoint = 2</code>로 80 SPS를 절반만 처리</li>
+<li><strong>저장 방식</strong>: <code>*workingPointer++ = Sensors</code>로 구조체를 순서대로 저장</li>
+<li><strong>화면 표시와 저장 분리</strong>: <code>WebSampleIdx</code>는 항상 증가, 0.4초마다 JSON 전송</li>
+<li><strong>SAVE 전송</strong>: 5분 단위로 나눠 전송, 1바이트 종료 신호로 완료 통보</li>
+</ul>
+<p>다음 글에서는 측정 전 반드시 해야 하는 영점 보정(캘리브레이션) 로직과 EEPROM 레이아웃, 그리고 AS5600 각도 센서 연동 방법을 자세히 설명하겠다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/esp32/">ESP32</a></li>
+      <li><a href="http://localhost:1313/tags/psram/">PSRAM</a></li>
+      <li><a href="http://localhost:1313/tags/%EB%A1%9C%EB%93%9C%EC%85%80/">로드셀</a></li>
+      <li><a href="http://localhost:1313/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%88%98%EC%A7%91/">데이터수집</a></li>
+      <li><a href="http://localhost:1313/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/">임베디드</a></li>
+      <li><a href="http://localhost:1313/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/">재활자전거</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>[ESP32] 4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/">
+    <span class="title">Next »</span>
+    <br>
+    <span>[ESP32] 4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+  </a>
+</nav>
+
+  </footer><div class="comments">
+  <script src="https://giscus.app/client.js"
+    data-repo="bromine1997/bromine1997.github.io"
+    data-repo-id="R_kgDOR1bAsg"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOR1bAss4C52wg"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="ko"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

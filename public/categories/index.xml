@@ -1,1 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Categories on bromine1997</title><link>https://bromine1997.github.io/categories/</link><description>Recent content in Categories on bromine1997</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Tue, 07 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://bromine1997.github.io/categories/index.xml" rel="self" type="application/rss+xml"/><item><title>Embedded Basic</title><link>https://bromine1997.github.io/categories/embedded-basic/</link><pubDate>Tue, 07 Apr 2026 00:00:00 +0000</pubDate><guid>https://bromine1997.github.io/categories/embedded-basic/</guid><description/></item><item><title>Embedded</title><link>https://bromine1997.github.io/categories/embedded/</link><pubDate>Fri, 03 Apr 2026 01:00:00 +0900</pubDate><guid>https://bromine1997.github.io/categories/embedded/</guid><description/></item><item><title>Notes</title><link>https://bromine1997.github.io/categories/notes/</link><pubDate>Tue, 31 Mar 2026 12:00:00 +0900</pubDate><guid>https://bromine1997.github.io/categories/notes/</guid><description/></item><item><title>Paper Review</title><link>https://bromine1997.github.io/categories/paper-review/</link><pubDate>Tue, 31 Mar 2026 00:00:00 +0000</pubDate><guid>https://bromine1997.github.io/categories/paper-review/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Categories on bromine1997</title>
+    <link>http://localhost:1313/categories/</link>
+    <description>Recent content in Categories on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Wed, 08 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Algorithm</title>
+      <link>http://localhost:1313/categories/algorithm/</link>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/algorithm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Embedded Basic</title>
+      <link>http://localhost:1313/categories/embedded-basic/</link>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/embedded-basic/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Embedded</title>
+      <link>http://localhost:1313/categories/embedded/</link>
+      <pubDate>Fri, 03 Apr 2026 02:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/categories/embedded/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Notes</title>
+      <link>http://localhost:1313/categories/notes/</link>
+      <pubDate>Tue, 31 Mar 2026 12:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/categories/notes/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Paper Review</title>
+      <link>http://localhost:1313/categories/paper-review/</link>
+      <pubDate>Tue, 31 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/paper-review/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

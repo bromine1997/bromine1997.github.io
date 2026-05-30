@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>인터럽트 on bromine1997</title>
+    <link>http://localhost:1313/tags/%EC%9D%B8%ED%84%B0%EB%9F%BD%ED%8A%B8/</link>
+    <description>Recent content in 인터럽트 on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Fri, 03 Apr 2026 02:00:00 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%EC%9D%B8%ED%84%B0%EB%9F%BD%ED%8A%B8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[ESP32] 4개의 로드셀을 동시에 측정하기 - 소프트웨어</title>
+      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/</link>
+      <pubDate>Fri, 03 Apr 2026 02:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/</guid>
+      <description>ADS1232 4채널을 왜 Hardware SPI 대신 GPIO 인터럽트로 읽었는가. IRAM_ATTR가 필요한 이유, 4채널 동시 비트 수집 구조, 24비트 2의 보수 부호 처리까지 정리했다.</description>
+    </item>
+  </channel>
+</rss>
