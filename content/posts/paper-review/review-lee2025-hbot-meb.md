@@ -1,6 +1,6 @@
 ---
 title: "[Paper Review] Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy"
-date: 2025-04-02
+date: 2026-04-01
 categories: ["Paper Review"]
 tags: ["HBOT", "MEB", "barotrauma", "monoplace chamber", "logistic regression"]
 description: "1인용 HBOT(monoplace chamber)을 받은 296명 환자를 대상으로 MEB의 독립적 위험 인자를 multivariable logistic regression으로 분석한 연구"

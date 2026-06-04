@@ -1,6 +1,6 @@
 ---
 title: "[Paper Review] Optimum Settings for Automatic Controllers"
-date: 2025-04-21
+date: 2026-04-15
 categories: ["Paper Review"]
 tags: ["PID", "Ziegler-Nichols", "tuning", "control"]
 description: "PID 제어기의 최적 파라미터를 실험적으로 결정하는 Z-N 튜닝 방법을 제안한 1942년 고전 논문. Ultimate sensitivity와 process reaction curve 두 가지 방법을 통해 현장에서 빠르게 최적 설정을 도출하는 절차를 제시한다."
