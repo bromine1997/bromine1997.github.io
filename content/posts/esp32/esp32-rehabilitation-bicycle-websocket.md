@@ -142,6 +142,8 @@ void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
 | `STOP` | 측정 중단 |
 | `SAVE` | 버퍼에 쌓인 데이터 전송 시작 |
 
+![ELEPHANT WEB MONITOR UI](/images/esp32/rehab-web-ui.png)
+
 ## 센서 데이터 실시간 전송
 
 루프에서 16 샘플(약 0.4초)마다 JSON을 모든 클라이언트에 브로드캐스트한다:
