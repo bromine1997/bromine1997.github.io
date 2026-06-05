@@ -81,30 +81,38 @@ params:
 
 menu:
   main:
-    - identifier: nav-embedded
-      name: Embedded
-      url: /categories/embedded/
+    - identifier: nav-basics
+      name: Basics
+      url: /posts/basics/
       weight: 10
+    - identifier: nav-esp32
+      name: ESP32
+      url: /posts/esp32/
+      weight: 20
+    - identifier: nav-stm32
+      name: STM32
+      url: /posts/stm32/
+      weight: 30
+    - identifier: nav-atmega
+      name: ATmega
+      url: /posts/atmega/
+      weight: 40
     - identifier: nav-algorithm
       name: Algorithm
       url: /categories/algorithm/
-      weight: 20
+      weight: 50
     - identifier: nav-paper-review
       name: Paper Review
       url: /categories/paper-review/
-      weight: 30
-    - identifier: nav-notes
-      name: Notes
-      url: /categories/notes/
-      weight: 40
-    - identifier: nav-projects
-      name: Projects
-      url: /projects/
-      weight: 45
+      weight: 60
+    - identifier: nav-troubleshooting
+      name: Troubleshooting
+      url: /posts/troubleshooting/
+      weight: 70
     - identifier: nav-search
       name: Search
       url: /search/
-      weight: 50
+      weight: 80
       
 pygmentsUseClasses: true
 
