@@ -1,6 +1,6 @@
 ---
 title: "[STM32] GPIO 기본개념 및 입출력 실습"
-date: 2026-03-16T22:56:00+09:00
+date: 2026-04-18T20:42:00+09:00
 draft: false
 categories:
   - Embedded

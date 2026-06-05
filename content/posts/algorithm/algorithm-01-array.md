@@ -1,6 +1,6 @@
 ---
 title: "[자료구조] 1편 - 배열과 동적 배열: 메모리를 직접 다루다"
-date: 2026-04-08
+date: 2026-04-15T20:08:00+09:00
 tags: ["C", "algorithm", "array", "malloc", "memory", "data-structure"]
 categories: ["Algorithm"]
 description: "int arr[10]부터 malloc()을 이용한 동적 배열까지. C언어에서 데이터를 저장하는 가장 기본적인 방법과 메모리 구조를 정리한다."

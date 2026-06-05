@@ -1,6 +1,6 @@
 ---
 title: "[ESP32] GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다"
-date: 2026-04-04T00:00:00+09:00
+date: 2026-06-04T20:52:00+09:00
 draft: false
 categories:
   - Embedded

@@ -1,6 +1,6 @@
 ---
 title: "[Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한"
-date: 2026-04-03T00:00:00+09:00
+date: 2026-05-30T20:41:00+09:00
 draft: false
 categories:
   - Embedded

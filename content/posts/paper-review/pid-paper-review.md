@@ -1,6 +1,6 @@
 ---
 title: "[Paper Review] PID Control System Analysis, Design, and Technology"
-date: 2026-04-08
+date: 2026-05-02T20:22:00+09:00
 categories: ["Paper Review"]
 tags: ["PID", "control", "embedded", "firmware"]
 description: "PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리."

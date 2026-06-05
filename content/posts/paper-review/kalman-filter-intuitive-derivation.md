@@ -1,6 +1,6 @@
 ---
 title: "[Paper Review] Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation"
-date: 2026-04-22
+date: 2026-05-09T20:07:00+09:00
 categories: ["Paper Review"]
 tags: ["Kalman Filter", "State Estimation", "Sensor Fusion", "Embedded Systems", "Signal Processing"]
 description: "가우시안 곱셈 성질만으로 칼만 필터 측정 업데이트 방정식을 유도하는 직관적 접근법 — 펌웨어 구현 관점에서 분석"

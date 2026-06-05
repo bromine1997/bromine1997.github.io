@@ -1,6 +1,6 @@
 ---
 title: "[ESP32] 4개의 로드셀을 동시에 측정하기 - 하드웨어"
-date: 2026-04-03T00:00:00+09:00
+date: 2026-05-20T20:16:00+09:00
 draft: false
 categories:
   - Embedded

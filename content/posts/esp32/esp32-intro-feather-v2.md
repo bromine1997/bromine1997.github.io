@@ -1,6 +1,6 @@
 ---
 title: "[ESP32] ESP32가 뭐길래?"
-date: 2026-02-23T02:06:00+09:00
+date: 2026-04-08T20:31:00+09:00
 draft: false
 categories:
   - Embedded

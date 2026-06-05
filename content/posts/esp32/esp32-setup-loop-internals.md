@@ -1,6 +1,6 @@
 ---
 title: "[ESP32] setup()과 loop()는 어떻게 실행되는가"
-date: 2026-04-03T00:00:00+09:00
+date: 2026-04-11T20:55:00+09:00
 draft: false
 categories:
   - Embedded

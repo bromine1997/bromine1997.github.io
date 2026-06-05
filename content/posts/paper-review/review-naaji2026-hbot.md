@@ -1,6 +1,6 @@
 ---
 title: "[Paper Review] Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives"
-date: 2026-04-29
+date: 2026-05-16T20:31:00+09:00
 categories: ["Paper Review"]
 tags: ["HBOT", "Biomedical", "Embedded", "PID", "Pressure Control"]
 description: "HBOT 챔버 내 유체 거동을 수학적으로 모델링하고, 축소 실험 챔버 + MCU 기반 압력 제어 시스템으로 검증한 연구"

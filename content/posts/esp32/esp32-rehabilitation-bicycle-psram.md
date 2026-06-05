@@ -1,6 +1,6 @@
 ---
 title: "[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조"
-date: 2026-04-03T01:00:00+09:00
+date: 2026-05-23T20:53:00+09:00
 draft: false
 categories:
   - Embedded
