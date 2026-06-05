@@ -1,3 +1,8 @@
+/* #menu의 overflow-x:auto가 position:absolute 드롭다운을 클리핑하므로 visible로 덮어씀 */
+#menu {
+    overflow: visible;
+}
+
 /* Dropdown menu */
 #menu li.has-dropdown {
     position: relative;
@@ -49,6 +54,7 @@
     display: block;
     padding: 8px 18px;
     font-size: 14px;
+    line-height: 1.4;
     color: var(--primary);
 }
 
