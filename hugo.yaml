@@ -53,6 +53,8 @@ params:
       하드웨어와 소프트웨어를 함께 다루는 임베디드 / 펌웨어 개발자입니다.
       STM32, ESP32 기반 시스템 개발, 논문 리뷰, 알고리즘 공부를 기록합니다.
 
+      [Basics](/posts/basics/) · [ESP32](/posts/esp32/) · [STM32](/posts/stm32/) · [ATmega](/posts/atmega/) · [Troubleshooting](/posts/troubleshooting/) · [Paper Review](/categories/paper-review/)
+
   socialIcons:
     - name: github
       url: "https://github.com/bromine1997"
@@ -81,38 +83,26 @@ params:
 
 menu:
   main:
-    - identifier: nav-basics
-      name: Basics
-      url: /posts/basics/
+    - identifier: nav-embedded
+      name: Embedded
+      url: /categories/embedded/
       weight: 10
-    - identifier: nav-esp32
-      name: ESP32
-      url: /posts/esp32/
-      weight: 20
-    - identifier: nav-stm32
-      name: STM32
-      url: /posts/stm32/
-      weight: 30
-    - identifier: nav-atmega
-      name: ATmega
-      url: /posts/atmega/
-      weight: 40
     - identifier: nav-algorithm
       name: Algorithm
       url: /categories/algorithm/
-      weight: 50
+      weight: 20
     - identifier: nav-paper-review
       name: Paper Review
       url: /categories/paper-review/
-      weight: 60
-    - identifier: nav-troubleshooting
-      name: Troubleshooting
-      url: /posts/troubleshooting/
-      weight: 70
+      weight: 30
+    - identifier: nav-tags
+      name: Tags
+      url: /tags/
+      weight: 40
     - identifier: nav-search
       name: Search
       url: /search/
-      weight: 80
+      weight: 50
       
 pygmentsUseClasses: true
 
