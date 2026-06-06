@@ -1,0 +1,100 @@
+<svg width="680" height="440" viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title  { font:14px Arial,sans-serif; fill:#1f2937; font-weight:bold; }
+      .hdr    { font:11px Arial,sans-serif; fill:#fff; font-weight:bold; }
+      .addr   { font:11px 'Courier New',monospace; fill:#374151; }
+      .idx    { font:11px 'Courier New',monospace; fill:#1e3a8a; font-weight:bold; }
+      .cont   { font:11px 'Courier New',monospace; fill:#1f2937; }
+      .tag    { font:10px Arial,sans-serif; fill:#6b7280; }
+      .note   { font:11px Arial,sans-serif; fill:#374151; }
+      .nbold  { font:11px Arial,sans-serif; fill:#1d4ed8; font-weight:bold; }
+    </style>
+  </defs>
+  <rect width="680" height="440" fill="#fff"/>
+
+  <text x="340" y="26" text-anchor="middle" class="title">ARM Cortex-M 벡터 테이블</text>
+
+  <!-- 컬럼 헤더 배경 -->
+  <rect x="20" y="35" width="640" height="28" rx="3" fill="#374151"/>
+  <text x="95"  y="54" text-anchor="middle" class="hdr">주소</text>
+  <text x="195" y="54" text-anchor="middle" class="hdr">인덱스</text>
+  <text x="390" y="54" text-anchor="middle" class="hdr">내용</text>
+  <text x="598" y="54" text-anchor="middle" class="hdr">비고</text>
+
+  <!-- 구분선 -->
+  <line x1="150" y1="35" x2="150" y2="300" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="240" y1="35" x2="240" y2="300" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="540" y1="35" x2="540" y2="300" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- 행 0: Initial MSP (특별 강조 - 초록) -->
+  <rect x="20" y="63" width="640" height="34" rx="0" fill="#d1fae5"/>
+  <text x="95"  y="85" text-anchor="middle" class="addr">0x0000_0000</text>
+  <text x="195" y="85" text-anchor="middle" class="idx">[0]</text>
+  <text x="390" y="82" text-anchor="middle" class="cont">Initial MSP Value  (_estack)</text>
+  <text x="390" y="95" text-anchor="middle" class="tag">RAM 끝 주소 = 스택 시작점</text>
+  <text x="598" y="85" text-anchor="middle" class="tag">주소값 (함수 아님)</text>
+
+  <!-- 행 1: Reset_Handler (특별 강조 - 파랑) -->
+  <rect x="20" y="97" width="640" height="34" rx="0" fill="#dbeafe"/>
+  <text x="95"  y="119" text-anchor="middle" class="addr">0x0000_0004</text>
+  <text x="195" y="119" text-anchor="middle" class="idx">[1]</text>
+  <text x="390" y="116" text-anchor="middle" class="cont">Reset_Handler  (addr | 1)</text>
+  <text x="390" y="129" text-anchor="middle" class="tag">리셋 후 CPU가 처음 실행하는 함수</text>
+  <text x="598" y="119" text-anchor="middle" class="nbold">Thumb: LSB=1</text>
+
+  <!-- 행 2 -->
+  <rect x="20" y="131" width="640" height="28" rx="0" fill="#f9fafb"/>
+  <text x="95"  y="150" text-anchor="middle" class="addr">0x0000_0008</text>
+  <text x="195" y="150" text-anchor="middle" class="idx">[2]</text>
+  <text x="390" y="150" text-anchor="middle" class="cont">NMI_Handler  (addr | 1)</text>
+  <text x="598" y="150" text-anchor="middle" class="tag">Thumb: LSB=1</text>
+
+  <!-- 행 3 -->
+  <rect x="20" y="159" width="640" height="28" rx="0" fill="#fff"/>
+  <text x="95"  y="178" text-anchor="middle" class="addr">0x0000_000C</text>
+  <text x="195" y="178" text-anchor="middle" class="idx">[3]</text>
+  <text x="390" y="178" text-anchor="middle" class="cont">HardFault_Handler  (addr | 1)</text>
+  <text x="598" y="178" text-anchor="middle" class="tag">Thumb: LSB=1</text>
+
+  <!-- 행 4 -->
+  <rect x="20" y="187" width="640" height="28" rx="0" fill="#f9fafb"/>
+  <text x="95"  y="206" text-anchor="middle" class="addr">0x0000_0010</text>
+  <text x="195" y="206" text-anchor="middle" class="idx">[4]</text>
+  <text x="390" y="206" text-anchor="middle" class="cont">MemManage_Handler  (addr | 1)</text>
+  <text x="598" y="206" text-anchor="middle" class="tag">Thumb: LSB=1</text>
+
+  <!-- 행 5 -->
+  <rect x="20" y="215" width="640" height="28" rx="0" fill="#fff"/>
+  <text x="95"  y="234" text-anchor="middle" class="addr">0x0000_0014</text>
+  <text x="195" y="234" text-anchor="middle" class="idx">[5]</text>
+  <text x="390" y="234" text-anchor="middle" class="cont">BusFault_Handler  (addr | 1)</text>
+  <text x="598" y="234" text-anchor="middle" class="tag">Thumb: LSB=1</text>
+
+  <!-- 생략 행 -->
+  <rect x="20" y="243" width="640" height="22" rx="0" fill="#f3f4f6"/>
+  <text x="340" y="258" text-anchor="middle" style="font:11px Arial,sans-serif; fill:#9ca3af">· · ·</text>
+
+  <!-- 행 16+: IRQ -->
+  <rect x="20" y="265" width="640" height="35" rx="0" fill="#fff"/>
+  <text x="95"  y="285" text-anchor="middle" class="addr">0x0000_0040~</text>
+  <text x="195" y="285" text-anchor="middle" class="idx">[16+]</text>
+  <text x="390" y="282" text-anchor="middle" class="cont">IRQ0_Handler, IRQ1_Handler, ...</text>
+  <text x="390" y="295" text-anchor="middle" class="tag">MCU 제조사가 정의 (STM32: EXTI, TIM, USART...)</text>
+  <text x="598" y="285" text-anchor="middle" class="tag">Thumb: LSB=1</text>
+
+  <!-- 테이블 테두리 -->
+  <rect x="20" y="35" width="640" height="265" rx="3" fill="none" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <!-- Thumb 설명 박스 -->
+  <rect x="20" y="315" width="640" height="60" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="40" y="336" class="nbold">Thumb 모드와 LSB=1</text>
+  <text x="40" y="353" class="note">벡터 테이블에 저장되는 핸들러 주소는 실제 함수 주소 + 1 (LSB = 1)</text>
+  <text x="40" y="368" class="note">예: Reset_Handler 실제 위치 0x0800_0184 → 벡터 테이블에 0x0800_0185  (Thumb 모드 진입 표시)</text>
+
+  <!-- 범례 -->
+  <rect x="20" y="390" width="16" height="12" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="42" y="401" class="tag">[0] 스택 초기값 (주소값, Thumb 아님)</text>
+  <rect x="230" y="390" width="16" height="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="252" y="401" class="tag">[1] Reset_Handler (CPU가 리셋 직후 점프)</text>
+</svg>
