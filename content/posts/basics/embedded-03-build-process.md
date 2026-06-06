@@ -1,6 +1,6 @@
 ---
 title: "[임베디드 기초] 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지"
-date: 2026-06-06T21:00:00+09:00
+date: 2026-06-06T14:00:00+09:00
 tags: ["embedded", "ARM", "Cortex-M", "toolchain", "linker", "ELF", "build"]
 categories: ["Embedded Basic"]
 description: "C 소스 파일이 MCU 플래시에 올라가기까지 전처리→컴파일→어셈블→링크 과정과 ARM Cortex-M 툴체인, ELF 포맷을 정리한다."
