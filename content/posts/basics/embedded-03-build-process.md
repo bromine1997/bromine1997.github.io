@@ -1,11 +1,10 @@
 ---
 title: "[임베디드 기초] 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지"
-date: 2026-06-06T14:00:00+09:00
+date: 2026-06-06T21:00:00+09:00
 tags: ["embedded", "ARM", "Cortex-M", "toolchain", "linker", "ELF", "build"]
 categories: ["Embedded Basic"]
 description: "C 소스 파일이 MCU 플래시에 올라가기까지 전처리→컴파일→어셈블→링크 과정과 ARM Cortex-M 툴체인, ELF 포맷을 정리한다."
 ---
-
 ## 들어가며
 
 2편에서 `.text`/`.data`/`.bss` 섹션과 링커 스크립트를 다뤘다. `.data > RAM AT > FLASH` 구문이 LMA와 VMA를 분리한다는 것까지 정리했다.
@@ -23,7 +22,7 @@ ARM Cortex-M을 타겟으로 빌드할 때 쓰는 컴파일러는 `arm-none-eabi
 이름을 뜯어보면:
 
 - `arm`: 타겟 아키텍처
-- `none`: 운영체제 없음 (bare-metal)
+- `none`: 운영체제 없음 (bare-metal)ㄱ
 - `eabi`: Embedded ABI — 함수 호출 규약, 데이터 정렬 방식 표준
 - `gcc`: GNU Compiler Collection
 
@@ -31,14 +30,14 @@ STM32CubeIDE나 PlatformIO 같은 IDE를 쓰면 이 툴체인이 자동으로 �
 
 툴체인에 포함된 주요 도구들:
 
-| 도구 | 역할 |
-|---|---|
-| `arm-none-eabi-gcc` | C/C++ 컴파일러 |
-| `arm-none-eabi-as` | 어셈블러 |
-| `arm-none-eabi-ld` | 링커 |
+| 도구                      | 역할                          |
+| ------------------------- | ----------------------------- |
+| `arm-none-eabi-gcc`     | C/C++ 컴파일러                |
+| `arm-none-eabi-as`      | 어셈블러                      |
+| `arm-none-eabi-ld`      | 링커                          |
 | `arm-none-eabi-objcopy` | 포맷 변환 (.elf → .hex/.bin) |
-| `arm-none-eabi-size` | 섹션별 크기 출력 |
-| `arm-none-eabi-objdump` | 역어셈블, 섹션 정보 확인 |
+| `arm-none-eabi-size`    | 섹션별 크기 출력              |
+| `arm-none-eabi-objdump` | 역어셈블, 섹션 정보 확인      |
 
 ---
 
@@ -105,6 +104,7 @@ arm-none-eabi-ld -T STM32F4.ld main.o startup.o -o firmware.elf
 링킹 결과물인 `.elf`는 **Executable and Linkable Format**의 약자다. 리눅스 실행 파일과 동일한 포맷이다.
 
 ELF 파일 안에는:
+
 - `.text`, `.data`, `.bss` 섹션과 각각의 LMA/VMA 주소
 - 심볼 테이블 (함수/변수 이름과 주소 매핑)
 - 디버그 정보 (소스 파일 이름, 줄 번호)
