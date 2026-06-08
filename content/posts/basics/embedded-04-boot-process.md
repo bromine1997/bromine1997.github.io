@@ -18,7 +18,7 @@ description: "ARM Cortex-M MCU에 전원이 들어오는 순간부터 main()이 
 
 ## ARM Cortex-M 메모리 맵
 
-![ARM Cortex-M 메모리 맵 — ARMv7-M ARM Table B3-1](/images/basics/armv7m-address-map-b3-592.png)
+![ARM Cortex-M 메모리 맵 — ARMv7-M ARM Table B3-1](/images/basics/armv7m-address-map-full.png)
 
 Cortex-M은 모든 제조사가 공통으로 따르는 표준 메모리 맵을 갖는다. STM32든 nRF52든 RP2040이든 코어 수준에서는 동일한 주소 배치를 사용한다.
 
