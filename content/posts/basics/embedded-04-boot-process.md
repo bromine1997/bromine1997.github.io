@@ -18,7 +18,7 @@ description: "ARM Cortex-M MCU에 전원이 들어오는 순간부터 main()이 
 
 ## ARM Cortex-M 메모리 맵
 
-![ARM Cortex-M 표준 메모리 맵](/images/basics/cortex-m-memory-map.svg)
+![ARM Cortex-M 메모리 맵 — ARMv7-M ARM Table B3-1](/images/basics/armv7m-address-map-b3-592.png)
 
 Cortex-M은 모든 제조사가 공통으로 따르는 표준 메모리 맵을 갖는다. STM32든 nRF52든 RP2040이든 코어 수준에서는 동일한 주소 배치를 사용한다.
 
@@ -65,7 +65,7 @@ CPU가 하는 일은 정확히 이게 전부다. 벡터 테이블 두 항목을 
 
 ## 벡터 테이블
 
-![벡터 테이블 구조](/images/basics/vector-table.svg)
+![벡터 테이블 구조 — ARMv7-M ARM B1.5.2](/images/basics/armv7m-vector-table-b1-525.png)
 
 벡터 테이블은 예외/인터럽트 핸들러들의 주소를 모아둔 배열이다. 플래시의 맨 앞에 위치한다.
 
