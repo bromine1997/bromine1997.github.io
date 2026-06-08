@@ -5,6 +5,7 @@ tags: ["embedded", "ARM", "Cortex-M", "toolchain", "linker", "ELF", "build"]
 categories: ["Embedded Basic"]
 description: "C 소스 파일이 MCU 플래시에 올라가기까지 전처리→컴파일→어셈블→링크 과정과 ARM Cortex-M 툴체인, ELF 포맷을 정리한다."
 ---
+
 ## 들어가며
 
 2편에서 `.text`/`.data`/`.bss` 섹션과 링커 스크립트를 다뤘다. `.data > RAM AT > FLASH` 구문이 LMA와 VMA를 분리한다는 것까지 정리했다.
@@ -22,7 +23,7 @@ ARM Cortex-M을 타겟으로 빌드할 때 쓰는 컴파일러는 `arm-none-eabi
 이름을 뜯어보면:
 
 - `arm`: 타겟 아키텍처
-- `none`: 운영체제 없음 (bare-metal)ㄱ
+- `none`: 운영체제 없음 (bare-metal)
 - `eabi`: Embedded ABI — 함수 호출 규약, 데이터 정렬 방식 표준
 - `gcc`: GNU Compiler Collection
 
