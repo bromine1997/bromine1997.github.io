@@ -65,7 +65,7 @@ CPU가 하는 일은 정확히 이게 전부다. 벡터 테이블 두 항목을 
 
 ## 벡터 테이블
 
-![벡터 테이블 구조 — ARMv7-M ARM B1.5.3](/images/basics/armv7m-vector-table-b1-525.png)
+![벡터 테이블 구조 — ARMv7-M ARM B1.5.2~B1.5.3](/images/basics/armv7m-vector-table-full.png)
 
 벡터 테이블은 예외/인터럽트 핸들러들의 주소를 모아둔 배열이다. 플래시의 맨 앞에 위치한다.
 
