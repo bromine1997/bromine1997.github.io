@@ -40,8 +40,3 @@ AVR 계열 MCU를 다룰 때 가장 흔하게 쓰이는 IDE입니다. 프로젝�
 ![Microchip Studio](/images/atmega4809/microchip-studio.png)
 *Microchip Studio IDE 화면*
 
-## 마무리
-
-기본적인 소개는 여기까지입니다.
-
-다음 글부터 본격적인 코드리뷰를 시작하겠습니다.

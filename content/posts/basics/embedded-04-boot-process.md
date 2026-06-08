@@ -176,12 +176,3 @@ main()
 
 이 모든 것이 startup code가 미리 해준 일이다.
 
----
-
-## 정리
-
-- **벡터 테이블**: 플래시 맨 앞에 위치. `[0]`은 스택 초기값, `[1]`은 Reset_Handler 주소.
-- **LSB=1**: Thumb 모드 진입 표시. Cortex-M의 모든 함수 주소는 LSB가 1이다.
-- **Reset_Handler**: `.data` 복사 → `.bss` 초기화 → `SystemInit()` → `main()` 순서.
-- **startup code**: IDE나 CMSIS가 제공. 직접 작성하지 않아도 되지만 내용은 알아야 한다.
-- **`main()` 진입 전**: 스택, 전역변수 초기화, 클럭 설정이 모두 완료된 상태.

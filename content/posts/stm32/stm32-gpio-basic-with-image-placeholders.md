@@ -16,8 +16,6 @@ summary: "GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, �
 GPIO(General Purpose Input/Output)는 MCU가 외부 세계와 신호를 주고받는 가장 기본적인 수단이다.  
 이름 그대로 특정 기능에 고정되지 않고, 소프트웨어 설정에 따라 입력 또는 출력으로 사용할 수 있다.
 
-크게 두 가지 역할이 있다.
-
 - **Input**: 외부 신호(버튼, 센서 등)를 MCU가 읽어들임
 - **Output**: MCU가 외부 장치(LED, 모터 드라이버 등)에 신호를 출력함
 
@@ -82,8 +80,6 @@ STM32는 외부 저항 없이 내부 Pull-up / Pull-down을 `PUPDR` 레지스터
 
 STM32 레퍼런스 매뉴얼에는 GPIO 핀 하나의 구조를 보여주는 블록 다이어그램이 있다.  
 GPIO를 이해할 때 가장 중요한 그림 중 하나라서, 한 번 제대로 읽어두면 이후에 훨씬 덜 헷갈린다.
-
-크게 세 부분으로 나눠서 볼 수 있다.
 
 <!-- 이미지 삽입 위치: STM32 GPIO 블록 다이어그램 -->
 ![STM32 GPIO 내부 블록 다이어그램](/images/stm32/stm32-gpio-block-diagram.png)
@@ -165,11 +161,7 @@ while (1)
 }
 ```
 
-동작은 단순하다.
-
-- 버튼 상태를 읽고
-- 눌려 있으면 LED를 켜고
-- 아니면 LED를 끈다
+버튼 상태를 읽어 눌려 있으면 LED를 켜고, 아니면 끈다.
 
 <!-- 이미지 삽입 위치: 실행 결과 사진 또는 GIF -->
 ![버튼 입력에 따라 LED가 켜지는 실행 결과](/images/stm32/stm32-gpio-button-led-result.jpg)
@@ -194,20 +186,3 @@ while (1)
 <!--  OSPEEDR 그림 -->
 ![OSPEEDR 레지스터](/images/stm32/stm32-gpio-ospeedr-slew-rate.png)
 
-## 핵심 키워드
-
-- Floating
-- Pull-up
-- Pull-down
-- Push-Pull
-- Open-Drain
-- Active Low
-- Schmitt Trigger
-- Slew Rate
-- Debouncing
-
-## 마무리
-
-이번 글에서는 GPIO의 기본 개념과 입력/출력 구조, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 제어하는 간단한 실습까지 정리했다.
-
-다음 글에서는 `HAL_GPIO_ReadPin()` 과 `HAL_GPIO_WritePin()` 이 실제로 내부에서 어떻게 동작하는지, 그리고 왜 `ODR` 대신 `BSRR`를 사용하는지까지 이어서 정리할 예정이다.

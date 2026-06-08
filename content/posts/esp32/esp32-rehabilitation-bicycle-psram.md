@@ -190,7 +190,7 @@ packetPointer                       workingPointer
 
 ## 실시간 화면 표시와 PSRAM 저장은 분리되어 있다
 
-여기서 한 가지 흥미로운 점이 있다. 웹 화면을 열면 START를 누르지 않아도 센서 값이 실시간으로 표시된다. PSRAM에 저장하는 것과 화면에 보여주는 것이 완전히 분리된 구조이기 때문이다.
+웹 화면을 열면 START를 누르지 않아도 센서 값이 실시간으로 표시된다. PSRAM에 저장하는 것과 화면에 보여주는 것이 완전히 분리된 구조이기 때문이다.
 
 ```cpp
 if ((t == HIGH) && (c == LOW)) {
@@ -214,9 +214,7 @@ if ((t == HIGH) && (c == LOW)) {
 
 `WebSampleIdx`는 `quit` 여부와 상관없이 Falling Edge마다 계속 증가한다. 16샘플(= 0.4초)마다 현재 `Sensors` 구조체 값을 JSON으로 브라우저에 보낸다. ISR은 항상 돌고 있으니 `Sensors`에는 항상 최신 값이 들어있다.
 
-정리하면:
-- **PSRAM 저장** → START 버튼을 눌러야 시작 (`quit = false`)
-- **화면 실시간 표시** → 항상 동작, 0.4초마다 갱신
+PSRAM 저장은 START 버튼을 눌러야 시작되고, 화면 실시간 표시는 항상 동작한다.
 
 ## STOP 후 SAVE: 데이터 전송 흐름
 
@@ -290,15 +288,3 @@ START 명령을 받으면 `workingPointer`를 `packetPointer`로 되돌리고 `p
 if (packetCounter == PACKET_SIZE) quit = true;
 ```
 
-## 마무리
-
-이번 글에서 다룬 내용을 정리하면:
-
-- **왜 PSRAM**: Flash 쓰기 지연, 내부 SRAM 용량 한계, Wi-Fi 스택과의 메모리 경쟁 세 가지를 동시에 해결
-- **데이터 구조**: `struct sensors` 20 bytes × 86,400 샘플 = 1.65 MB
-- **40 SPS**: `DataSubSamplePoint = 2`로 80 SPS를 절반만 처리
-- **저장 방식**: `*workingPointer++ = Sensors`로 구조체를 순서대로 저장
-- **화면 표시와 저장 분리**: `WebSampleIdx`는 항상 증가, 0.4초마다 JSON 전송
-- **SAVE 전송**: 5분 단위로 나눠 전송, 1바이트 종료 신호로 완료 통보
-
-다음 글에서는 측정 전 반드시 해야 하는 영점 보정(캘리브레이션) 로직과 EEPROM 레이아웃, 그리고 AS5600 각도 센서 연동 방법을 자세히 설명하겠다.
