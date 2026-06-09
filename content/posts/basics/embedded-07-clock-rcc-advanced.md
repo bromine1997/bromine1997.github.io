@@ -27,46 +27,46 @@ Baud Rate = f_PCLK / (16 × USARTDIV)
 
 ### 계산 예시
 
-**UART2, APB1 = 42 MHz, 목표: 115200 bps**
+**UART2, APB1 = 50 MHz, 목표: 115200 bps**
 
 ```
-USARTDIV = 42,000,000 / (16 × 115,200) = 22.786...
+USARTDIV = 50,000,000 / (16 × 115,200) = 27.127...
 
-정수부: 22
-소수부: 0.786 × 16 = 12.576 → 반올림 → 13
+정수부: 27
+소수부: 0.127 × 16 = 2.03 → 반올림 → 2
 
-BRR = (22 << 4) | 13 = 0x016D
+BRR = (27 << 4) | 2 = 0x01B2
 ```
 
 실제 보드레이트 역산:
 
 ```
-USARTDIV_actual = 22 + 13/16 = 22.8125
-Baud Rate       = 42,000,000 / (16 × 22.8125) = 114,942 bps
+USARTDIV_actual = 27 + 2/16 = 27.125
+Baud Rate       = 50,000,000 / (16 × 27.125) = 115,207 bps
 
-오차 = |115,200 - 114,942| / 115,200 × 100 ≈ 0.22%
+오차 = |115,200 - 115,207| / 115,200 × 100 ≈ 0.006%
 ```
 
-UART는 일반적으로 오차 **±2% 이내**면 통신 가능하다. 0.22%는 문제없다.
+UART는 일반적으로 오차 **±2% 이내**면 통신 가능하다. 0.006%는 거의 오차가 없는 수준이다.
 
 HAL 라이브러리가 이 계산을 자동으로 처리한다. 하지만 APB 클럭이 틀리면 HAL이 계산한 BRR 값도 틀리고, 그러면 상대방과 보드레이트가 맞지 않아 데이터가 깨진다.
 
 ### UART1 vs UART2
 
 ```c
-// UART2: APB1 42MHz 기준
-// UART1: APB2 84MHz 기준
+// UART2: APB1 50MHz 기준
+// UART1: APB2 100MHz 기준
 // 같은 115200을 설정해도 BRR 값이 다르다
 ```
 
-| | UART2 (APB1=42MHz) | UART1 (APB2=84MHz) |
+| | UART2 (APB1=50MHz) | UART1 (APB2=100MHz) |
 |---|---|---|
-| USARTDIV | 22.8125 | 45.5625 |
-| BRR | 0x016D | 0x02D9 |
-| 실제 보드레이트 | 114,942 bps | 115,108 bps |
-| 오차 | 0.22% | 0.08% |
+| USARTDIV | 27.125 | 54.25 |
+| BRR | 0x01B2 | 0x0364 |
+| 실제 보드레이트 | 115,207 bps | 115,207 bps |
+| 오차 | 0.006% | 0.006% |
 
-APB2가 더 높으니 오차가 더 작다.
+F411에서는 APB1(50 MHz)과 APB2(100 MHz) 모두 오차가 거의 없다. APB 클럭이 115200의 배수에 가까운 덕분이다.
 
 ![USART 보드레이트 계산 예시](/images/basics/rm0383-usart-baudrate-example.png)
 *RM0383 19.3.4 — USARTDIV 계산 예시: 정수부/소수부 분리 및 BRR 값 도출 과정*
@@ -81,13 +81,15 @@ APB2가 더 높으니 오차가 더 작다.
 UART와 달리 SPI는 소수점 분주가 없다. **2의 거듭제곱 분주비**만 지원한다.
 
 ```c
-// SPI1: APB2(84MHz) 기준
-// SPI_BAUDRATEPRESCALER_2   → 84 / 2  = 42 MHz
-// SPI_BAUDRATEPRESCALER_4   → 84 / 4  = 21 MHz
-// SPI_BAUDRATEPRESCALER_8   → 84 / 8  = 10.5 MHz
-// SPI_BAUDRATEPRESCALER_16  → 84 / 16 = 5.25 MHz
-// ...
-// SPI_BAUDRATEPRESCALER_256 → 84 / 256 ≈ 328 kHz
+// SPI1: APB2(100MHz) 기준
+// SPI_BAUDRATEPRESCALER_2   → 100 / 2   = 50 MHz
+// SPI_BAUDRATEPRESCALER_4   → 100 / 4   = 25 MHz
+// SPI_BAUDRATEPRESCALER_8   → 100 / 8   = 12.5 MHz
+// SPI_BAUDRATEPRESCALER_16  → 100 / 16  = 6.25 MHz
+// SPI_BAUDRATEPRESCALER_32  → 100 / 32  = 3.125 MHz
+// SPI_BAUDRATEPRESCALER_64  → 100 / 64  ≈ 1.56 MHz
+// SPI_BAUDRATEPRESCALER_128 → 100 / 128 ≈ 781 kHz
+// SPI_BAUDRATEPRESCALER_256 → 100 / 256 ≈ 390 kHz
 ```
 
 원하는 정확한 속도를 만들 수 없는 경우가 많다. 연결하는 장치의 **최대 SPI 클럭보다 낮은 쪽으로 내림**해서 선택한다.
@@ -95,9 +97,9 @@ UART와 달리 SPI는 소수점 분주가 없다. **2의 거듭제곱 분주비*
 **예: ADS1232 ADC, 최대 SPI 클럭 1 MHz**
 
 ```
-SPI1(APB2 84MHz) 기준
-→ DIV128: 84/128 ≈ 656 kHz  ✓ (1MHz 이하)
-→ DIV64:  84/64  ≈ 1.3 MHz  ✗ (초과)
+SPI1(APB2 100MHz) 기준
+→ DIV128: 100/128 ≈ 781 kHz  ✓ (1MHz 이하)
+→ DIV64:  100/64  ≈ 1.56 MHz ✗ (초과)
 ```
 
 DIV128을 선택해야 한다.
