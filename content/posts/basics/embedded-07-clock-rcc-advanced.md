@@ -1,6 +1,6 @@
 ---
 title: "[임베디드 기초] 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가"
-date: 2026-06-18T20:00:00+09:00
+date: 2026-06-09T20:46:00+09:00
 tags: ["embedded", "STM32", "UART", "SPI", "baud rate", "clock", "RCC", "APB"]
 categories: ["Embedded Basic"]
 description: "APB 클럭에서 UART 보드레이트와 SPI 속도가 계산되는 원리, 오차 계산, 실무에서 만나는 클럭 관련 문제들을 정리한다."

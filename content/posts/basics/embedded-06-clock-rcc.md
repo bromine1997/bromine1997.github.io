@@ -1,6 +1,6 @@
 ---
 title: "[임베디드 기초] 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가"
-date: 2026-06-16T20:00:00+09:00
+date: 2026-06-03T20:22:00+09:00
 tags: ["embedded", "STM32", "clock", "RCC", "PLL", "HSE", "HSI", "APB"]
 categories: ["Embedded Basic"]
 description: "크리스탈에서 168MHz까지 — STM32F4의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다."

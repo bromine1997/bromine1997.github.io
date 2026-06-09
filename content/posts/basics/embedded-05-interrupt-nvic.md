@@ -1,6 +1,6 @@
 ---
 title: "[임베디드 기초] 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라"
-date: 2026-06-13T20:00:00+09:00
+date: 2026-05-28T20:38:00+09:00
 tags: ["embedded", "ARM", "Cortex-M", "interrupt", "NVIC", "ISR", "STM32", "volatile"]
 categories: ["Embedded Basic"]
 description: "폴링과 인터럽트의 차이, Cortex-M NVIC 구조와 우선순위 시스템, volatile 키워드의 필요성까지 인터럽트의 핵심 개념을 정리한다."

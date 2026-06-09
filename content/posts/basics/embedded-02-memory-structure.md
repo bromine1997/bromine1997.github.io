@@ -1,6 +1,6 @@
 ---
 title: "[임베디드 기초] 2편 - 메모리 구조와 변수 저장 원리"
-date: 2026-04-04T20:47:00+09:00
+date: 2026-05-10T20:43:00+09:00
 tags: ["embedded", "STM32", "memory", "flash", "RAM", "linker"]
 categories: ["Embedded Basic"]
 description: "STM32의 메모리 구조를 Flash, RAM, 섹션(.text/.data/.bss) 개념부터 링커 스크립트, Memory Map까지 정리한다."
