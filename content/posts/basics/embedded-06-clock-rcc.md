@@ -3,7 +3,7 @@ title: "[임베디드 기초] 6편 - 클럭 트리와 RCC: 주파수는 어디�
 date: 2026-06-03T20:22:00+09:00
 tags: ["embedded", "STM32", "clock", "RCC", "PLL", "HSE", "HSI", "APB"]
 categories: ["Embedded Basic"]
-description: "크리스탈에서 168MHz까지 — STM32F4의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다."
+description: "크리스탈에서 100MHz까지 — STM32F411의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다."
 ---
 
 ## 들어가며
@@ -48,9 +48,23 @@ MCU는 기준 클럭을 어딘가에서 공급받아야 한다. STM32F4의 주�
 
 ---
 
+## Cortex-M 시리즈별 클럭 비교
+
+같은 ARM 코어라도 시리즈마다 최대 클럭과 기능이 다르다.
+
+| 코어 | 대표 MCU | 최대 클럭 | FPU | DSP 명령어 | 주요 용도 |
+|---|---|---|---|---|---|
+| Cortex-M3 | STM32F1 (F103) | 72 MHz | 없음 | 없음 | 범용 제어, 저전력 |
+| Cortex-M4 | STM32F4 (F411) | 100 MHz | 단정밀도 | SIMD / MAC | 모터 제어, 오디오, DSP |
+| Cortex-M7 | STM32F7 / H7 | 216 ~ 480 MHz | 단/배정밀도 | 강화 DSP | 고성능 처리, 그래픽 |
+
+> F407은 최대 168 MHz, H743은 480 MHz — 같은 Cortex-M4/M7 코어라도 MCU 설계에 따라 최대 클럭이 다르다. 이 시리즈는 **STM32F411RE (Nucleo-64, 최대 100 MHz)** 기준으로 진행한다.
+
+---
+
 ## PLL (Phase-Locked Loop)
 
-8 MHz 크리스탈로 168 MHz를 만들려면 21배를 올려야 한다. 이를 담당하는 것이 PLL이다.
+8 MHz 크리스탈로 100 MHz를 만들려면 12.5배를 올려야 한다. 이를 담당하는 것이 PLL이다.
 
 PLL은 입력 클럭을 분주(divide)하고 체배(multiply)해서 원하는 주파수를 만든다. STM32F4의 메인 PLL은 M, N, P 세 파라미터로 제어한다.
 
@@ -60,14 +74,14 @@ VCO 클럭  = VCO 입력 × N
 SYSCLK    = VCO 클럭 / P
 ```
 
-STM32F4 168 MHz 설정 예:
+STM32F411 100 MHz 설정 예:
 
 ```
-VCO 입력 = 8 MHz / 8    = 1 MHz
-VCO 클럭 = 1 MHz × 336  = 336 MHz
-SYSCLK   = 336 MHz / 2  = 168 MHz
+VCO 입력 = 8 MHz / 4    = 2 MHz
+VCO 클럭 = 2 MHz × 200  = 400 MHz
+SYSCLK   = 400 MHz / 4  = 100 MHz
 
-→ M=8, N=336, P=2
+→ M=4, N=200, P=4
 ```
 
 VCO(Voltage Controlled Oscillator)가 내부에서 실제로 주파수를 만들고, P로 나눠 최종 SYSCLK를 출력한다. VCO 클럭은 192 ~ 432 MHz 범위여야 한다는 제약이 있다.
@@ -84,23 +98,23 @@ CubeMX를 쓰면 이 계산을 자동으로 해주지만, 값이 어떻게 나�
 SYSCLK 하나로 모든 주변장치가 동작하지는 않는다. 버스와 주변장치마다 허용 최대 클럭이 다르기 때문에 분주해서 여러 클럭을 만든다.
 
 ```
-HSE (8MHz) → PLL → SYSCLK (168MHz)
+HSE (8MHz) → PLL → SYSCLK (100MHz)
                         │
               AHB Prescaler (÷1)
                         │
-                   HCLK (168MHz) ─── CPU, DMA, Flash, SDIO
+                   HCLK (100MHz) ─── CPU, DMA, Flash
                         │
            ┌────────────┴────────────┐
-  APB1 Prescaler (÷4)      APB2 Prescaler (÷2)
+  APB1 Prescaler (÷2)      APB2 Prescaler (÷1)
            │                         │
-      PCLK1 (42MHz)             PCLK2 (84MHz)
+      PCLK1 (50MHz)             PCLK2 (100MHz)
       UART2/3/4/5               UART1/6
       SPI2/3                    SPI1/4/5
       I2C1/2/3                  ADC1/2/3
-      TIM2/3/4/5/6/7            TIM1/8/9/10/11
+      TIM2/3/4/5                TIM1/8/9/10/11
 ```
 
-같은 UART라도 번호에 따라 연결된 APB가 다르다. UART2는 APB1(42 MHz)을, UART1은 APB2(84 MHz)를 기준으로 보드레이트를 계산한다. 같은 `115200` 설정이어도 내부 레지스터 값이 다르다.
+같은 UART라도 번호에 따라 연결된 APB가 다르다. UART2는 APB1(50 MHz)을, UART1은 APB2(100 MHz)를 기준으로 보드레이트를 계산한다. 같은 `115200` 설정이어도 내부 레지스터 값이 다르다.
 
 ![STM32F411 클럭 트리](/images/basics/rm0383-clock-tree-full.png)
 *RM0383 Figure 12 — STM32F411 전체 클럭 트리 (HSI/HSE → PLL → SYSCLK → AHB/APB 분배)*
@@ -144,19 +158,19 @@ RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
 RCC_OscInitStruct.HSEState       = RCC_HSE_ON;
 RCC_OscInitStruct.PLL.PLLState   = RCC_PLL_ON;
 RCC_OscInitStruct.PLL.PLLSource  = RCC_PLLSOURCE_HSE;
-RCC_OscInitStruct.PLL.PLLM       = 8;
-RCC_OscInitStruct.PLL.PLLN       = 336;
-RCC_OscInitStruct.PLL.PLLP       = RCC_PLLP_DIV2;
-RCC_OscInitStruct.PLL.PLLQ       = 7;
+RCC_OscInitStruct.PLL.PLLM       = 4;
+RCC_OscInitStruct.PLL.PLLN       = 200;
+RCC_OscInitStruct.PLL.PLLP       = RCC_PLLP_DIV4;
+RCC_OscInitStruct.PLL.PLLQ       = 8;
 HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
 // AHB/APB 분주비 설정
 RCC_ClkInitStruct.ClockType      = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
 RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
-RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;   // HCLK  = 168MHz
-RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;     // PCLK1 = 42MHz
-RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;     // PCLK2 = 84MHz
-HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
+RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;   // HCLK  = 100MHz
+RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;     // PCLK1 = 50MHz
+RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;     // PCLK2 = 100MHz
+HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3);
 ```
 
 ![CubeMX 클럭 설정 화면](/images/basics/clock-cubemx-config.png)
