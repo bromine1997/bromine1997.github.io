@@ -1,91 +1,77 @@
-<svg width="560" height="620" viewBox="0 0 560 620" xmlns="http://www.w3.org/2000/svg">
+<svg width="560" height="670" viewBox="0 0 560 670" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .bstep  { fill:#f0f4fa; stroke:#2b4c7e; stroke-width:1.5; }
-      .bhigh  { fill:#dbeafe; stroke:#1d4ed8; stroke-width:1.5; }
-      .bmain  { fill:#d1fae5; stroke:#065f46; stroke-width:1.5; }
-      .breset { fill:#fef3c7; stroke:#d97706; stroke-width:1.8; }
-      .bstartup { fill:#ede9fe; stroke:#7c3aed; stroke-width:1.5; }
-      .step   { font:12px Arial,sans-serif; fill:#1f2937; font-weight:bold; }
-      .sub    { font:11px Arial,sans-serif; fill:#6b7280; }
-      .note   { font:10px 'Courier New',monospace; fill:#374151; }
+      .step { font:bold 12px Arial,sans-serif; fill:#111827; }
+      .sub  { font:11px Arial,sans-serif; fill:#4b5563; }
+      .note { font:10px Arial,sans-serif; fill:#6b7280; }
     </style>
     <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
       <polygon points="0 0,8 3,0 6" fill="#374151"/>
     </marker>
   </defs>
-  <rect width="560" height="620" fill="#fff"/>
+  <rect width="560" height="670" fill="white"/>
 
-  <!-- ===== 타이틀 ===== -->
-  <text x="280" y="24" text-anchor="middle" style="font:14px Arial,sans-serif; fill:#1f2937; font-weight:bold">Cortex-M 부팅 흐름: 리셋 → main()</text>
+  <!-- Title -->
+  <text x="280" y="26" text-anchor="middle" style="font:bold 14px Arial,sans-serif; fill:#111827">Cortex-M 부팅 흐름: 리셋 → main()</text>
 
-  <!-- ===== [0] 리셋 / 전원 인가 ===== -->
-  <rect x="140" y="36" width="280" height="40" rx="20" class="breset"/>
-  <text x="280" y="61" text-anchor="middle" class="step" fill="#92400e">리셋 / 전원 인가</text>
+  <!-- ── 모든 박스: x=90, width=380, center=280 ── -->
 
-  <!-- 화살표 -->
-  <line x1="280" y1="76" x2="280" y2="102" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
+  <!-- [0] 리셋 / 전원 인가  (pill) -->
+  <rect x="90" y="38" width="380" height="44" rx="22" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+  <text x="280" y="65" text-anchor="middle" style="font:bold 12px Arial,sans-serif; fill:white">리셋 / 전원 인가</text>
 
-  <!-- ===== [1] 벡터 테이블 [0] 읽기 ===== -->
-  <rect x="110" y="106" width="280" height="44" rx="6" class="bhigh"/>
-  <text x="250" y="124" text-anchor="middle" class="step" fill="#1e3a8a">벡터 테이블 [0] 읽기</text>
-  <text x="250" y="141" text-anchor="middle" class="sub">0x0000_0000 번지</text>
-  <!-- 오른쪽 노트 -->
-  <text x="400" y="124" class="note">→ MSP 초기값 로드</text>
-  <text x="400" y="137" class="note">  (RAM 끝 주소)</text>
+  <line x1="280" y1="84" x2="280" y2="110" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
 
-  <line x1="280" y1="150" x2="280" y2="176" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
+  <!-- [1] 벡터 테이블 [0] -->
+  <rect x="90" y="114" width="380" height="52" rx="8" fill="white" stroke="#111111" stroke-width="1.5"/>
+  <text x="280" y="135" text-anchor="middle" class="step">벡터 테이블 [0] 읽기</text>
+  <text x="280" y="153" text-anchor="middle" class="sub">0x0000_0000 → MSP 초기값 로드 (RAM 끝 주소)</text>
 
-  <!-- ===== [2] 벡터 테이블 [1] 읽기 ===== -->
-  <rect x="110" y="180" width="280" height="44" rx="6" class="bhigh"/>
-  <text x="250" y="198" text-anchor="middle" class="step" fill="#1e3a8a">벡터 테이블 [1] 읽기</text>
-  <text x="250" y="214" text-anchor="middle" class="sub">0x0000_0004 번지</text>
-  <text x="400" y="198" class="note">→ Reset_Handler 주소</text>
-  <text x="400" y="211" class="note">  LSB=1 (Thumb)</text>
+  <line x1="280" y1="168" x2="280" y2="194" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
 
-  <line x1="280" y1="224" x2="280" y2="250" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
+  <!-- [2] 벡터 테이블 [1] -->
+  <rect x="90" y="198" width="380" height="52" rx="8" fill="white" stroke="#111111" stroke-width="1.5"/>
+  <text x="280" y="219" text-anchor="middle" class="step">벡터 테이블 [1] 읽기</text>
+  <text x="280" y="237" text-anchor="middle" class="sub">0x0000_0004 → Reset_Handler 주소  (LSB=1, Thumb)</text>
 
-  <!-- ===== [3] Reset_Handler 진입 ===== -->
-  <rect x="110" y="254" width="280" height="36" rx="6" class="bstartup"/>
-  <text x="250" y="277" text-anchor="middle" class="step" fill="#4c1d95">Reset_Handler 진입</text>
+  <line x1="280" y1="252" x2="280" y2="278" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
 
-  <!-- startup code 블록 (좌측 브라켓) -->
-  <line x1="108" y1="295" x2="108" y2="456" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="6 3"/>
-  <text x="22" y="380" text-anchor="middle" style="font:10px Arial,sans-serif; fill:#7c3aed; writing-mode:tb">startup code</text>
+  <!-- [3] Reset_Handler 진입 -->
+  <rect x="90" y="282" width="380" height="36" rx="8" fill="white" stroke="#111111" stroke-width="2"/>
+  <text x="280" y="305" text-anchor="middle" class="step">Reset_Handler 진입</text>
 
-  <line x1="280" y1="290" x2="280" y2="316" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
+  <!-- startup code 브라켓: 박스 [3] top ~ 박스 [6] bottom 사이 -->
+  <line x1="84" y1="282" x2="84" y2="570" stroke="#666666" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="0" y="0" transform="translate(18,426) rotate(-90)" text-anchor="middle"
+        style="font:10px Arial,sans-serif; fill:#555555">startup code</text>
 
-  <!-- ===== [4] .data 복사 ===== -->
-  <rect x="110" y="320" width="280" height="44" rx="6" class="bstep"/>
-  <text x="250" y="338" text-anchor="middle" class="step">.data 섹션 복사</text>
-  <text x="250" y="354" text-anchor="middle" class="sub">Flash LMA → RAM VMA</text>
-  <text x="400" y="338" class="note">_sidata → _sdata</text>
-  <text x="400" y="351" class="note">초기값 전달</text>
+  <line x1="280" y1="320" x2="280" y2="346" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
 
-  <line x1="280" y1="364" x2="280" y2="390" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
+  <!-- [4] .data 복사 -->
+  <rect x="90" y="350" width="380" height="52" rx="8" fill="white" stroke="#111111" stroke-width="1.5"/>
+  <text x="280" y="371" text-anchor="middle" class="step">.data 섹션 복사</text>
+  <text x="280" y="389" text-anchor="middle" class="sub">Flash LMA → RAM VMA  (_sidata → _sdata 초기값 전달)</text>
 
-  <!-- ===== [5] .bss 초기화 ===== -->
-  <rect x="110" y="394" width="280" height="44" rx="6" class="bstep"/>
-  <text x="250" y="412" text-anchor="middle" class="step">.bss 섹션 초기화</text>
-  <text x="250" y="428" text-anchor="middle" class="sub">_sbss ~ _ebss 전체 0으로</text>
-  <text x="400" y="412" class="note">C 표준: 전역변수</text>
-  <text x="400" y="425" class="note">0 초기화 보장</text>
+  <line x1="280" y1="404" x2="280" y2="430" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
 
-  <line x1="280" y1="438" x2="280" y2="464" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
+  <!-- [5] .bss 초기화 -->
+  <rect x="90" y="434" width="380" height="52" rx="8" fill="white" stroke="#111111" stroke-width="1.5"/>
+  <text x="280" y="455" text-anchor="middle" class="step">.bss 섹션 초기화</text>
+  <text x="280" y="473" text-anchor="middle" class="sub">_sbss ~ _ebss 전체 0으로 클리어  (C 표준 보장)</text>
 
-  <!-- ===== [6] SystemInit ===== -->
-  <rect x="110" y="468" width="280" height="44" rx="6" class="bstep"/>
-  <text x="250" y="486" text-anchor="middle" class="step">SystemInit()</text>
-  <text x="250" y="502" text-anchor="middle" class="sub">클럭, PLL 설정</text>
-  <text x="400" y="486" class="note">HSI → PLL → 목표 클럭</text>
-  <text x="400" y="499" class="note">(STM32F4: 168 MHz)</text>
+  <line x1="280" y1="488" x2="280" y2="514" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
 
-  <line x1="280" y1="512" x2="280" y2="538" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
+  <!-- [6] SystemInit -->
+  <rect x="90" y="518" width="380" height="52" rx="8" fill="white" stroke="#111111" stroke-width="1.5"/>
+  <text x="280" y="539" text-anchor="middle" class="step">SystemInit()</text>
+  <text x="280" y="557" text-anchor="middle" class="sub">HSI → PLL → SYSCLK 100 MHz  (STM32F411RE)</text>
 
-  <!-- ===== [7] main() ===== -->
-  <rect x="140" y="542" width="280" height="44" rx="20" class="bmain"/>
-  <text x="280" y="567" text-anchor="middle" class="step" fill="#064e3b">main()</text>
+  <line x1="280" y1="572" x2="280" y2="598" stroke="#374151" stroke-width="1.5" marker-end="url(#ah)"/>
+
+  <!-- [7] main()  (pill) -->
+  <rect x="90" y="602" width="380" height="44" rx="22" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+  <text x="280" y="629" text-anchor="middle" style="font:bold 13px Arial,sans-serif; fill:white">main()</text>
 
   <!-- 하단 설명 -->
-  <text x="280" y="606" text-anchor="middle" style="font:10px Arial,sans-serif; fill:#9ca3af">이 시점에서 스택·전역변수 초기화·클럭이 모두 완료된 상태</text>
+  <text x="280" y="660" text-anchor="middle" class="note">이 시점: 스택 · 전역변수 초기화 · 클럭 설정 완료</text>
 </svg>
