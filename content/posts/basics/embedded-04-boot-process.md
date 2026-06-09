@@ -152,22 +152,9 @@ Reset_Handler가 `main()`을 호출하기 전에 `SystemInit()`을 먼저 부른
 
 ## main()까지의 전체 흐름
 
-![Reset_Handler에서 main()까지](/images/basics/reset-handler-flow.svg)
+![Reset_Handler에서 main()까지](/images/basics/boot-flow-bw.png)
+*전원 인가부터 main() 진입까지 — 벡터 테이블, startup code, SystemInit() 전체 흐름*
 
-```
-전원 인가 / 리셋
-  ↓
-벡터 테이블 [0] 읽기 → MSP(스택 포인터) 설정
-  ↓
-벡터 테이블 [1] 읽기 → Reset_Handler 주소로 점프
-  ↓
-Reset_Handler
-  ├─ .data 복사 (플래시 LMA → RAM VMA)
-  ├─ .bss 초기화 (0으로)
-  └─ SystemInit() (클럭 설정)
-  ↓
-main()
-```
 
 우리가 작성하는 `main()`이 시작되는 시점에는 이미:
 - 스택이 설정되어 있고

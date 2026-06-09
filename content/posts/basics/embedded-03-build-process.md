@@ -40,7 +40,8 @@ STM32CubeIDE나 PlatformIO 같은 IDE를 쓰면 이 툴체인이 자동으로 �
 
 ---
 
-![빌드 과정 전체 흐름](/images/basics/build-flow.svg)
+![빌드 과정 전체 흐름](/images/basics/build-flow-bw.png)
+*main.c → 전처리 → 컴파일 → 어셈블 → 링크 → firmware.hex/.bin 전체 파이프라인*
 
 ## 빌드 4단계
 
@@ -141,17 +142,5 @@ arm-none-eabi-objcopy -O binary firmware.elf firmware.bin
 
 ## 전체 흐름 정리
 
-```
-main.c
-  ↓ 전처리 (gcc -E)      → 헤더 병합, 매크로 치환
-main.i
-  ↓ 컴파일 (gcc -S)      → ARM Thumb-2 어셈블리
-main.s
-  ↓ 어셈블 (as)          → 기계어, 주소 미확정
-main.o
-  ↓ 링크 (ld + .ld)      → 섹션 배치, 주소 확정
-firmware.elf
-  ↓ objcopy              → 플래시에 올릴 수 있는 형태
-firmware.hex / .bin
-```
+![빌드 파이프라인 요약](/images/basics/build-flow-bw.png)
 
