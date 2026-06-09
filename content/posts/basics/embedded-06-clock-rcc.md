@@ -74,6 +74,9 @@ VCO(Voltage Controlled Oscillator)가 내부에서 실제로 주파수를 만들
 
 CubeMX를 쓰면 이 계산을 자동으로 해주지만, 값이 어떻게 나왔는지 이해하고 있어야 디버깅할 때 막히지 않는다.
 
+![RCC_PLLCFGR 레지스터](/images/basics/rm0383-rcc-pllcfgr.png)
+*RM0383 6.3.2 — RCC_PLLCFGR: M/N/P/Q 파라미터가 실제로 설정되는 레지스터*
+
 ---
 
 ## 클럭 트리 (Clock Tree)
@@ -98,6 +101,12 @@ HSE (8MHz) → PLL → SYSCLK (168MHz)
 ```
 
 같은 UART라도 번호에 따라 연결된 APB가 다르다. UART2는 APB1(42 MHz)을, UART1은 APB2(84 MHz)를 기준으로 보드레이트를 계산한다. 같은 `115200` 설정이어도 내부 레지스터 값이 다르다.
+
+![STM32F411 클럭 트리](/images/basics/rm0383-clock-tree-full.png)
+*RM0383 Figure 12 — STM32F411 전체 클럭 트리 (HSI/HSE → PLL → SYSCLK → AHB/APB 분배)*
+
+![AHB/APB 분주비 레지스터](/images/basics/rm0383-rcc-cfgr-prescaler.png)
+*RM0383 6.3.3 — RCC_CFGR: AHB/APB1/APB2 분주비가 설정되는 레지스터*
 
 ---
 
@@ -149,6 +158,9 @@ RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;     // PCLK1 = 42MHz
 RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;     // PCLK2 = 84MHz
 HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 ```
+
+![CubeMX 클럭 설정 화면](/images/basics/clock-cubemx-config.png)
+*STM32CubeMX Clock Configuration — HSE, PLL, AHB/APB 분주비를 시각적으로 설정할 수 있다*
 
 ---
 

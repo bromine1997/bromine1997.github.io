@@ -16,6 +16,9 @@ description: "APB 클럭에서 UART 보드레이트와 SPI 속도가 계산되�
 
 STM32 UART는 BRR(Baud Rate Register)로 분주비를 설정한다. 기본 16배 오버샘플링(OVER8=0) 기준:
 
+![USART 보드레이트 공식](/images/basics/rm0383-usart-baudrate-formula.png)
+*RM0383 19.3.4 — Fractional baud rate generation: BRR 레지스터와 USARTDIV 관계*
+
 ```
 Baud Rate = f_PCLK / (16 × USARTDIV)
 ```
@@ -64,6 +67,12 @@ HAL 라이브러리가 이 계산을 자동으로 처리한다. 하지만 APB �
 | 오차 | 0.22% | 0.08% |
 
 APB2가 더 높으니 오차가 더 작다.
+
+![USART 보드레이트 계산 예시](/images/basics/rm0383-usart-baudrate-example.png)
+*RM0383 19.3.4 — USARTDIV 계산 예시: 정수부/소수부 분리 및 BRR 값 도출 과정*
+
+![USART_BRR 레지스터](/images/basics/rm0383-usart-brr-register.png)
+*RM0383 19.6.3 — USART_BRR: DIV_Mantissa[15:4] 12비트 + DIV_Fraction[3:0] 4비트 구조*
 
 ---
 

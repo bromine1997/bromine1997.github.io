@@ -51,6 +51,9 @@ CPU: 현재 컨텍스트 저장 (PC, xPSR, R0-R3, R12, LR)
 
 Cortex-M은 컨텍스트 저장/복원을 **하드웨어가 자동으로** 처리한다. 핸들러는 일반 C 함수처럼 작성하면 된다.
 
+![Cortex-M4 예외 처리 개요](/images/basics/cortex-m4-trm-exceptions.png)
+*ARM Cortex-M4 TRM — 예외 처리 및 인터럽트 지연 특성*
+
 ---
 
 ## Cortex-M 예외 모델
@@ -73,6 +76,9 @@ Cortex-M은 컨텍스트 저장/복원을 **하드웨어가 자동으로** 처�
 | 16+ | IRQ0~ | 외부 주변장치 인터럽트 (UART, TIM, EXTI...) |
 
 예외 번호 16번부터가 MCU 제조사가 정의하는 영역이다. STM32F4에서 EXTI0는 IRQ 6번(예외 번호 22번)이다.
+
+![STM32F411 벡터 테이블](/images/basics/rm0383-nvic-vector-table.png)
+*RM0383 Table 37 — STM32F411 예외 및 인터럽트 벡터 테이블*
 
 ---
 
@@ -118,6 +124,12 @@ HAL_NVIC_SetPriority(USART1_IRQn, 2, 0);  // preemption=2
 ```
 
 USART1 핸들러 실행 중 EXTI0 인터럽트가 발생하면? EXTI0의 Preemption Priority(1)가 더 높으므로 USART1을 중단하고 EXTI0를 먼저 처리한다. 이것이 **Nested(중첩)** 인터럽트다.
+
+![중첩 인터럽트 타임라인](/images/basics/nvic-nested-timeline.png)
+*Nested Interrupt — 높은 우선순위 ISR이 낮은 우선순위 ISR을 선점하는 흐름*
+
+![NVIC 레지스터 구조](/images/basics/cortex-m4-trm-nvic-registers.png)
+*ARM Cortex-M4 TRM — NVIC 레지스터 목록 및 ICTR 비트 구조*
 
 ---
 
