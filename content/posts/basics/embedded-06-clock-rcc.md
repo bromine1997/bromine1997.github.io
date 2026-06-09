@@ -97,22 +97,8 @@ CubeMX를 쓰면 이 계산을 자동으로 해주지만, 값이 어떻게 나�
 
 SYSCLK 하나로 모든 주변장치가 동작하지는 않는다. 버스와 주변장치마다 허용 최대 클럭이 다르기 때문에 분주해서 여러 클럭을 만든다.
 
-```
-HSE (8MHz) → PLL → SYSCLK (100MHz)
-                        │
-              AHB Prescaler (÷1)
-                        │
-                   HCLK (100MHz) ─── CPU, DMA, Flash
-                        │
-           ┌────────────┴────────────┐
-  APB1 Prescaler (÷2)      APB2 Prescaler (÷1)
-           │                         │
-      PCLK1 (50MHz)             PCLK2 (100MHz)
-      UART2/3/4/5               UART1/6
-      SPI2/3                    SPI1/4/5
-      I2C1/2/3                  ADC1/2/3
-      TIM2/3/4/5                TIM1/8/9/10/11
-```
+![STM32F411 클럭 트리 다이어그램](/images/basics/clock-tree-f411.png)
+*STM32F411RE (Nucleo-64) 클럭 트리 — HSE 8 MHz → PLL → SYSCLK 100 MHz → HCLK → APB1/APB2 분배*
 
 같은 UART라도 번호에 따라 연결된 APB가 다르다. UART2는 APB1(50 MHz)을, UART1은 APB2(100 MHz)를 기준으로 보드레이트를 계산한다. 같은 `115200` 설정이어도 내부 레지스터 값이 다르다.
 
