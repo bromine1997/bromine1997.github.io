@@ -13,7 +13,7 @@ draft: false
 
 ---
 
-## 📌 논문 정보
+## 논문 정보
 
 | 항목 | 내용 |
 |------|------|
@@ -26,7 +26,7 @@ draft: false
 
 ---
 
-## 🎯 문제 정의
+## 문제 정의
 
 MEB(Middle Ear Barotrauma)는 HBOT에서 가장 흔한 합병증 중 하나로 알려져 있다. 그러나 기존 연구 대부분은 multiplace chamber 환자를 대상으로 하고 있어, monoplace chamber에서의 MEB 위험 인자에 대한 데이터가 부족하다.
 
@@ -34,7 +34,7 @@ Monoplace chamber는 환자가 supine position으로 치료를 받는다는 점�
 
 ---
 
-## 💡 Contribution
+## Contribution
 
 - 단일기관 296명 규모의 monoplace HBOT 환자 데이터를 기반으로 MEB 발생률 및 위험 인자 분석
 - Video otoscopy + 수정 O'Neill grading system을 적용한 객관적 MEB 평가
@@ -44,7 +44,7 @@ Monoplace chamber는 환자가 supine position으로 치료를 받는다는 점�
 
 ---
 
-## 🔬 방법론
+## 방법론
 
 **연구 설계**
 
@@ -81,7 +81,7 @@ Video otoscope(INSIGHT-I, MEDIANA)로 치료 전후 TM(Tympanic Membrane) 상태
 
 ---
 
-## 📊 실험 및 결과
+## 실험 및 결과
 
 **환자 특성**
 
@@ -125,7 +125,7 @@ Video otoscope(INSIGHT-I, MEDIANA)로 치료 전후 TM(Tympanic Membrane) 상태
 
 ---
 
-## ✅ 장점 / ⚠️ 한계
+## 장점 / 한계
 
 **장점**
 
@@ -142,7 +142,7 @@ Video otoscope(INSIGHT-I, MEDIANA)로 치료 전후 TM(Tympanic Membrane) 상태
 
 ---
 
-## 💬 내 생각 / 인사이트
+## 내 생각 / 인사이트
 
 석사 논문 주제가 HBOT 챔버 제어 시스템이었기 때문에, 이 논문의 임상 데이터가 특히 와닿았다.
 
@@ -154,7 +154,7 @@ Video otoscope(INSIGHT-I, MEDIANA)로 치료 전후 TM(Tympanic Membrane) 상태
 
 ---
 
-## 🔗 관련 논문
+## 관련 논문
 
 - Lima MA, et al. Update on middle ear barotrauma after hyperbaric oxygen therapy. *Int Arch Otorhinolaryngol* 2014
 - Karahatay S, et al. Middle ear barotrauma with hyperbaric oxygen therapy: incidence and predictive value. *Ear Nose Throat J* 2008

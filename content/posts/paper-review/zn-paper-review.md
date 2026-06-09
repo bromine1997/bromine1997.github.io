@@ -14,7 +14,7 @@ math: true
 
 ---
 
-## 📌 논문 정보
+## 논문 정보
 
 | 항목 | 내용 |
 | --- | --- |
@@ -27,7 +27,7 @@ math: true
 
 ---
 
-## 🎯 읽게 된 이유
+## 읽게 된 이유
 
 고압산소챔버(HBOT) 제어 시스템을 구현하면서 압력을 목표값까지 안정적으로 올리는 것이 핵심 과제였다. 4–20mA 비례 밸브로 압력을 제어하는 구조였는데, PID를 쓰려면 $K_P$, $T_I$, $T_D$ 를 어떻게든 정해야 했다.
 
@@ -35,7 +35,7 @@ math: true
 
 ---
 
-## 🔍 핵심 개념
+## 핵심 개념
 
 ### 세 가지 제어 효과
 
@@ -110,7 +110,7 @@ $$\text{Sensitivity} = \frac{1.2}{R_1 L}, \qquad \text{Reset rate} = \frac{0.5}{
 
 ---
 
-## 📊 파라미터/변수의 의미
+## 파라미터/변수의 의미
 
 | 변수 | 의미 | 결정 방법 |
 | --- | --- | --- |
@@ -123,7 +123,7 @@ $$\text{Sensitivity} = \frac{1.2}{R_1 L}, \qquad \text{Reset rate} = \frac{0.5}{
 
 ---
 
-## 💡 직관적 유도 & 인사이트
+## 직관적 유도 & 인사이트
 
 ### 왜 $K_P = 0.5\, S_u$ 인가
 
@@ -139,7 +139,7 @@ I항(automatic reset)은 위상 지연을 추가해 amplitude ratio를 높인다
 
 ---
 
-## ✅ 정리
+## 정리
 
 - **Z-N 공식은 수학적 유도가 아니라 실험 관찰의 산물이다.** $K_P = 0.6\, S_u$, $T_I = P_u/2$ 같은 공식은 다양한 공정에서 반복 실험한 결과 경험적으로 도출된 값이다. 이 사실을 알면 "왜 이 공식이 내 플랜트에서 안 맞지?"라는 질문에 답할 수 있다. Z-N은 범용 출발점이지 보편적 최적해가 아니다.
 
@@ -151,13 +151,13 @@ I항(automatic reset)은 위상 지연을 추가해 amplitude ratio를 높인다
 
 ---
 
-## 💬 내 생각 / 인사이트
+## 내 생각 / 인사이트
 
 > 🔖 **개인적 메모**: HBOT 챔버 압력 제어에서는 compression 초기 구간이 사실상 1차 플랜트에 가깝기 때문에 reaction curve 방법으로 $R_1$ 과 $L$ 을 측정하고 PI 설정을 시작점으로 쓰는 것이 합리적이다. 챔버 내부 압력은 환자 안전과 직결되므로 overshoot을 줄이는 방향, 즉 Z-N 기본값보다 $K_P$ 를 낮게, $T_I$ 를 길게 잡는 보수적 조정이 필요하다.
 
 ---
 
-## 🔗 관련 논문
+## 관련 논문
 
 - Ang KH, Chong G, Li Y. PID control system analysis, design, and technology. *IEEE Trans Control Syst Technol* 2005
 - Åström KJ, Hägglund T. Revisiting the Ziegler-Nichols step response method for PID control. *J Process Control* 2004

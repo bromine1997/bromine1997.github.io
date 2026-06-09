@@ -13,7 +13,7 @@ draft: false
 
 ---
 
-## 📌 논문 정보
+## 논문 정보
 
 | 항목 | 내용 |
 |------|------|
@@ -26,13 +26,13 @@ draft: false
 
 ---
 
-## 🎯 문제 정의
+## 문제 정의
 
 기존 HBOT 시스템은 대부분 empirical calibration에 의존하고 있으며, gas flow 및 pressure dynamics에 대한 predictive model이 부족하다. 또한 압력·산소 제어의 자동화 수준이 낮고, control loop의 feedback delay 문제가 있어 치료 재현성이 떨어진다. 이 논문은 이러한 한계를 수학적·실험적 framework으로 해결하고자 한다.
 
 ---
 
-## 💡 Contribution
+## Contribution
 
 - Reynolds, Froude, Archimedes 등 dimensionless number를 활용한 HBOT 챔버 내 oxygenated air flow 수학 모델 수립
 - Ruark transformation을 도입해 dimensionless coordinate로 일반화 → 유사 환경에 결과 확장 가능
@@ -42,7 +42,7 @@ draft: false
 
 ---
 
-## 🔬 방법론
+## 방법론
 
 **Mathematical Modeling**
 - Continuity equation, Navier-Stokes, thermal energy equation, Fick's diffusion equation을 무차원화
@@ -60,7 +60,7 @@ draft: false
 
 ---
 
-## 📊 실험 및 결과
+## 실험 및 결과
 
 - 챔버 압력 10% 증가 시 모델 내 pO₂ 약 8~9% 향상 → 조직 산소화 관련 생리학적 반응과 일치
 - 제안된 압력 제어 시스템은 안정적인 pressurization/depressurization cycle을 재현, 상업용 HBOT 챔버와 원리적으로 유사함을 확인
@@ -70,7 +70,7 @@ draft: false
 
 ---
 
-## ✅ 장점 / ⚠️ 한계
+## 장점 / 한계
 
 **장점**
 - Mathematical model → 축소 실험 챔버 → 실제 제어 시스템까지 일관된 multidisciplinary pipeline
@@ -85,7 +85,7 @@ draft: false
 
 ---
 
-## 💬 내 생각 / 인사이트
+## 내 생각 / 인사이트
 
 석사 논문에서 Tinker Board 2S + dual PID + AD5420 DAC 기반으로 HBOT 시스템을 구현했던 경험이 있어서, 이 논문의 방향성이 꽤 친숙하게 읽혔다.
 
@@ -99,7 +99,7 @@ draft: false
 
 ---
 
-## 🔗 관련 논문
+## 관련 논문
 
 - Flegg et al. (2010) - Mathematical model of HBOT for chronic diabetic wounds, *Bull. Math. Biol.*
 - Kovtanyuk et al. (2023) - Mathematical modeling of cerebral oxygen transport, *Front. Appl. Math. Stat.*
