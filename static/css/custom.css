@@ -63,7 +63,11 @@ code, pre, kbd, samp, .highlight, .chroma {
 }
 
 /* ── 배경 ─────────────────────────────────────────────── */
-body { background: var(--theme); }
+body {
+  background: var(--theme);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
 html body.list { background: var(--theme) !important; }
 :root[data-theme="dark"] body.list { background: var(--theme) !important; }
 
@@ -249,8 +253,6 @@ html body:not(.list) main.main {
 /* ── 본문 타이포그래피 ─────────────────────────────────── */
 .post-content {
   line-height: 1.85;
-  word-break: keep-all;
-  overflow-wrap: break-word;
 }
 
 .post-content p {
@@ -303,6 +305,7 @@ html body:not(.list) main.main {
   border-radius: 5px;
   font-size: 0.87em;
   padding: 0.12em 0.48em;
+  white-space: nowrap;
 }
 :root[data-theme="dark"] .post-content code:not(.chroma *) {
   background: var(--accent-subtle) !important;
