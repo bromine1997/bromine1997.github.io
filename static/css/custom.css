@@ -246,21 +246,42 @@ html body:not(.list) main.main {
   background-clip: text;
 }
 
+/* ── 본문 타이포그래피 ─────────────────────────────────── */
+.post-content {
+  line-height: 1.85;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.post-content p {
+  margin-bottom: 1.25rem;
+}
+
+.post-content ul,
+.post-content ol {
+  margin-bottom: 1.25rem;
+}
+
+.post-content li {
+  line-height: 1.85;
+}
+
 /* 소제목 (h2) — 왼쪽 인디고 보더 */
 .post-content h2 {
   font-size: 1.2rem;
   font-weight: 700;
   padding-left: 0.85rem;
   border-left: 3.5px solid var(--accent);
-  margin-top: 2.2rem;
-  margin-bottom: 0.85rem;
+  margin-top: 2.4rem;
+  margin-bottom: 1rem;
   color: var(--primary);
 }
 .post-content h3 {
   font-size: 1rem;
   font-weight: 700;
   color: var(--primary);
-  margin-top: 1.6rem;
+  margin-top: 1.8rem;
+  margin-bottom: 0.7rem;
 }
 
 /* ── 코드 블록 ─────────────────────────────────────────── */
