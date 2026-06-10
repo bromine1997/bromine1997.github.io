@@ -1,5 +1,5 @@
 ---
-title: "[Paper Review] Optimum Settings for Automatic Controllers"
+title: "Optimum Settings for Automatic Controllers"
 date: 2026-05-06T20:49:00+09:00
 categories: ["Paper Review"]
 tags: ["PID", "Ziegler-Nichols", "tuning", "control"]

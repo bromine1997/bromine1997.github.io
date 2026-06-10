@@ -1,5 +1,5 @@
 ---
-title: "[자료구조] 1편 - 배열과 동적 배열: 메모리를 직접 다루다"
+title: "자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다"
 date: 2026-04-15T20:08:00+09:00
 tags: ["C", "algorithm", "array", "malloc", "memory", "data-structure"]
 categories: ["Algorithm"]

@@ -1,5 +1,5 @@
 ---
-title: "[Paper Review] Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation"
+title: "Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation"
 date: 2026-05-09T20:07:00+09:00
 categories: ["Paper Review"]
 tags: ["Kalman Filter", "State Estimation", "Sensor Fusion", "Embedded Systems", "Signal Processing"]

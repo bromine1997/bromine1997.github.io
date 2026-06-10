@@ -1,5 +1,5 @@
 ---
-title: "[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어"
+title: "HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어"
 date: 2026-04-22T20:19:00+09:00
 draft: false
 categories:

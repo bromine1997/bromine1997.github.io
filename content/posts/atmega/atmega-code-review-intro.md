@@ -1,5 +1,5 @@
 ---
-title: "[ATMEGA4809] 시작하며"
+title: "시작하며"
 date: 2026-04-25T20:58:00+09:00
 draft: false
 categories:

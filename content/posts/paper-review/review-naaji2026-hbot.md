@@ -1,5 +1,5 @@
 ---
-title: "[Paper Review] Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives"
+title: "Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives"
 date: 2026-05-16T20:31:00+09:00
 categories: ["Paper Review"]
 tags: ["HBOT", "Biomedical", "Embedded", "PID", "Pressure Control"]

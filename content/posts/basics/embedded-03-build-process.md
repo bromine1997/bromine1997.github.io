@@ -1,5 +1,5 @@
 ---
-title: "[임베디드 기초] 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지"
+title: "임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지"
 date: 2026-05-14T20:29:00+09:00
 tags: ["embedded", "ARM", "Cortex-M", "toolchain", "linker", "ELF", "build"]
 categories: ["Embedded Basic"]

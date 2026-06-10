@@ -1,11 +1,10 @@
 ---
-title: "[임베디드 기초] 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라"
+title: "임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라"
 date: 2026-05-28T20:38:00+09:00
 tags: ["embedded", "ARM", "Cortex-M", "interrupt", "NVIC", "ISR", "STM32", "volatile"]
 categories: ["Embedded Basic"]
 description: "폴링과 인터럽트의 차이, Cortex-M NVIC 구조와 우선순위 시스템, volatile 키워드의 필요성까지 인터럽트의 핵심 개념을 정리한다."
 ---
-
 ## 들어가며
 
 4편에서 벡터 테이블을 다뤘다. `[0]`은 MSP, `[1]`은 Reset_Handler 주소였고, 나머지 항목들(NMI_Handler, HardFault_Handler, TIM2_IRQHandler...)은 그냥 지나쳤다.
@@ -35,13 +34,21 @@ CPU가 주기적으로 상태를 직접 확인한다. CPU가 루프를 돌며 GP
 
 하드웨어가 이벤트 발생 시 CPU에게 직접 신호를 보낸다. CPU는 하던 작업을 멈추고 핸들러를 실행한 뒤 원래 위치로 돌아온다.
 
-![인터럽트 처리 흐름](/images/basics/interrupt-flow.png)
-*이벤트 발생 → 컨텍스트 저장 → ISR 실행 → 복원 → 복귀까지의 전체 흐름*
+```
+메인 코드 실행 중
+  ↓
+이벤트 발생 (버튼, UART 수신, 타이머 만료...)
+  ↓
+하드웨어가 CPU에 인터럽트 신호 전달
+  ↓
+CPU: 현재 컨텍스트 저장 (PC, xPSR, R0-R3, R12, LR)
+  ↓
+벡터 테이블에서 핸들러 주소 읽기 → 핸들러 실행
+  ↓
+핸들러 완료 → 컨텍스트 복원 → 원래 코드로 복귀
+```
 
 Cortex-M은 컨텍스트 저장/복원을 **하드웨어가 자동으로** 처리한다. 핸들러는 일반 C 함수처럼 작성하면 된다.
-
-![Cortex-M4 예외 처리 개요](/images/basics/cortex-m4-trm-exceptions.png)
-*ARM Cortex-M4 TRM — 예외 처리 및 인터럽트 지연 특성*
 
 ---
 
@@ -51,23 +58,20 @@ Cortex-M은 컨텍스트 저장/복원을 **하드웨어가 자동으로** 처�
 
 **예외(Exception)** 는 인터럽트를 포함하는 더 넓은 개념이다.
 
-| 예외 번호 | 이름 | 발생 원인 |
-|---|---|---|
-| 1 | Reset | 전원 인가, 리셋 핀 |
-| 2 | NMI | Non-Maskable Interrupt — 무조건 처리 |
-| 3 | HardFault | 처리되지 않은 예외의 에스컬레이션 |
-| 4 | MemManage | MPU 위반 |
-| 5 | BusFault | 버스 접근 오류 |
-| 6 | UsageFault | 미정의 명령어, 정렬 오류 등 |
-| 11 | SVCall | `SVC` 명령어 (RTOS에서 시스템 콜) |
-| 14 | PendSV | RTOS 컨텍스트 스위칭 |
-| 15 | SysTick | 시스템 타이머 (HAL_Delay 기반) |
-| 16+ | IRQ0~ | 외부 주변장치 인터럽트 (UART, TIM, EXTI...) |
+| 예외 번호 | 이름       | 발생 원인                                   |
+| --------- | ---------- | ------------------------------------------- |
+| 1         | Reset      | 전원 인가, 리셋 핀                          |
+| 2         | NMI        | Non-Maskable Interrupt — 무조건 처리       |
+| 3         | HardFault  | 처리되지 않은 예외의 에스컬레이션           |
+| 4         | MemManage  | MPU 위반                                    |
+| 5         | BusFault   | 버스 접근 오류                              |
+| 6         | UsageFault | 미정의 명령어, 정렬 오류 등                 |
+| 11        | SVCall     | `SVC` 명령어 (RTOS에서 시스템 콜)         |
+| 14        | PendSV     | RTOS 컨텍스트 스위칭                        |
+| 15        | SysTick    | 시스템 타이머 (HAL_Delay 기반)              |
+| 16+       | IRQ0~      | 외부 주변장치 인터럽트 (UART, TIM, EXTI...) |
 
 예외 번호 16번부터가 MCU 제조사가 정의하는 영역이다. STM32F4에서 EXTI0는 IRQ 6번(예외 번호 22번)이다.
-
-![STM32F411 벡터 테이블](/images/basics/rm0383-nvic-vector-table.png)
-*RM0383 Table 37 — STM32F411 예외 및 인터럽트 벡터 테이블*
 
 ---
 
@@ -87,7 +91,7 @@ NVIC_SetPriority(EXTI0_IRQn, 1);
 NVIC_EnableIRQ(EXTI0_IRQn);
 ```
 
-활성화하지 않으면 인터럽트 요청이 발생해도 CPU가 처리하지 않는다.
+활성화하지 않ㄱ으면 인터럽트 요청이 발생해도 CPU가 처리하지 않는다.
 
 ### 우선순위
 
@@ -113,12 +117,6 @@ HAL_NVIC_SetPriority(USART1_IRQn, 2, 0);  // preemption=2
 ```
 
 USART1 핸들러 실행 중 EXTI0 인터럽트가 발생하면? EXTI0의 Preemption Priority(1)가 더 높으므로 USART1을 중단하고 EXTI0를 먼저 처리한다. 이것이 **Nested(중첩)** 인터럽트다.
-
-![중첩 인터럽트 타임라인](/images/basics/nvic-nested-timeline.png)
-*Nested Interrupt — 높은 우선순위 ISR이 낮은 우선순위 ISR을 선점하는 흐름*
-
-![NVIC 레지스터 구조](/images/basics/cortex-m4-trm-nvic-registers.png)
-*ARM Cortex-M4 TRM — NVIC 레지스터 목록 및 ICTR 비트 구조*
 
 ---
 
@@ -227,4 +225,3 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 ```
 
 수신 완료마다 콜백이 호출되고, 다음 1바이트 수신을 다시 등록한다. 인터럽트 기반으로 CPU 점유 없이 데이터를 받을 수 있다.
-

@@ -1,5 +1,5 @@
 ---
-title: "[임베디드 기초] 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가"
+title: "임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가"
 date: 2026-06-03T20:22:00+09:00
 tags: ["embedded", "STM32", "clock", "RCC", "PLL", "HSE", "HSI", "APB"]
 categories: ["Embedded Basic"]

@@ -1,5 +1,5 @@
 ---
-title: "[임베디드 기초] 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지"
+title: "임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지"
 date: 2026-05-21T20:51:00+09:00
 tags: ["embedded", "ARM", "Cortex-M", "startup", "reset handler", "vector table", "boot"]
 categories: ["Embedded Basic"]

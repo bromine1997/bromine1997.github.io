@@ -1,5 +1,5 @@
 ---
-title: "[임베디드 기초] 1편 - 임베디드 시스템과 펌웨어란 무엇인가"
+title: "임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가"
 date: 2026-05-07T20:17:00+09:00
 tags: ["embedded", "firmware", "MCU", "DSP", "FPGA"]
 categories: ["Embedded Basic"]

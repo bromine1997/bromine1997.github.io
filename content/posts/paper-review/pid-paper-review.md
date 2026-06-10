@@ -1,5 +1,5 @@
 ---
-title: "[Paper Review] PID Control System Analysis, Design, and Technology"
+title: "PID Control System Analysis, Design, and Technology"
 date: 2026-05-02T20:22:00+09:00
 categories: ["Paper Review"]
 tags: ["PID", "control", "embedded", "firmware"]
