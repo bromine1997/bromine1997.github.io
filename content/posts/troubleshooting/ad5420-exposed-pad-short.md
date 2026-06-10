@@ -44,6 +44,16 @@ TSSOP 변환기판을 쓰면 24개 다리는 pad에 딱 맞게 올라가는데, 
 
 만능기판에서 변환기판을 쓰는 경우에는, 칩을 변환기판에 올리기 전에 exposed pad 위치에 맞게 변환기판 뒷면에 구리 테이프나 도선을 붙여두고 GND에 연결해주는 방식으로 처리할 수 있다. 아니면 처음부터 exposed pad용 pad가 설계에 포함된 변환기판을 고르는 게 더 깔끔하다.
 
+## PCB 아트웍 시 주의사항
+
+만능기판 테스트를 넘어 실제 PCB를 설계할 때도 exposed pad를 빠뜨리면 같은 문제가 생긴다. footprint 작업 시 칩 다리 pad 외에 바닥 exposed pad 영역을 GND 동박과 연결되도록 별도로 잡아줘야 한다.
+
+아래 PCB에서 U9, U14가 AD5420 소자인데, 칩 바닥 중앙에 exposed pad가 보인다.
+
+![실제 PCB — U9, U14 (AD5420) 의 exposed pad](/images/troubleshooting/ad5420-pcb-exposed-pad.jpg)
+
+PCB 제작 후 리플로우나 수납땜 시 이 pad에 충분히 열을 가해 GND에 확실히 붙여야 한다. 외관상 칩 다리 납땜이 다 됐어도 바닥 pad가 붕 떠 있으면 똑같이 발열 문제가 재현된다.
+
 ## 정리
 
 | 항목 | 내용 |
