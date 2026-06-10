@@ -132,6 +132,8 @@ void da_free(DynamicArray *da) {
 }
 ```
 
+![da_push 실행 흐름](/images/algorithm/da-push-flowchart.png)
+
 `realloc()` 동작 방식: 현재 블록 뒤에 공간이 있으면 확장, 없으면 새 위치에 복사 후 이전 블록 해제.
 
 ![realloc 동작 방식](/images/algorithm/array-realloc.svg)
