@@ -1,26 +1,18 @@
 /* ── 사이드바 공통 레이아웃 ────────────────────────────── */
 
-/* 싱글 포스트 (post-with-sidebar) */
-.post-with-sidebar {
+/* ── 그리드 레이아웃 ──────────────────────────────────── */
+.post-with-sidebar,
+.list-with-sidebar {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 260px minmax(0, 1fr);
   gap: 2rem;
   align-items: start;
-  max-width: 1100px;
   width: 100%;
   margin: 0 auto;
 }
 
-/* 홈/리스트 (list-with-sidebar) */
-.list-with-sidebar {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 2rem;
-  align-items: start;
-  max-width: 1160px;
-  width: 100%;
-  margin: 0 auto;
-}
+.post-with-sidebar { max-width: 1100px; }
+.list-with-sidebar { max-width: 1160px; }
 
 /* list 페이지 main 너비 */
 html body.list main.main {
@@ -28,8 +20,17 @@ html body.list main.main {
   padding: 0 1.5rem !important;
 }
 
-/* 사이드바 sticky */
+/* 콘텐츠 컬럼이 절대 사이드바를 밀지 못하게 */
+.list-content,
+article.post-single {
+  min-width: 0;
+}
+
+/* 사이드바 — 너비 고정 + sticky */
 .sidebar {
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
   position: sticky;
   top: calc(var(--header-height, 60px) + 1rem);
   display: flex;
