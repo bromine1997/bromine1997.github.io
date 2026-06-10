@@ -1,5 +1,5 @@
 ---
-title: "[ESP32] GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다"
+title: "GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다"
 date: 2026-06-04T20:52:00+09:00
 draft: false
 categories:
@@ -11,6 +11,7 @@ tags:
   - 스트래핑핀
   - 트러블슈팅
   - Feather V2
+series: ["재활자전거 Troubleshooting"]
 summary: "ESP32 Feather V2에서 GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다. 원인은 코드나 회로 문제가 아니라 스트래핑 핀이었다."
 ---
 

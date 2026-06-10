@@ -11,6 +11,7 @@ tags:
   - 납땜
   - 트러블슈팅
   - 만능기판
+series: ["HBOT Troubleshooting"]
 summary: "AD5420을 TSSOP 변환기판으로 만능기판에서 테스트하려다 전원 넣으면 발열이 심하게 생겼다. 원인은 배선이 아니라 칩 바닥 exposed pad였다."
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "[Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한"
+title: "SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한"
 date: 2026-05-30T20:41:00+09:00
 draft: false
 categories:
@@ -12,6 +12,7 @@ tags:
   - Android
   - 트러블슈팅
   - Digital Isolator
+series: ["HBOT Troubleshooting"]
 summary: "ASUS Tinker Board 2S에서 SPI 통신 파형이 왜곡되는 문제를 겪었다. 원인은 하드웨어가 아닌 Digital Isolator의 주파수 제한이었다."
 ---
 
