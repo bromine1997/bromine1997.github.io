@@ -136,7 +136,7 @@ markup:
     codeFences: true
     guessSyntax: true
     lineNos: true
-    style: monokai
+    style: vs2015
   goldmark:
     renderer:
       unsafe: true
