@@ -127,7 +127,9 @@ Step-Function 실험에서의 미미한 Overshoot와 응급 배기밸브 테스�
 
 **Android 앱을 SBC 컨트롤러로 사용한 이유**
 
-일반적인 임베디드 제어 시스템은 Linux + Python/C로 하드웨어를 제어한다. 이 프로젝트는 Tinker Board 2S가 Android OS를 지원한다는 점을 활용해 Android 앱 자체를 컨트롤러로 운용했다. MRAA 라이브러리를 통해 Java 코드에서 GPIO 핀을 직접 제어하는 구조로, 제어 로직과 UI·통신을 단일 개발 환경에서 통합 관리할 수 있다는 장점이 있다.
+상업용 고압산소챔버는 대부분 PLC로 하드웨어를 제어하고, 별도 HMI 패널로 UI를 구성하는 구조다. SBC 기반으로 접근하더라도 일반적으로는 Linux + C 환경에서 제어 코드를 작성하고, Qt 같은 GUI 프레임워크를 별도로 구성해야 한다.
+
+이 프로젝트는 Tinker Board 2S가 Android OS를 지원한다는 점을 활용해 Android 앱 자체를 컨트롤러로 운용했다. MRAA 라이브러리를 통해 Java 코드에서 GPIO 핀을 직접 제어하는 구조로, 제어 로직·UI·통신을 Android Studio 단일 환경에서 통합 개발할 수 있다는 점이 이 선택의 핵심 이유다.
 
 **2채널 독립 PID 구성**
 
