@@ -1,5 +1,9 @@
 {{- define "main" }}
 
+{{- if ne .Section "projects" }}
+<div id="reading-progress-bar"></div>
+{{- end }}
+
 <div class="post-with-sidebar{{ if eq .Section "projects" }} no-sidebar{{ end }}">
 
 {{- if ne .Section "projects" }}
@@ -70,5 +74,24 @@
 
 
 </div>
+
+{{- if ne .Section "projects" }}
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+{{- end }}
 
 {{- end }}{{/* end main */}}

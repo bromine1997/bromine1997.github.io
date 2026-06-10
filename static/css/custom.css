@@ -77,6 +77,20 @@ html body:not(.list) main.main {
   padding: 0 1.5rem !important;
 }
 
+/* ── 읽기 진행률 바 ────────────────────────────────────── */
+#reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, #8b5cf6 100%);
+  z-index: 9999;
+  transition: width 0.08s linear;
+  border-radius: 0 2px 2px 0;
+  pointer-events: none;
+}
+
 /* ── 헤더 ─────────────────────────────────────────────── */
 .header {
   background: rgba(255,255,255,0.9) !important;
