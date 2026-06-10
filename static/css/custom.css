@@ -14,7 +14,7 @@
   --tertiary:        #e5e7eb;
   --content:         #374151;
   --code-block-bg:   #1e1b4b;
-  --code-bg:         #f5f3ff;
+  --code-bg:         #f3f4f6;
   --border:          #e5e7eb;
 
   --accent:          #6366f1;
@@ -288,3 +288,22 @@ body { background: var(--theme); }
 
 /* ── 하이라이트 코드 블록 상단 여백 보정 ──────────────── */
 .highlight { border-radius: 10px; overflow: hidden; }
+
+/* ── 홈 인사 카드 높이 보정 ────────────────────────────── */
+/* PaperMod 기본값 min-height:320px 가 너무 큼 */
+.first-entry.home-info {
+  min-height: auto !important;
+  padding: 1.5rem 2rem 1.5rem;
+}
+
+/* ── list 페이지 배경색 강제 ───────────────────────────── */
+/* PaperMod가 --code-bg 를 .list 배경으로 사용하는 것 방지 */
+html body.list { background: var(--theme) !important; }
+:root[data-theme="dark"] body.list { background: var(--theme) !important; }
+
+/* ── Projects 싱글 페이지: 사이드바 없이 전체 폭 사용 ──── */
+.post-with-sidebar:has(> .post-single:only-child),
+.post-with-sidebar.no-sidebar {
+  grid-template-columns: 1fr;
+  max-width: 860px;
+}

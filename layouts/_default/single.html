@@ -1,6 +1,6 @@
 {{- define "main" }}
 
-<div class="post-with-sidebar">
+<div class="post-with-sidebar{{ if eq .Section "projects" }} no-sidebar{{ end }}">
 
 <article class="post-single">
   <header class="post-header">
@@ -64,7 +64,9 @@
   {{- end }}
 </article>
 
+{{- if ne .Section "projects" }}
 {{- partial "sidebar.html" . }}
+{{- end }}
 
 </div>
 
