@@ -1,8 +1,6 @@
 {{- define "main" }}
 
-{{- if ne .Section "projects" }}
 <div id="reading-progress-bar"></div>
-{{- end }}
 
 <div class="post-with-sidebar{{ if eq .Section "projects" }} no-sidebar{{ end }}">
 
@@ -75,7 +73,6 @@
 
 </div>
 
-{{- if ne .Section "projects" }}
 <script>
 (function () {
   var bar = document.getElementById('reading-progress-bar');
@@ -92,6 +89,5 @@
   update();
 })();
 </script>
-{{- end }}
 
 {{- end }}{{/* end main */}}
