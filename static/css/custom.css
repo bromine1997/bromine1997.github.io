@@ -1,0 +1,290 @@
+/* =========================================================
+   모던 테크 라이트 테마
+   ========================================================= */
+
+/* Pretendard 폰트 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+/* ── CSS 변수 오버라이드 (라이트) ─────────────────────── */
+:root {
+  --theme:           #f3f4f6;
+  --entry:           #ffffff;
+  --primary:         #111827;
+  --secondary:       #6b7280;
+  --tertiary:        #e5e7eb;
+  --content:         #374151;
+  --code-block-bg:   #1e1b4b;
+  --code-bg:         #f5f3ff;
+  --border:          #e5e7eb;
+
+  --accent:          #6366f1;
+  --accent-hover:    #4f46e5;
+  --accent-subtle:   #f0eeff;
+  --accent-border:   #ddd6fe;
+
+  --card-shadow:     0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --card-shadow-md:  0 4px 12px rgba(99,102,241,0.08), 0 2px 4px rgba(0,0,0,0.04);
+}
+
+/* ── CSS 변수 오버라이드 (다크) ─────────────────────── */
+:root[data-theme="dark"] {
+  --theme:           #0f1117;
+  --entry:           #1a1d24;
+  --primary:         #e8eaf0;
+  --secondary:       #8b92a4;
+  --tertiary:        #2a2d38;
+  --content:         #c8cdd8;
+  --code-block-bg:   #13151e;
+  --code-bg:         #1e2030;
+  --border:          #2a2d38;
+
+  --accent:          #818cf8;
+  --accent-hover:    #a5b4fc;
+  --accent-subtle:   #1e2040;
+  --accent-border:   #3730a3;
+
+  --card-shadow:     0 1px 3px rgba(0,0,0,0.3);
+  --card-shadow-md:  0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ── 전체 폰트 ─────────────────────────────────────────── */
+body,
+.post-content,
+.entry-content,
+.page-header,
+nav,
+button {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+/* 코드는 JetBrains Mono 유지 */
+code, pre, kbd, samp,
+.highlight,
+.chroma {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* ── 배경 ─────────────────────────────────────────────── */
+body { background: var(--theme); }
+.list { background: var(--theme) !important; }
+
+/* ── 헤더 ─────────────────────────────────────────────── */
+.header {
+  background: rgba(255,255,255,0.88) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: 0 1px 0 var(--border), var(--card-shadow) !important;
+}
+:root[data-theme="dark"] .header {
+  background: rgba(15,17,23,0.88) !important;
+}
+
+/* 로고 그라디언트 */
+.logo a {
+  background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700 !important;
+}
+:root[data-theme="dark"] .logo a {
+  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* 메뉴 링크 */
+#menu a {
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+#menu a:hover { background: var(--accent-subtle); color: var(--accent); }
+#menu a span.active { color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--accent); }
+
+/* ── 홈 포스트 목록 카드 ───────────────────────────────── */
+.post-entry {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 12px !important;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  overflow: hidden;
+}
+.post-entry:hover {
+  box-shadow: var(--card-shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--accent-border);
+}
+
+/* first-entry (홈 첫 카드) */
+.first-entry {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 12px !important;
+  box-shadow: var(--card-shadow);
+}
+
+/* 포스트 목록 제목 */
+.entry-header h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+/* ── 싱글 포스트 ───────────────────────────────────────── */
+.post-single {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem 2.5rem !important;
+  box-shadow: var(--card-shadow-md);
+}
+
+/* 포스트 제목 그라디언트 */
+.post-title {
+  font-size: 1.75rem !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  background: linear-gradient(135deg, var(--primary) 55%, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.6rem !important;
+}
+:root[data-theme="dark"] .post-title {
+  background: linear-gradient(135deg, var(--primary) 55%, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* 소제목 (h2) — 왼쪽 인디고 보더 */
+.post-content h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding-left: 0.85rem;
+  border-left: 3.5px solid var(--accent);
+  margin-top: 2.2rem;
+  margin-bottom: 0.85rem;
+  color: var(--primary);
+}
+
+.post-content h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 1.6rem;
+}
+
+/* ── 코드 블록 ─────────────────────────────────────────── */
+.post-content pre,
+.highlight > pre,
+.chroma {
+  border-radius: 10px !important;
+  border: 1px solid var(--accent-border) !important;
+}
+:root[data-theme="dark"] .post-content pre,
+:root[data-theme="dark"] .highlight > pre,
+:root[data-theme="dark"] .chroma {
+  border-color: #2e3155 !important;
+}
+
+/* 인라인 코드 */
+.post-content code:not(.chroma *) {
+  background: var(--accent-subtle) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 5px;
+  font-size: 0.87em;
+  padding: 0.12em 0.48em;
+}
+:root[data-theme="dark"] .post-content code:not(.chroma *) {
+  background: var(--accent-subtle) !important;
+  color: #a5b4fc !important;
+  border-color: var(--accent-border) !important;
+}
+
+/* ── 태그 ──────────────────────────────────────────────── */
+.post-tags a,
+.tag-entry a {
+  background: var(--accent-subtle) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 20px !important;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.8rem !important;
+  transition: background 0.15s, color 0.15s;
+}
+.post-tags a:hover,
+.tag-entry a:hover {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+/* ── TOC ───────────────────────────────────────────────── */
+.toc {
+  background: var(--accent-subtle) !important;
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 10px !important;
+}
+.toc details summary {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── 브레드크럼 ────────────────────────────────────────── */
+.breadcrumbs a { color: var(--accent); }
+
+/* ── 포스트 메타 배지 ─────────────────────────────────── */
+.post-meta a {
+  color: var(--secondary);
+  text-decoration: none;
+}
+.post-meta a:hover { color: var(--accent); }
+
+/* ── 페이지네이션 ──────────────────────────────────────── */
+.pagination a {
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  color: var(--accent);
+  padding: 0.4rem 0.9rem;
+  transition: background 0.15s;
+}
+.pagination a:hover {
+  background: var(--accent-subtle);
+}
+
+/* ── 링크 ──────────────────────────────────────────────── */
+.post-content a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-border);
+  text-underline-offset: 3px;
+}
+.post-content a:hover {
+  color: var(--accent-hover);
+  text-decoration-color: var(--accent);
+}
+
+/* ── 검색 ──────────────────────────────────────────────── */
+#searchbox input {
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 8px !important;
+  background: var(--entry) !important;
+}
+#searchbox input:focus {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: -1px;
+}
+
+/* ── 스크롤바 ──────────────────────────────────────────── */
+::-webkit-scrollbar-thumb { background: var(--accent-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── 하이라이트 코드 블록 상단 여백 보정 ──────────────── */
+.highlight { border-radius: 10px; overflow: hidden; }
