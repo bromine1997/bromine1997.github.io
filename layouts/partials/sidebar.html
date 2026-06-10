@@ -1,0 +1,56 @@
+<aside class="sidebar">
+
+  {{/* 최근 포스트 */}}
+  {{- $currentPage := . }}
+  <section class="sidebar-section">
+    <h3 class="sidebar-title">최근 포스트</h3>
+    <ul class="sidebar-list">
+      {{- range site.RegularPages.ByDate.Reverse | first 7 }}
+      <li class="sidebar-item">
+        <a href="{{ .Permalink }}" class="sidebar-link{{ if eq . $currentPage }} active{{ end }}">
+          <span class="sidebar-item-title">{{ .Title }}</span>
+        </a>
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+
+  {{/* 카테고리 (posts 하위 섹션) */}}
+  {{- $postsSection := site.GetPage "/posts" }}
+  {{- if and $postsSection $postsSection.Sections }}
+  <section class="sidebar-section">
+    <h3 class="sidebar-title">카테고리</h3>
+    <ul class="sidebar-list">
+      {{- range $postsSection.Sections.ByTitle }}
+      {{- if gt (len .RegularPages) 0 }}
+      <li class="sidebar-item">
+        <a href="{{ .Permalink }}" class="sidebar-link">
+          <span class="sidebar-item-title">{{ .Title }}</span>
+          <span class="sidebar-count">{{ len .RegularPages }}</span>
+        </a>
+      </li>
+      {{- end }}
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+
+  {{/* 태그 */}}
+  {{- $tags := site.Taxonomies.tags }}
+  {{- if $tags }}
+  <section class="sidebar-section">
+    <h3 class="sidebar-title">태그</h3>
+    <div class="sidebar-tags">
+      {{- range $name, $pages := $tags }}
+      {{- with site.GetPage (printf "/tags/%s" $name) }}
+      <a href="{{ .Permalink }}" class="sidebar-tag">
+        {{ $name }}
+        <span class="sidebar-tag-count">{{ len $pages }}</span>
+      </a>
+      {{- end }}
+      {{- end }}
+    </div>
+  </section>
+  {{- end }}
+
+</aside>
