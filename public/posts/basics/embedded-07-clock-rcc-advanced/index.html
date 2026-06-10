@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가 | bromine1997</title>
+<meta name="keywords" content="embedded, STM32, UART, SPI, baud rate, clock, RCC, APB">
+<meta name="description" content="APB 클럭에서 UART 보드레이트와 SPI 속도가 계산되는 원리, 오차 계산, 실무에서 만나는 클럭 관련 문제들을 정리한다.">
+<meta name="author" content="서보민">
+<link rel="canonical" href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
+<meta property="og:url" content="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/">
+  <meta property="og:site_name" content="bromine1997">
+  <meta property="og:title" content="임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가">
+  <meta property="og:description" content="APB 클럭에서 UART 보드레이트와 SPI 속도가 계산되는 원리, 오차 계산, 실무에서 만나는 클럭 관련 문제들을 정리한다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-06-09T13:00:00+09:00">
+    <meta property="article:modified_time" content="2026-06-09T13:00:00+09:00">
+    <meta property="article:tag" content="Embedded">
+    <meta property="article:tag" content="STM32">
+    <meta property="article:tag" content="UART">
+    <meta property="article:tag" content="SPI">
+    <meta property="article:tag" content="Baud Rate">
+    <meta property="article:tag" content="Clock">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가">
+  <meta name="twitter:description" content="APB 클럭에서 UART 보드레이트와 SPI 속도가 계산되는 원리, 오차 계산, 실무에서 만나는 클럭 관련 문제들을 정리한다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "임베디드 기초",
+      "item": "http://localhost:1313/posts/basics/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가",
+      "item": "http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가",
+  "name": "임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가",
+  "description": "APB 클럭에서 UART 보드레이트와 SPI 속도가 계산되는 원리, 오차 계산, 실무에서 만나는 클럭 관련 문제들을 정리한다.",
+  "keywords": [
+    "embedded", "STM32", "UART", "SPI", "baud rate", "clock", "RCC", "APB"
+  ],
+  "articleBody": "들어가며 UART 보드레이트 계산 BRR 레지스터 STM32 UART는 BRR(Baud Rate Register)로 분주비를 설정한다. 기본 16배 오버샘플링(OVER8=0) 기준:\nRM0383 19.3.4 — Fractional baud rate generation: BRR 레지스터와 USARTDIV 관계\n1 Baud Rate = f_PCLK / (16 × USARTDIV) USARTDIV는 정수부(12비트)와 소수부(4비트)로 구성된다. 소수점 이하 4비트이므로 1/16 단위까지 설정 가능하다.\n계산 예시 UART2, APB1 = 50 MHz, 목표: 115200 bps\n1 2 3 4 5 6 USARTDIV = 50,000,000 / (16 × 115,200) = 27.127... 정수부: 27 소수부: 0.127 × 16 = 2.03 → 반올림 → 2 BRR = (27 \u003c\u003c 4) | 2 = 0x01B2 실제 보드레이트 역산:\n1 2 3 4 USARTDIV_actual = 27 + 2/16 = 27.125 Baud Rate = 50,000,000 / (16 × 27.125) = 115,207 bps 오차 = |115,200 - 115,207| / 115,200 × 100 ≈ 0.006% UART는 일반적으로 오차 ±2% 이내면 통신 가능하다. 0.006%는 거의 오차가 없는 수준이다.\nHAL 라이브러리가 이 계산을 자동으로 처리한다. 하지만 APB 클럭이 틀리면 HAL이 계산한 BRR 값도 틀리고, 그러면 상대방과 보드레이트가 맞지 않아 데이터가 깨진다.\nUART1 vs UART2 1 2 3 // UART2: APB1 50MHz 기준 // UART1: APB2 100MHz 기준 // 같은 115200을 설정해도 BRR 값이 다르다 UART2 (APB1=50MHz) UART1 (APB2=100MHz) USARTDIV 27.125 54.25 BRR 0x01B2 0x0364 실제 보드레이트 115,207 bps 115,207 bps 오차 0.006% 0.006% F411에서는 APB1(50 MHz)과 APB2(100 MHz) 모두 오차가 거의 없다. APB 클럭이 115200의 배수에 가까운 덕분이다.\nRM0383 19.3.4 — USARTDIV 계산 예시: 정수부/소수부 분리 및 BRR 값 도출 과정\nRM0383 19.6.3 — USART_BRR: DIV_Mantissa[15:4] 12비트 + DIV_Fraction[3:0] 4비트 구조\nSPI 클럭 계산 UART와 달리 SPI는 소수점 분주가 없다. 2의 거듭제곱 분주비만 지원한다.\n1 2 3 4 5 6 7 8 9 // SPI1: APB2(100MHz) 기준 // SPI_BAUDRATEPRESCALER_2 → 100 / 2 = 50 MHz // SPI_BAUDRATEPRESCALER_4 → 100 / 4 = 25 MHz // SPI_BAUDRATEPRESCALER_8 → 100 / 8 = 12.5 MHz // SPI_BAUDRATEPRESCALER_16 → 100 / 16 = 6.25 MHz // SPI_BAUDRATEPRESCALER_32 → 100 / 32 = 3.125 MHz // SPI_BAUDRATEPRESCALER_64 → 100 / 64 ≈ 1.56 MHz // SPI_BAUDRATEPRESCALER_128 → 100 / 128 ≈ 781 kHz // SPI_BAUDRATEPRESCALER_256 → 100 / 256 ≈ 390 kHz 원하는 정확한 속도를 만들 수 없는 경우가 많다. 연결하는 장치의 최대 SPI 클럭보다 낮은 쪽으로 내림해서 선택한다.\n예: ADS1232 ADC, 최대 SPI 클럭 1 MHz\n1 2 3 SPI1(APB2 100MHz) 기준 → DIV128: 100/128 ≈ 781 kHz ✓ (1MHz 이하) → DIV64: 100/64 ≈ 1.56 MHz ✗ (초과) DIV128을 선택해야 한다.\n1 hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128; 클럭 관련 실무 문제들 보드레이트가 맞는데 데이터가 깨진다 원인 후보:\nHSE_VALUE가 실제 크리스탈 주파수와 다름 APB 분주비가 예상과 다름 (CubeMX 설정 확인) 상대방 장치의 클럭 오차 누적 확인 방법: 오실로스코프로 실제 전송 주기 측정. 115200 bps면 1비트당 약 8.68 μs여야 한다.\nSPI 통신이 간헐적으로 실패한다 SPI 속도가 너무 빠를 때 자주 발생한다. 배선 길이와 커패시턴스로 인한 신호 열화가 원인인 경우가 많다.\n→ 분주비를 한 단계 낮춰서(속도를 절반으로) 테스트.\nSystemClock_Config() 이후 HAL_Delay()가 부정확하다 HAL_RCC_ClockConfig() 호출 후 SystemCoreClock 변수가 업데이트된다. 이 변수 기반으로 SysTick이 재설정되는데, 순서가 틀리면 Delay가 부정확해진다.\nCubeMX가 생성하는 코드 순서를 바꾸지 않는 것이 안전하다.\n",
+  "wordCount" : "492",
+  "inLanguage": "en",
+  "datePublished": "2026-06-09T13:00:00+09:00",
+  "dateModified": "2026-06-09T13:00:00+09:00",
+  "author":{
+    "@type": "Person",
+    "name": "서보민"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "bromine1997",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li class="has-dropdown">
+                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                    <span>Algorithm</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                    <span>Paper Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link active">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/basics/">임베디드 기초</a></div>
+    <h1 class="post-title entry-hint-parent">
+      임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가
+    </h1>
+    <div class="post-description">
+      APB 클럭에서 UART 보드레이트와 SPI 속도가 계산되는 원리, 오차 계산, 실무에서 만나는 클럭 관련 문제들을 정리한다.
+    </div>
+    <div class="post-meta"><span title='2026-06-09 13:00:00 +0900 KST'>June 9, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/basics/embedded-07-clock-rcc-advanced.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
+</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#들어가며">들어가며</a></li>
+    <li><a href="#uart-보드레이트-계산">UART 보드레이트 계산</a>
+      <ul>
+        <li><a href="#brr-레지스터">BRR 레지스터</a></li>
+        <li><a href="#계산-예시">계산 예시</a></li>
+        <li><a href="#uart1-vs-uart2">UART1 vs UART2</a></li>
+      </ul>
+    </li>
+    <li><a href="#spi-클럭-계산">SPI 클럭 계산</a></li>
+    <li><a href="#클럭-관련-실무-문제들">클럭 관련 실무 문제들</a>
+      <ul>
+        <li><a href="#보드레이트가-맞는데-데이터가-깨진다">보드레이트가 맞는데 데이터가 깨진다</a></li>
+        <li><a href="#spi-통신이-간헐적으로-실패한다">SPI 통신이 간헐적으로 실패한다</a></li>
+        <li><a href="#systemclock_config-이후-hal_delay가-부정확하다">SystemClock_Config() 이후 HAL_Delay()가 부정확하다</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="들어가며">들어가며<a hidden class="anchor" aria-hidden="true" href="#들어가며">#</a></h2>
+<hr>
+<h2 id="uart-보드레이트-계산">UART 보드레이트 계산<a hidden class="anchor" aria-hidden="true" href="#uart-보드레이트-계산">#</a></h2>
+<h3 id="brr-레지스터">BRR 레지스터<a hidden class="anchor" aria-hidden="true" href="#brr-레지스터">#</a></h3>
+<p>STM32 UART는 BRR(Baud Rate Register)로 분주비를 설정한다. 기본 16배 오버샘플링(OVER8=0) 기준:</p>
+<p><img alt="USART 보드레이트 공식" loading="lazy" src="/images/basics/rm0383-usart-baudrate-formula.png">
+<em>RM0383 19.3.4 — Fractional baud rate generation: BRR 레지스터와 USARTDIV 관계</em></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-0-1"><a class="lnlinks" href="#hl-0-1">1</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Baud Rate = f_PCLK / (16 × USARTDIV)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>USARTDIV</code>는 정수부(12비트)와 소수부(4비트)로 구성된다. 소수점 이하 4비트이므로 1/16 단위까지 설정 가능하다.</p>
+<h3 id="계산-예시">계산 예시<a hidden class="anchor" aria-hidden="true" href="#계산-예시">#</a></h3>
+<p><strong>UART2, APB1 = 50 MHz, 목표: 115200 bps</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-1-1"><a class="lnlinks" href="#hl-1-1">1</a>
+</span><span class="lnt" id="hl-1-2"><a class="lnlinks" href="#hl-1-2">2</a>
+</span><span class="lnt" id="hl-1-3"><a class="lnlinks" href="#hl-1-3">3</a>
+</span><span class="lnt" id="hl-1-4"><a class="lnlinks" href="#hl-1-4">4</a>
+</span><span class="lnt" id="hl-1-5"><a class="lnlinks" href="#hl-1-5">5</a>
+</span><span class="lnt" id="hl-1-6"><a class="lnlinks" href="#hl-1-6">6</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">USARTDIV = 50,000,000 / (16 × 115,200) = 27.127...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">정수부: 27
+</span></span><span class="line"><span class="cl">소수부: 0.127 × 16 = 2.03 → 반올림 → 2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">BRR = (27 &lt;&lt; 4) | 2 = 0x01B2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>실제 보드레이트 역산:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-2-1"><a class="lnlinks" href="#hl-2-1">1</a>
+</span><span class="lnt" id="hl-2-2"><a class="lnlinks" href="#hl-2-2">2</a>
+</span><span class="lnt" id="hl-2-3"><a class="lnlinks" href="#hl-2-3">3</a>
+</span><span class="lnt" id="hl-2-4"><a class="lnlinks" href="#hl-2-4">4</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">USARTDIV_actual = 27 + 2/16 = 27.125
+</span></span><span class="line"><span class="cl">Baud Rate       = 50,000,000 / (16 × 27.125) = 115,207 bps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">오차 = |115,200 - 115,207| / 115,200 × 100 ≈ 0.006%
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>UART는 일반적으로 오차 <strong>±2% 이내</strong>면 통신 가능하다. 0.006%는 거의 오차가 없는 수준이다.</p>
+<p>HAL 라이브러리가 이 계산을 자동으로 처리한다. 하지만 APB 클럭이 틀리면 HAL이 계산한 BRR 값도 틀리고, 그러면 상대방과 보드레이트가 맞지 않아 데이터가 깨진다.</p>
+<h3 id="uart1-vs-uart2">UART1 vs UART2<a hidden class="anchor" aria-hidden="true" href="#uart1-vs-uart2">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-3-1"><a class="lnlinks" href="#hl-3-1">1</a>
+</span><span class="lnt" id="hl-3-2"><a class="lnlinks" href="#hl-3-2">2</a>
+</span><span class="lnt" id="hl-3-3"><a class="lnlinks" href="#hl-3-3">3</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// UART2: APB1 50MHz 기준
+</span></span></span><span class="line"><span class="cl"><span class="c1">// UART1: APB2 100MHz 기준
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 같은 115200을 설정해도 BRR 값이 다르다
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>UART2 (APB1=50MHz)</th>
+          <th>UART1 (APB2=100MHz)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>USARTDIV</td>
+          <td>27.125</td>
+          <td>54.25</td>
+      </tr>
+      <tr>
+          <td>BRR</td>
+          <td>0x01B2</td>
+          <td>0x0364</td>
+      </tr>
+      <tr>
+          <td>실제 보드레이트</td>
+          <td>115,207 bps</td>
+          <td>115,207 bps</td>
+      </tr>
+      <tr>
+          <td>오차</td>
+          <td>0.006%</td>
+          <td>0.006%</td>
+      </tr>
+  </tbody>
+</table>
+<p>F411에서는 APB1(50 MHz)과 APB2(100 MHz) 모두 오차가 거의 없다. APB 클럭이 115200의 배수에 가까운 덕분이다.</p>
+<p><img alt="USART 보드레이트 계산 예시" loading="lazy" src="/images/basics/rm0383-usart-baudrate-example.png">
+<em>RM0383 19.3.4 — USARTDIV 계산 예시: 정수부/소수부 분리 및 BRR 값 도출 과정</em></p>
+<p><img alt="USART_BRR 레지스터" loading="lazy" src="/images/basics/rm0383-usart-brr-register.png">
+<em>RM0383 19.6.3 — USART_BRR: DIV_Mantissa[15:4] 12비트 + DIV_Fraction[3:0] 4비트 구조</em></p>
+<hr>
+<h2 id="spi-클럭-계산">SPI 클럭 계산<a hidden class="anchor" aria-hidden="true" href="#spi-클럭-계산">#</a></h2>
+<p>UART와 달리 SPI는 소수점 분주가 없다. <strong>2의 거듭제곱 분주비</strong>만 지원한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-4-1"><a class="lnlinks" href="#hl-4-1">1</a>
+</span><span class="lnt" id="hl-4-2"><a class="lnlinks" href="#hl-4-2">2</a>
+</span><span class="lnt" id="hl-4-3"><a class="lnlinks" href="#hl-4-3">3</a>
+</span><span class="lnt" id="hl-4-4"><a class="lnlinks" href="#hl-4-4">4</a>
+</span><span class="lnt" id="hl-4-5"><a class="lnlinks" href="#hl-4-5">5</a>
+</span><span class="lnt" id="hl-4-6"><a class="lnlinks" href="#hl-4-6">6</a>
+</span><span class="lnt" id="hl-4-7"><a class="lnlinks" href="#hl-4-7">7</a>
+</span><span class="lnt" id="hl-4-8"><a class="lnlinks" href="#hl-4-8">8</a>
+</span><span class="lnt" id="hl-4-9"><a class="lnlinks" href="#hl-4-9">9</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// SPI1: APB2(100MHz) 기준
+</span></span></span><span class="line"><span class="cl"><span class="c1">// SPI_BAUDRATEPRESCALER_2   → 100 / 2   = 50 MHz
+</span></span></span><span class="line"><span class="cl"><span class="c1">// SPI_BAUDRATEPRESCALER_4   → 100 / 4   = 25 MHz
+</span></span></span><span class="line"><span class="cl"><span class="c1">// SPI_BAUDRATEPRESCALER_8   → 100 / 8   = 12.5 MHz
+</span></span></span><span class="line"><span class="cl"><span class="c1">// SPI_BAUDRATEPRESCALER_16  → 100 / 16  = 6.25 MHz
+</span></span></span><span class="line"><span class="cl"><span class="c1">// SPI_BAUDRATEPRESCALER_32  → 100 / 32  = 3.125 MHz
+</span></span></span><span class="line"><span class="cl"><span class="c1">// SPI_BAUDRATEPRESCALER_64  → 100 / 64  ≈ 1.56 MHz
+</span></span></span><span class="line"><span class="cl"><span class="c1">// SPI_BAUDRATEPRESCALER_128 → 100 / 128 ≈ 781 kHz
+</span></span></span><span class="line"><span class="cl"><span class="c1">// SPI_BAUDRATEPRESCALER_256 → 100 / 256 ≈ 390 kHz
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>원하는 정확한 속도를 만들 수 없는 경우가 많다. 연결하는 장치의 <strong>최대 SPI 클럭보다 낮은 쪽으로 내림</strong>해서 선택한다.</p>
+<p><strong>예: ADS1232 ADC, 최대 SPI 클럭 1 MHz</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-5-1"><a class="lnlinks" href="#hl-5-1">1</a>
+</span><span class="lnt" id="hl-5-2"><a class="lnlinks" href="#hl-5-2">2</a>
+</span><span class="lnt" id="hl-5-3"><a class="lnlinks" href="#hl-5-3">3</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">SPI1(APB2 100MHz) 기준
+</span></span><span class="line"><span class="cl">→ DIV128: 100/128 ≈ 781 kHz  ✓ (1MHz 이하)
+</span></span><span class="line"><span class="cl">→ DIV64:  100/64  ≈ 1.56 MHz ✗ (초과)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>DIV128을 선택해야 한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-6-1"><a class="lnlinks" href="#hl-6-1">1</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">hspi1</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">BaudRatePrescaler</span> <span class="o">=</span> <span class="n">SPI_BAUDRATEPRESCALER_128</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="클럭-관련-실무-문제들">클럭 관련 실무 문제들<a hidden class="anchor" aria-hidden="true" href="#클럭-관련-실무-문제들">#</a></h2>
+<h3 id="보드레이트가-맞는데-데이터가-깨진다">보드레이트가 맞는데 데이터가 깨진다<a hidden class="anchor" aria-hidden="true" href="#보드레이트가-맞는데-데이터가-깨진다">#</a></h3>
+<p>원인 후보:</p>
+<ol>
+<li><code>HSE_VALUE</code>가 실제 크리스탈 주파수와 다름</li>
+<li>APB 분주비가 예상과 다름 (CubeMX 설정 확인)</li>
+<li>상대방 장치의 클럭 오차 누적</li>
+</ol>
+<p>확인 방법: 오실로스코프로 실제 전송 주기 측정. 115200 bps면 1비트당 약 8.68 μs여야 한다.</p>
+<h3 id="spi-통신이-간헐적으로-실패한다">SPI 통신이 간헐적으로 실패한다<a hidden class="anchor" aria-hidden="true" href="#spi-통신이-간헐적으로-실패한다">#</a></h3>
+<p>SPI 속도가 너무 빠를 때 자주 발생한다. 배선 길이와 커패시턴스로 인한 신호 열화가 원인인 경우가 많다.</p>
+<p>→ 분주비를 한 단계 낮춰서(속도를 절반으로) 테스트.</p>
+<h3 id="systemclock_config-이후-hal_delay가-부정확하다">SystemClock_Config() 이후 HAL_Delay()가 부정확하다<a hidden class="anchor" aria-hidden="true" href="#systemclock_config-이후-hal_delay가-부정확하다">#</a></h3>
+<p><code>HAL_RCC_ClockConfig()</code> 호출 후 <code>SystemCoreClock</code> 변수가 업데이트된다. 이 변수 기반으로 SysTick이 재설정되는데, 순서가 틀리면 Delay가 부정확해진다.</p>
+<p>CubeMX가 생성하는 코드 순서를 바꾸지 않는 것이 안전하다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/embedded/">Embedded</a></li>
+      <li><a href="http://localhost:1313/tags/stm32/">STM32</a></li>
+      <li><a href="http://localhost:1313/tags/uart/">UART</a></li>
+      <li><a href="http://localhost:1313/tags/spi/">SPI</a></li>
+      <li><a href="http://localhost:1313/tags/baud-rate/">Baud Rate</a></li>
+      <li><a href="http://localhost:1313/tags/clock/">Clock</a></li>
+      <li><a href="http://localhost:1313/tags/rcc/">RCC</a></li>
+      <li><a href="http://localhost:1313/tags/apb/">APB</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>만능기판 테스트 중 계속 발열이 생긴 이유</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/">
+    <span class="title">Next »</span>
+    <br>
+    <span>상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+  </a>
+</nav>
+
+  </footer><div class="comments">
+  <script src="https://giscus.app/client.js"
+    data-repo="bromine1997/bromine1997.github.io"
+    data-repo-id="R_kgDOR1bAsg"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOR1bAss4C52wg"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="ko"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+
+</article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

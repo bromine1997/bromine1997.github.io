@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어 | bromine1997</title>
+<title>HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어 | bromine1997</title>
 <meta name="keywords" content="STM32, GPIO, HAL, Register, STM32F4, BSRR, IDR">
 <meta name="description" content="HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글">
 <meta name="author" content="서보민">
 <link rel="canonical" href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -70,16 +70,19 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
 <meta property="og:url" content="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/">
   <meta property="og:site_name" content="bromine1997">
-  <meta property="og:title" content="[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어">
+  <meta property="og:title" content="HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어">
   <meta property="og:description" content="HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-03-31T12:00:00+09:00">
-    <meta property="article:modified_time" content="2026-03-31T12:00:00+09:00">
+    <meta property="article:published_time" content="2026-04-22T20:19:00+09:00">
+    <meta property="article:modified_time" content="2026-04-22T20:19:00+09:00">
     <meta property="article:tag" content="STM32">
     <meta property="article:tag" content="GPIO">
     <meta property="article:tag" content="HAL">
@@ -88,7 +91,7 @@
     <meta property="article:tag" content="BSRR">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어">
+  <meta name="twitter:title" content="HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어">
   <meta name="twitter:description" content="HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글">
 
 
@@ -106,7 +109,13 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어",
+      "name": "STM32",
+      "item": "http://localhost:1313/posts/stm32/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어",
       "item": "http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/"
     }
   ]
@@ -116,17 +125,17 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어",
-  "name": "[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어",
+  "headline": "HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어",
+  "name": "HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어",
   "description": "HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글",
   "keywords": [
     "STM32", "GPIO", "HAL", "Register", "STM32F4", "BSRR", "IDR"
   ],
-  "articleBody": "1편에서는 GPIO의 구조와 내부 블록 다이어그램, 데이터시트 읽는 법까지 다뤘다. 마지막에는 아래 코드로 User Button을 눌렀을 때 LED가 켜지는 실습도 해봤는데,\n1 2 3 4 if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET) { HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET); } 사실 이 코드가 내부에서 뭘 하는지는 설명 안 하고 넘어갔다. HAL_GPIO_ReadPin()이 IDR을 읽는다는 건 알겠는데, 어떤 방식으로? HAL_GPIO_WritePin()은 왜 ODR 대신 BSRR을 쓰는 건지, 그리고 그게 왜 중요한지.\n이번 편에서는 그 안을 직접 열어볼 거다. HAL 소스 코드를 뜯으면서 레지스터 레벨까지 내려가 보고, 마지막엔 HAL 없이 레지스터만으로 똑같이 구현해볼 거다.\nHAL 소스 어떻게 보나 CubeIDE에서 함수에 커서 올리고 F3 누르면 해당 함수 정의로 바로 이동한다. 또는 함수명에서 Ctrl + 클릭.\n파일 위치는 프로젝트마다 다르지만 보통 이쪽이다.\n1 2 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h 여기가 HAL GPIO 관련 로직이 다 모여있는 곳이다. 이걸 직접 열어서 1편 코드와 대조해보는 게 이번 포스트 목표다.\nHAL_GPIO_ReadPin() 내부 1편에서 쓴 코드:\n1 HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) F3 눌러서 소스 열어보면 이렇다.\n함수 본문은 생각보다 단순하다. IDR(Input Data Register) 에서 해당 핀 비트를 읽어서 반환하는 게 전부다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) { GPIO_PinState bitstatus; if ((GPIOx-\u003eIDR \u0026 GPIO_Pin) != (uint32_t)GPIO_PIN_RESET) { bitstatus = GPIO_PIN_SET; } else { bitstatus = GPIO_PIN_RESET; } return bitstatus; } 반환 타입인 GPIO_PinState는 stm32f4xx_hal_gpio.h에 아래처럼 정의돼 있다.\n1 2 3 4 5 typedef enum { GPIO_PIN_RESET = 0, GPIO_PIN_SET } GPIO_PinState; GPIOx-\u003eIDR \u0026 GPIO_Pin은 IDR 레지스터에서 특정 핀 비트만 마스킹해서 읽는 것이다. PC13이라면 GPIOC-\u003eIDR \u0026 (1 \u003c\u003c 13) 이 된다.\n그래서 1편에서 == GPIO_PIN_RESET으로 버튼 눌림을 판단한 게, 실제로는 IDR의 13번 비트가 0인지 확인하는 거다. Active Low 버튼이니까 눌렸을 때 핀이 GND로 당겨지고 → IDR 비트가 0 → GPIO_PIN_RESET 반환.\nHAL_GPIO_WritePin() 내부 1 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET); 소스를 열면 ODR이 아닌 BSRR(Bit Set/Reset Register) 을 쓰고 있다.\n1 2 3 4 5 6 7 8 9 10 11 void HAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState) { if (PinState != GPIO_PIN_RESET) { GPIOx-\u003eBSRR = GPIO_Pin; // Set: 하위 16비트에 핀 마스크 기록 } else { GPIOx-\u003eBSRR = (uint32_t)GPIO_Pin \u003c\u003c 16U; // Reset: 상위 16비트에 핀 마스크 기록 } } Set할 때는 GPIO_Pin(= 1 \u003c\u003c 5 = 0x0020)을 그대로 쓰고, Reset할 때는 GPIO_Pin \u003c\u003c 16(= 0x00200000)을 써서 상위 16비트에 넣는다.\nBSRR은 32비트 레지스터인데 상위/하위 16비트의 역할이 다르다.\n1 2 BSRR [31:16] → BR (Bit Reset): 해당 비트가 1이면 핀을 LOW로 BSRR [15:0] → BS (Bit Set) : 해당 비트가 1이면 핀을 HIGH로 동작 BSRR에 쓰는 값 예시 (PA5) PA5 HIGH GPIO_Pin 0x00000020 PA5 LOW GPIO_Pin \u003c\u003c 16 0x00200000 ODR은 “핀 상태 전체를 이 값으로 덮어써라\"이고, BSRR은 “이 핀만 Set해라” 또는 “이 핀만 Reset해라\"다. 건드리지 않을 핀은 0을 쓰면 그냥 무시된다.\n왜 HAL은 ODR 대신 BSRR을 쓰나 ODR로 특정 핀만 바꾸려면 이렇게 된다.\n1 GPIOA-\u003eODR |= (1 \u003c\u003c 5); // Read → Modify → Write 겉으로는 한 줄이지만 실제로는 세 단계다.\n1 2 3 ① ODR 읽기 (Read) ② 5번 비트 수정 (Modify) ③ ODR에 쓰기 (Write) 문제는 ①과 ③ 사이에 인터럽트가 끼어드는 경우다. 메인 루프에서 PA5를 SET하려는 도중, 인터럽트 핸들러가 PA6을 RESET했다고 하면:\n1 2 3 [메인] ODR 읽음 → PA5, PA6 모두 HIGH 상태 [인터럽트] PA6 RESET → ODR 반영됨 [메인 재개] Modify한 값 씀 → PA6이 다시 HIGH로 덮어씌워짐 인터럽트에서 바꾼 PA6 상태가 날아간다. 이게 Race Condition이다.\nBSRR은 Write 한 번으로 끝난다. 하드웨어가 해당 비트만 건드리기 때문에 Read → Modify → Write 과정 자체가 없다. 인터럽트가 끼어들 틈이 없다는 뜻이다. 이게 Atomic한 이유고, HAL이 BSRR을 쓰는 이유다.\n방식 동작 단계 인터럽트 안전 ODR |= Read → Modify → Write ❌ 위험 BSRR = Write ✅ 안전 (Atomic) 추후에 저런 Critical Section을 어떻게 관리해야 하는지도 따로 글을 써보려고 한다.\n레지스터 직접 접근 버전 HAL 없이 똑같이 동작하는 코드:\n1 2 3 4 5 6 7 8 9 10 11 while (1) { if (!(GPIOC-\u003eIDR \u0026 (1 \u003c\u003c 13))) // PC13 LOW = 버튼 눌림 { GPIOA-\u003eBSRR = (1 \u003c\u003c 5); // PA5 Set (LED ON) } else { GPIOA-\u003eBSRR = (1 \u003c\u003c 5) \u003c\u003c 16; // PA5 Reset (LED OFF) } } HAL은 결국 이걸 함수로 감싼 것뿐이다. 이걸 알고 쓰는 것과 모르고 쓰는 건, 뭔가 이상하게 동작할 때 어디서 파고들지가 달라진다.\n마무리 HAL로 간단한 동작을 구현하는 데 있어서는 충분하다. 함수 이름만 봐도 뭘 하는지 알 수 있고, 포팅도 쉽다.\n하지만 막상 뭔가 원하는 대로 안 동작할 때 얘기가 달라진다. 핀이 왜 안 켜지는지, 인터럽트에서 왜 상태가 깨지는지 — 이걸 파고들려면 결국 IDR이 뭘 읽고 있는지, BSRR에 어떤 값이 들어가고 있는지를 봐야 한다. HAL 함수 이름만 알고 있으면 그 아래서 멈추게 된다.\n레지스터 수준을 알고 쓰는 것과 모르고 쓰는 건, 코드가 잘 돌아갈 때는 차이가 없다. 차이는 안 돌아갈 때 난다.\n다음 글에서는 EXTI(External Interrupt) 를 통해 GPIO 입력을 인터럽트 방식으로 처리하는 방법을 정리할 예정이다. 폴링 방식과 어떻게 다른지, NVIC 설정은 어떻게 연결되는지까지 이어서 다룰 생각이다.\n",
-  "wordCount" : "778",
+  "articleBody": "1편에서는 GPIO의 구조와 내부 블록 다이어그램, 데이터시트 읽는 법까지 다뤘다. 마지막에는 아래 코드로 User Button을 눌렀을 때 LED가 켜지는 실습도 해봤는데,\n1 2 3 4 if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET) { HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET); } 사실 이 코드가 내부에서 뭘 하는지는 설명 안 하고 넘어갔다. HAL_GPIO_ReadPin()이 IDR을 읽는다는 건 알겠는데, 어떤 방식으로? HAL_GPIO_WritePin()은 왜 ODR 대신 BSRR을 쓰는 건지, 그리고 그게 왜 중요한지.\nHAL 소스 어떻게 보나 CubeIDE에서 함수에 커서를 올리고 F3 누르면 해당 함수 정의로 바로 이동한다. 또는 함수명에서 Ctrl + 클릭.\n파일 위치는 프로젝트마다 다르지만 보통 이쪽이다.\n1 2 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h 여기가 HAL GPIO 관련 로직이 다 모여있는 곳이다.\nHAL_GPIO_ReadPin() 내부 1편에서 쓴 코드:\n1 HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) F3 눌러서 소스 열어보면 이렇다.\n함수 본문은 생각보다 단순하다. IDR(Input Data Register) 에서 해당 핀 비트를 읽어서 반환하는 게 전부다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) { GPIO_PinState bitstatus; if ((GPIOx-\u003eIDR \u0026 GPIO_Pin) != (uint32_t)GPIO_PIN_RESET) { bitstatus = GPIO_PIN_SET; } else { bitstatus = GPIO_PIN_RESET; } return bitstatus; } 반환 타입인 GPIO_PinState는 stm32f4xx_hal_gpio.h에 아래처럼 정의돼 있다.\n1 2 3 4 5 typedef enum { GPIO_PIN_RESET = 0, GPIO_PIN_SET } GPIO_PinState; GPIOx-\u003eIDR \u0026 GPIO_Pin은 IDR 레지스터에서 특정 핀 비트만 마스킹해서 읽는 것이다. PC13이라면 GPIOC-\u003eIDR \u0026 (1 \u003c\u003c 13) 이 된다.\n그래서 1편에서 == GPIO_PIN_RESET으로 버튼 눌림을 판단한 게, 실제로는 IDR의 13번 비트가 0인지 확인하는 거다. Active Low 버튼이니까 눌렸을 때 핀이 GND로 당겨지고 → IDR 비트가 0 → GPIO_PIN_RESET 반환.\nHAL_GPIO_WritePin() 내부 1 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET); 소스를 열면 ODR이 아닌 BSRR(Bit Set/Reset Register) 을 쓰고 있다.\n1 2 3 4 5 6 7 8 9 10 11 void HAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState) { if (PinState != GPIO_PIN_RESET) { GPIOx-\u003eBSRR = GPIO_Pin; // Set: 하위 16비트에 핀 마스크 기록 } else { GPIOx-\u003eBSRR = (uint32_t)GPIO_Pin \u003c\u003c 16U; // Reset: 상위 16비트에 핀 마스크 기록 } } Set할 때는 GPIO_Pin(= 1 \u003c\u003c 5 = 0x0020)을 그대로 쓰고, Reset할 때는 GPIO_Pin \u003c\u003c 16(= 0x00200000)을 써서 상위 16비트에 넣는다.\nBSRR은 32비트 레지스터인데 상위/하위 16비트의 역할이 다르다.\n1 2 BSRR [31:16] → BR (Bit Reset): 해당 비트가 1이면 핀을 LOW로 BSRR [15:0] → BS (Bit Set) : 해당 비트가 1이면 핀을 HIGH로 동작 BSRR에 쓰는 값 예시 (PA5) PA5 HIGH GPIO_Pin 0x00000020 PA5 LOW GPIO_Pin \u003c\u003c 16 0x00200000 ODR은 “핀 상태 전체를 이 값으로 덮어써라\"이고, BSRR은 “이 핀만 Set해라” 또는 “이 핀만 Reset해라\"다. 건드리지 않을 핀은 0을 쓰면 그냥 무시된다.\n왜 HAL은 ODR 대신 BSRR을 쓰나 ODR로 특정 핀만 바꾸려면 이렇게 된다.\n1 GPIOA-\u003eODR |= (1 \u003c\u003c 5); // Read → Modify → Write 겉으로는 한 줄이지만 실제로는 세 단계다.\n1 2 3 ① ODR 읽기 (Read) ② 5번 비트 수정 (Modify) ③ ODR에 쓰기 (Write) 문제는 ①과 ③ 사이에 인터럽트가 끼어드는 경우다. 메인 루프에서 PA5를 SET하려는 도중, 인터럽트 핸들러가 PA6을 RESET했다고 하면:\n1 2 3 [메인] ODR 읽음 → PA5, PA6 모두 HIGH 상태 [인터럽트] PA6 RESET → ODR 반영됨 [메인 재개] Modify한 값 씀 → PA6이 다시 HIGH로 덮어씌워짐 인터럽트에서 바꾼 PA6 상태가 날아간다. 이게 Race Condition이다.\nBSRR은 Write 한 번으로 끝난다. 하드웨어가 해당 비트만 건드리기 때문에 Read → Modify → Write 과정 자체가 없다. 인터럽트가 끼어들 틈이 없다는 뜻이다. 이게 Atomic한 이유고, HAL이 BSRR을 쓰는 이유다.\n방식 동작 단계 인터럽트 안전 ODR |= Read → Modify → Write ❌ 위험 BSRR = Write ✅ 안전 (Atomic) 추후에 저런 Critical Section을 어떻게 관리해야 하는지도 따로 글을 써보려고 한다.\n레지스터 직접 접근 버전 HAL 없이 똑같이 동작하는 코드:\n1 2 3 4 5 6 7 8 9 10 11 while (1) { if (!(GPIOC-\u003eIDR \u0026 (1 \u003c\u003c 13))) // PC13 LOW = 버튼 눌림 { GPIOA-\u003eBSRR = (1 \u003c\u003c 5); // PA5 Set (LED ON) } else { GPIOA-\u003eBSRR = (1 \u003c\u003c 5) \u003c\u003c 16; // PA5 Reset (LED OFF) } } HAL은 결국 이걸 함수로 감싼 것뿐이다. 이걸 알고 쓰는 것과 모르고 쓰는 건, 뭔가 이상하게 동작할 때 어디서부터 파고들지가 달라진다.\nHAL로 간단한 동작을 구현하는 데 있어서는 충분하다. 함수 이름만 봐도 뭘 하는지 알 수 있고, 포팅도 쉽다.\n하지만 막상 뭔가 원하는 대로 안 동작할 때 얘기가 달라진다. 핀이 왜 안 켜지는지, 인터럽트에서 왜 상태가 깨지는지 — 이걸 파고들려면 결국 IDR이 뭘 읽고 있는지, BSRR에 어떤 값이 들어가고 있는지를 봐야 한다. HAL 함수 이름만 알고 있으면 거기서 막히게 된다.\n레지스터 수준을 알고 쓰는 것과 모르고 쓰는 건, 코드가 잘 돌아갈 때는 차이가 없다. 차이는 안 돌아갈 때 난다.\n",
+  "wordCount" : "719",
   "inLanguage": "en",
-  "datePublished": "2026-03-31T12:00:00+09:00",
-  "dateModified": "2026-03-31T12:00:00+09:00",
+  "datePublished": "2026-04-22T20:19:00+09:00",
+  "dateModified": "2026-04-22T20:19:00+09:00",
   "author":{
     "@type": "Person",
     "name": "서보민"
@@ -175,10 +184,38 @@
             </div>
         </div>
         <ul id="menu">
-            <li>
+            <li class="has-dropdown">
                 <a href="http://localhost:1313/categories/embedded/" title="Embedded">
-                    <span>Embedded</span>
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
                 </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
@@ -188,11 +225,6 @@
             <li>
                 <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
                     <span>Paper Review</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/notes/" title="Notes">
-                    <span>Notes</span>
                 </a>
             </li>
             <li>
@@ -210,13 +242,251 @@
 </header>
 <main class="main">
 
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link active">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/stm32/">STM32</a></div>
     <h1 class="post-title entry-hint-parent">
-      [STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어
+      HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어
     </h1>
-    <div class="post-meta"><span title='2026-03-31 12:00:00 +0900 KST'>March 31, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <div class="post-meta"><span title='2026-04-22 20:19:00 +0900 KST'>April 22, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
     <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/stm32/stm32-hal-gpio-internals.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
 </span>
 
@@ -234,7 +504,6 @@
     <li><a href="#hal_gpio_writepin-내부">HAL_GPIO_WritePin() 내부</a></li>
     <li><a href="#왜-hal은-odr-대신-bsrr을-쓰나">왜 HAL은 ODR 대신 BSRR을 쓰나</a></li>
     <li><a href="#레지스터-직접-접근-버전">레지스터 직접 접근 버전</a></li>
-    <li><a href="#마무리">마무리</a></li>
   </ul>
 </nav>
         </div>
@@ -257,9 +526,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>사실 이 코드가 내부에서 뭘 하는지는 설명 안 하고 넘어갔다. <code>HAL_GPIO_ReadPin()</code>이 IDR을 읽는다는 건 알겠는데, 어떤 방식으로? <code>HAL_GPIO_WritePin()</code>은 왜 ODR 대신 BSRR을 쓰는 건지, 그리고 그게 왜 중요한지.</p>
-<p>이번 편에서는 그 안을 직접 열어볼 거다. HAL 소스 코드를 뜯으면서 레지스터 레벨까지 내려가 보고, 마지막엔 HAL 없이 레지스터만으로 똑같이 구현해볼 거다.</p>
 <h2 id="hal-소스-어떻게-보나">HAL 소스 어떻게 보나<a hidden class="anchor" aria-hidden="true" href="#hal-소스-어떻게-보나">#</a></h2>
-<p>CubeIDE에서 함수에 커서 올리고 <strong>F3</strong> 누르면 해당 함수 정의로 바로 이동한다. 또는 함수명에서 <strong>Ctrl + 클릭</strong>.</p>
+<p>CubeIDE에서 함수에 커서를 올리고 <strong>F3</strong> 누르면 해당 함수 정의로 바로 이동한다. 또는 함수명에서 <strong>Ctrl + 클릭</strong>.</p>
 <p>파일 위치는 프로젝트마다 다르지만 보통 이쪽이다.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -271,7 +539,7 @@
 </span></span><span class="line"><span class="cl">Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>여기가 HAL GPIO 관련 로직이 다 모여있는 곳이다. 이걸 직접 열어서 1편 코드와 대조해보는 게 이번 포스트 목표다.</p>
+</div><p>여기가 HAL GPIO 관련 로직이 다 모여있는 곳이다.</p>
 <h2 id="hal_gpio_readpin-내부">HAL_GPIO_ReadPin() 내부<a hidden class="anchor" aria-hidden="true" href="#hal_gpio_readpin-내부">#</a></h2>
 <p>1편에서 쓴 코드:</p>
 <div class="highlight"><div class="chroma">
@@ -509,12 +777,10 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>HAL은 결국 이걸 함수로 감싼 것뿐이다. 이걸 알고 쓰는 것과 모르고 쓰는 건, 뭔가 이상하게 동작할 때 어디서 파고들지가 달라진다.</p>
-<h2 id="마무리">마무리<a hidden class="anchor" aria-hidden="true" href="#마무리">#</a></h2>
+</div><p>HAL은 결국 이걸 함수로 감싼 것뿐이다. 이걸 알고 쓰는 것과 모르고 쓰는 건, 뭔가 이상하게 동작할 때 어디서부터 파고들지가 달라진다.</p>
 <p>HAL로 간단한 동작을 구현하는 데 있어서는 충분하다. 함수 이름만 봐도 뭘 하는지 알 수 있고, 포팅도 쉽다.</p>
-<p>하지만 막상 뭔가 원하는 대로 안 동작할 때 얘기가 달라진다. 핀이 왜 안 켜지는지, 인터럽트에서 왜 상태가 깨지는지 — 이걸 파고들려면 결국 IDR이 뭘 읽고 있는지, BSRR에 어떤 값이 들어가고 있는지를 봐야 한다. HAL 함수 이름만 알고 있으면 그 아래서 멈추게 된다.</p>
-<p>레지스터 수준을 알고 쓰는 것과 모르고 쓰는 건, 코드가 잘 돌아갈 때는 차이가 없다. <strong>차이는 안 돌아갈 때 난다.</strong></p>
-<p>다음 글에서는 <strong>EXTI(External Interrupt)</strong> 를 통해 GPIO 입력을 인터럽트 방식으로 처리하는 방법을 정리할 예정이다. 폴링 방식과 어떻게 다른지, NVIC 설정은 어떻게 연결되는지까지 이어서 다룰 생각이다.</p>
+<p>하지만 막상 뭔가 원하는 대로 안 동작할 때 얘기가 달라진다. 핀이 왜 안 켜지는지, 인터럽트에서 왜 상태가 깨지는지 — 이걸 파고들려면 결국 IDR이 뭘 읽고 있는지, BSRR에 어떤 값이 들어가고 있는지를 봐야 한다. HAL 함수 이름만 알고 있으면 거기서 막히게 된다.</p>
+<p>레지스터 수준을 알고 쓰는 것과 모르고 쓰는 건, 코드가 잘 돌아갈 때는 차이가 없다. 차이는 안 돌아갈 때 난다.</p>
 
 
   </div>
@@ -533,12 +799,12 @@
   <a class="prev" href="http://localhost:1313/posts/atmega/atmega-code-review-intro/">
     <span class="title">« Prev</span>
     <br>
-    <span>[ATMEGA4809] 시작하며</span>
+    <span>시작하며</span>
   </a>
-  <a class="next" href="http://localhost:1313/posts/notes/first-note/">
+  <a class="next" href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/">
     <span class="title">Next »</span>
     <br>
-    <span>첫 번째 Notes 글</span>
+    <span>GPIO 기본개념 및 입출력 실습</span>
   </a>
 </nav>
 
@@ -562,6 +828,26 @@
 </div>
 
 </article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
     </main>
     
 <footer class="footer">

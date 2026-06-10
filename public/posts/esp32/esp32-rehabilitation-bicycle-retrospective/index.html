@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며 | bromine1997</title>
+<meta name="keywords" content="ESP32, 재활자전거, IoT, 헬스케어, 회고">
+<meta name="description" content="전자공학회 구두 발표까지 이어진 상하지 재활 자전거 모니터링 시스템 개발 과정을 연구 배경부터 시스템 설계, 기술적 선택, 한계까지 정리했다.">
+<meta name="author" content="서보민">
+<link rel="canonical" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
+<meta property="og:url" content="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/">
+  <meta property="og:site_name" content="bromine1997">
+  <meta property="og:title" content="상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며">
+  <meta property="og:description" content="전자공학회 구두 발표까지 이어진 상하지 재활 자전거 모니터링 시스템 개발 과정을 연구 배경부터 시스템 설계, 기술적 선택, 한계까지 정리했다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-06-05T21:22:00+09:00">
+    <meta property="article:modified_time" content="2026-06-05T21:22:00+09:00">
+    <meta property="article:tag" content="ESP32">
+    <meta property="article:tag" content="재활자전거">
+    <meta property="article:tag" content="IoT">
+    <meta property="article:tag" content="헬스케어">
+    <meta property="article:tag" content="회고">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며">
+  <meta name="twitter:description" content="전자공학회 구두 발표까지 이어진 상하지 재활 자전거 모니터링 시스템 개발 과정을 연구 배경부터 시스템 설계, 기술적 선택, 한계까지 정리했다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "ESP32",
+      "item": "http://localhost:1313/posts/esp32/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며",
+      "item": "http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며",
+  "name": "상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며",
+  "description": "전자공학회 구두 발표까지 이어진 상하지 재활 자전거 모니터링 시스템 개발 과정을 연구 배경부터 시스템 설계, 기술적 선택, 한계까지 정리했다.",
+  "keywords": [
+    "ESP32", "재활자전거", "IoT", "헬스케어", "회고"
+  ],
+  "articleBody": "이 시리즈는 하드웨어 설계부터 소프트웨어 구현까지 기술적인 내용을 중심으로 다뤘다. 마지막 편에서는 한 발 물러나서, 왜 이 시스템을 만들었는지, 무엇을 달성했고 어떤 한계가 있었는지를 정리한다. 의공학부 학부연구에서부터 전자공학회 구두 발표까지 이어졌다.\n왜 만들었는가 전 세계적인 고령화가 가속화되면서 근골격계 및 신경질환으로 인한 재활 환자 수가 늘고 있다. 국내 65세 이상 노인 인구 비율과 등록 장애인 수, 진료비 모두 꾸준히 증가하는 추세다.\n재활 치료의 핵심 변수는 강도(Intensity)와 반복 횟수다. 그러나 기존 재활 프로그램은 인력과 시간의 제약 속에서 표준화된 프로토콜에 의존해왔다. 치료 강도와 반복 훈련에 관한 선행 연구들도 정의와 치료 구성의 다양성으로 인해 근거가 부족한 상황이다. 환자 개인의 특성을 반영한 맞춤형 프로토콜을 적용하기 어렵다는 것이 기존 시스템의 한계였다.\n이 프로젝트가 목표로 한 것은 세 가지다:\n원격 모니터링: 전문 인력 없이도 운동 상태를 실시간으로 확인할 수 있게 데이터 수집: 치료 계획 수립에 활용할 수 있는 정량적 데이터 확보 개별화: 강도와 반복도를 데이터 기반으로 조절할 수 있는 가능성 제시 상하지 재활 자전거란 상하지 재활 자전거는 페달과 핸들이 링크 장치로 연결되어 있다. 한 곳에 힘을 주면 나머지 관절도 함께 회전운동을 한다. 한 손이나 한 발의 움직임만으로도 전신 운동이 가능해, 편마비 환자에게도 적용할 수 있다.\n고령자부터 고위험군 질환 환자를 대상으로 하며, 환측 관절의 가동 범위 증진, 근력 및 지구력 강화, 심폐기능 증진을 목적으로 사용된다.\n시스템 구성 하드웨어와 소프트웨어 각각의 선택에 대한 상세한 이유는 이 시리즈의 앞선 편들에서 다뤘다. 여기서는 전체 구성을 한 번에 정리한다.\n하드웨어\n부품 역할 ESP32 Feather V2 MCU, Wi-Fi 통신, 웹서버 Load Cell × 4 팔·다리 각 부위에 작용하는 힘 측정 ADS1232 × 4 24-bit ADC, 최대 80 SPS AS5600 자기 엔코더, 크랭크 회전 각도 측정 NeoPixel 운동 상태 시각적 피드백 소프트웨어 핵심 구조\nSPIFFS (1.5 MB): HTML, JavaScript, CSS 파일 저장. 웹 UI 수정 시 펌웨어 재업로드 불필요 PSRAM (8 MB): 측정 데이터를 패킷 단위로 버퍼링. 최대 36분 분량 저장 가능 ESPAsyncWebServer + WebSocket: 비동기 웹서버로 샘플링을 유지하면서 실시간 데이터 전송 EEPROM: Wi-Fi 자격증명과 센서 오프셋을 비휘발성으로 저장 기술적 선택들을 돌아보며 이 시리즈를 쓰면서 당시 선택들을 다시 들여다봤다. 몇 가지는 명확한 이유가 있었고, 몇 가지는 시간이 지나도 이유가 기억나지 않았다.\n명확했던 것: Hardware SPI 대신 GPIO 인터럽트를 쓴 이유는 4채널 동시 수집 때문이었다. SPI는 MISO가 하나라 순차 읽기만 가능해 채널 간 시간 오차가 생긴다. ISR로 4개 핀을 동시에 읽으면 이 문제가 없다.\n아쉬웠던 것들\n게인을 코드에 하드코딩: 캘리브레이션 게인이 #define 상수로 박혀 있어, 로드셀을 교체하거나 재설치하면 코드를 수정하고 다시 플래시해야 한다. 오프셋처럼 게인도 EEPROM에 저장하고 현장에서 업데이트할 수 있는 구조였으면 더 실용적이었을 것이다.\n타임스탬프 없는 데이터: 저장되는 sensors 구조체에 타임스탬프가 없다. 40 SPS가 항상 일정하다는 가정 하에 인덱스로 시간을 역산하는 방식인데, 루프 지연이나 처리 부하로 샘플 간격이 흔들리면 시간 정보가 어긋난다.\n전송 안정성: 바이너리 청크 전송에 체크섬이 없다. 연결이 불안정한 환경에서 데이터 일부가 손상되거나 유실돼도 감지할 방법이 없다. 연구 목적의 프로토타입 수준에서는 감수할 수 있지만, 실제 임상 환경에서 쓰려면 보완이 필요한 부분이다.\nOTA 업데이트 미지원: 펌웨어 수정 시 USB 케이블을 직접 연결해야 한다. 병원이나 재활 시설에 장비가 배치된 상황이라면 매번 회수하거나 엔지니어가 방문해야 한다. ESP32는 OTA를 지원하므로 처음부터 구현했으면 운용이 훨씬 편했을 것이다.\n저항 조절 없음: 이 시스템은 페달 부하를 측정하기만 할 뿐 조절하지는 못한다. 자전거 자체가 수동 저항 방식이라 강도를 바꾸려면 사람이 직접 다이얼을 돌려야 했다. 만약 전기적으로 저항을 제어할 수 있는 하드웨어였다면, 펌웨어에서 측정값을 보면서 강도를 자동으로 조절하는 구조까지 갈 수 있었을 것이다.\n캘리브레이션 1 kg, 3 kg, 5 kg 분동으로 각 로드셀의 게인을 측정했다. 스트레인 게이지의 선형 특성을 이용해 원점을 통과하는 직선의 기울기를 구하고, 엑셀 추세선으로 최종 게인을 산출했다.\n영점은 버튼 하나로 현장에서 바로 잡을 수 있도록 설계했다. EEPROM에 저장하기 때문에 전원을 꺼도 오프셋이 유지된다.\n결론 이 시스템이 제시하는 것은 다음과 같다:\n원격 모니터링과 실시간 데이터 접근성을 통해 전문 인력 부족 문제를 부분적으로 완화할 수 있다 환자의 이동 부담과 경제적 부담을 줄일 수 있다 수집된 데이터를 바탕으로 개별화된 치료 프로그램을 수립하는 가능성을 제시한다 다만 이 시스템 단독으로 임상적 유효성을 검증하기에는 한계가 있다. 측정 데이터가 실제 재활 효과와 어떻게 연결되는지, 어떤 지표가 의미 있는지는 후속 연구가 필요한 부분이다.\n느낀 점 학부 과정에서 진행한 첫 번째 프로젝트였다. 회로를 직접 설계하고 소자를 선택하고 납땜까지 혼자 해본 것도 처음이었다.\n처음에는 브레드보드로 시작했다. 회로가 동작은 했지만 노이즈가 심해서 로드셀 데이터가 심하게 흔들렸다. 접촉 저항과 긴 점프선이 아날로그 신호에 그대로 실렸다. 결국 만능기판에 납땜하기로 했다.\n처음 만든 기판은 넓었다. 배선이 많으니 여유 있게 쓴 게 당연하다고 생각했는데, 지도교수님께 노이즈가 많이 탄다는 피드백을 받았다. 배선이 길수록 안테나처럼 동작해 외부 노이즈를 더 잘 잡는다.\nADS1232 보드를 일렬로 배치한 첫 번째 버전. 배선이 길고 레이아웃이 비효율적이었다.\n부품 간 거리를 최대한 줄이고, ESP32를 중앙에 두고 ADS1232 4개를 상하좌우 대칭으로 재배치했다. 신호선과 전원선을 분리하고, 다시 만들었다.\n대칭 배치로 배선 길이를 균일하게 줄인 수정본. 노이즈가 눈에 띄게 줄었다.\n소형화된 기판에 납땜하는 건 생각보다 훨씬 어려웠다. 인두를 오래 대고 있으면 피복이 녹았고, 좁은 패드에 납이 번지면 옆 선과 쇼트가 났다. 몇 번을 다시 뜯어내고 다시 납땜했다. 교과서에서 배운 회로 이론과 실제로 납땜 인두를 잡고 앉아있는 것은 완전히 다른 영역이었다.\n캘리브레이션도 처음 해봤다. 센서에서 숫자가 나온다는 건 알았지만, 그 숫자가 실제 물리량과 어떻게 대응되는지는 막연했다. 분동을 올려놓고 raw 값을 읽어서 기울기를 구하고, 그게 kg으로 변환되는 과정을 직접 해보면서 ADC 출력이 어떻게 의미 있는 값이 되는지 처음으로 이해했다. 센서를 쓴다는 것이 단순히 라이브러리를 호출하는 게 아니라는 걸 그때 알았다.\n소프트웨어만 공부하던 시점에서, 하드웨어와 소프트웨어가 만나는 지점에서 직접 무언가를 만들어본 경험이었다. 납땜 불량으로 신호가 끊기거나, 배선 실수로 부팅이 안 되거나, 이런 것들을 겪으면서 임베디드 시스템이 왜 까다로운지 몸으로 배웠다.\n이 시리즈를 통해 하드웨어 설계부터 ISR, PSRAM, 캘리브레이션, WebSocket, 데이터 저장까지 전 과정을 기록했다. 코드를 다시 뜯어보며 당시에 왜 그렇게 했는지 기억나는 것, 기억나지 않는 것을 모두 포함해서 썼다. 완벽한 시스템은 아니었지만, 문제를 정의하고 제한된 자원 안에서 동작하는 시스템을 만들었다는 것으로 충분하다고 생각한다.\n",
+  "wordCount" : "896",
+  "inLanguage": "en",
+  "datePublished": "2026-06-05T21:22:00+09:00",
+  "dateModified": "2026-06-05T21:22:00+09:00",
+  "author":{
+    "@type": "Person",
+    "name": "서보민"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "bromine1997",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li class="has-dropdown">
+                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                    <span>Algorithm</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                    <span>Paper Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link active">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/esp32/">ESP32</a></div>
+    <h1 class="post-title entry-hint-parent">
+      상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며
+    </h1>
+    <div class="post-meta"><span title='2026-06-05 21:22:00 +0900 KST'>June 5, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/esp32/esp32-rehabilitation-bicycle-retrospective.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
+</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#왜-만들었는가">왜 만들었는가</a></li>
+    <li><a href="#상하지-재활-자전거란">상하지 재활 자전거란</a></li>
+    <li><a href="#시스템-구성">시스템 구성</a></li>
+    <li><a href="#기술적-선택들을-돌아보며">기술적 선택들을 돌아보며</a></li>
+    <li><a href="#캘리브레이션">캘리브레이션</a></li>
+    <li><a href="#결론">결론</a></li>
+    <li><a href="#느낀-점">느낀 점</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>이 시리즈는 하드웨어 설계부터 소프트웨어 구현까지 기술적인 내용을 중심으로 다뤘다. 마지막 편에서는 한 발 물러나서, 왜 이 시스템을 만들었는지, 무엇을 달성했고 어떤 한계가 있었는지를 정리한다. 의공학부 학부연구에서부터 전자공학회 구두 발표까지 이어졌다.</p>
+<h2 id="왜-만들었는가">왜 만들었는가<a hidden class="anchor" aria-hidden="true" href="#왜-만들었는가">#</a></h2>
+<p>전 세계적인 고령화가 가속화되면서 근골격계 및 신경질환으로 인한 재활 환자 수가 늘고 있다. 국내 65세 이상 노인 인구 비율과 등록 장애인 수, 진료비 모두 꾸준히 증가하는 추세다.</p>
+<p>재활 치료의 핵심 변수는 강도(Intensity)와 반복 횟수다. 그러나 기존 재활 프로그램은 인력과 시간의 제약 속에서 표준화된 프로토콜에 의존해왔다. 치료 강도와 반복 훈련에 관한 선행 연구들도 정의와 치료 구성의 다양성으로 인해 근거가 부족한 상황이다. 환자 개인의 특성을 반영한 맞춤형 프로토콜을 적용하기 어렵다는 것이 기존 시스템의 한계였다.</p>
+<p>이 프로젝트가 목표로 한 것은 세 가지다:</p>
+<ul>
+<li><strong>원격 모니터링</strong>: 전문 인력 없이도 운동 상태를 실시간으로 확인할 수 있게</li>
+<li><strong>데이터 수집</strong>: 치료 계획 수립에 활용할 수 있는 정량적 데이터 확보</li>
+<li><strong>개별화</strong>: 강도와 반복도를 데이터 기반으로 조절할 수 있는 가능성 제시</li>
+</ul>
+<h2 id="상하지-재활-자전거란">상하지 재활 자전거란<a hidden class="anchor" aria-hidden="true" href="#상하지-재활-자전거란">#</a></h2>
+<p>상하지 재활 자전거는 페달과 핸들이 링크 장치로 연결되어 있다. 한 곳에 힘을 주면 나머지 관절도 함께 회전운동을 한다. 한 손이나 한 발의 움직임만으로도 전신 운동이 가능해, 편마비 환자에게도 적용할 수 있다.</p>
+<p>고령자부터 고위험군 질환 환자를 대상으로 하며, 환측 관절의 가동 범위 증진, 근력 및 지구력 강화, 심폐기능 증진을 목적으로 사용된다.</p>
+<h2 id="시스템-구성">시스템 구성<a hidden class="anchor" aria-hidden="true" href="#시스템-구성">#</a></h2>
+<p>하드웨어와 소프트웨어 각각의 선택에 대한 상세한 이유는 이 시리즈의 앞선 편들에서 다뤘다. 여기서는 전체 구성을 한 번에 정리한다.</p>
+<p><img alt="시스템 다이어그램" loading="lazy" src="/images/esp32/rehab-system-diagram.png"></p>
+<p><strong>하드웨어</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>부품</th>
+          <th>역할</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>ESP32 Feather V2</td>
+          <td>MCU, Wi-Fi 통신, 웹서버</td>
+      </tr>
+      <tr>
+          <td>Load Cell × 4</td>
+          <td>팔·다리 각 부위에 작용하는 힘 측정</td>
+      </tr>
+      <tr>
+          <td>ADS1232 × 4</td>
+          <td>24-bit ADC, 최대 80 SPS</td>
+      </tr>
+      <tr>
+          <td>AS5600</td>
+          <td>자기 엔코더, 크랭크 회전 각도 측정</td>
+      </tr>
+      <tr>
+          <td>NeoPixel</td>
+          <td>운동 상태 시각적 피드백</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>소프트웨어 핵심 구조</strong></p>
+<ul>
+<li><strong>SPIFFS</strong> (1.5 MB): HTML, JavaScript, CSS 파일 저장. 웹 UI 수정 시 펌웨어 재업로드 불필요</li>
+<li><strong>PSRAM</strong> (8 MB): 측정 데이터를 패킷 단위로 버퍼링. 최대 36분 분량 저장 가능</li>
+<li><strong>ESPAsyncWebServer + WebSocket</strong>: 비동기 웹서버로 샘플링을 유지하면서 실시간 데이터 전송</li>
+<li><strong>EEPROM</strong>: Wi-Fi 자격증명과 센서 오프셋을 비휘발성으로 저장</li>
+</ul>
+<h2 id="기술적-선택들을-돌아보며">기술적 선택들을 돌아보며<a hidden class="anchor" aria-hidden="true" href="#기술적-선택들을-돌아보며">#</a></h2>
+<p>이 시리즈를 쓰면서 당시 선택들을 다시 들여다봤다. 몇 가지는 명확한 이유가 있었고, 몇 가지는 시간이 지나도 이유가 기억나지 않았다.</p>
+<p><strong>명확했던 것</strong>: Hardware SPI 대신 GPIO 인터럽트를 쓴 이유는 4채널 동시 수집 때문이었다. SPI는 MISO가 하나라 순차 읽기만 가능해 채널 간 시간 오차가 생긴다. ISR로 4개 핀을 동시에 읽으면 이 문제가 없다.</p>
+<p><strong>아쉬웠던 것들</strong></p>
+<p><em>게인을 코드에 하드코딩</em>: 캘리브레이션 게인이 <code>#define</code> 상수로 박혀 있어, 로드셀을 교체하거나 재설치하면 코드를 수정하고 다시 플래시해야 한다. 오프셋처럼 게인도 EEPROM에 저장하고 현장에서 업데이트할 수 있는 구조였으면 더 실용적이었을 것이다.</p>
+<p><em>타임스탬프 없는 데이터</em>: 저장되는 <code>sensors</code> 구조체에 타임스탬프가 없다. 40 SPS가 항상 일정하다는 가정 하에 인덱스로 시간을 역산하는 방식인데, 루프 지연이나 처리 부하로 샘플 간격이 흔들리면 시간 정보가 어긋난다.</p>
+<p><em>전송 안정성</em>: 바이너리 청크 전송에 체크섬이 없다. 연결이 불안정한 환경에서 데이터 일부가 손상되거나 유실돼도 감지할 방법이 없다. 연구 목적의 프로토타입 수준에서는 감수할 수 있지만, 실제 임상 환경에서 쓰려면 보완이 필요한 부분이다.</p>
+<p><em>OTA 업데이트 미지원</em>: 펌웨어 수정 시 USB 케이블을 직접 연결해야 한다. 병원이나 재활 시설에 장비가 배치된 상황이라면 매번 회수하거나 엔지니어가 방문해야 한다. ESP32는 OTA를 지원하므로 처음부터 구현했으면 운용이 훨씬 편했을 것이다.</p>
+<p><em>저항 조절 없음</em>: 이 시스템은 페달 부하를 측정하기만 할 뿐 조절하지는 못한다. 자전거 자체가 수동 저항 방식이라 강도를 바꾸려면 사람이 직접 다이얼을 돌려야 했다. 만약 전기적으로 저항을 제어할 수 있는 하드웨어였다면, 펌웨어에서 측정값을 보면서 강도를 자동으로 조절하는 구조까지 갈 수 있었을 것이다.</p>
+<h2 id="캘리브레이션">캘리브레이션<a hidden class="anchor" aria-hidden="true" href="#캘리브레이션">#</a></h2>
+<p>1 kg, 3 kg, 5 kg 분동으로 각 로드셀의 게인을 측정했다. 스트레인 게이지의 선형 특성을 이용해 원점을 통과하는 직선의 기울기를 구하고, 엑셀 추세선으로 최종 게인을 산출했다.</p>
+<p>영점은 버튼 하나로 현장에서 바로 잡을 수 있도록 설계했다. EEPROM에 저장하기 때문에 전원을 꺼도 오프셋이 유지된다.</p>
+<h2 id="결론">결론<a hidden class="anchor" aria-hidden="true" href="#결론">#</a></h2>
+<p>이 시스템이 제시하는 것은 다음과 같다:</p>
+<ul>
+<li>원격 모니터링과 실시간 데이터 접근성을 통해 전문 인력 부족 문제를 부분적으로 완화할 수 있다</li>
+<li>환자의 이동 부담과 경제적 부담을 줄일 수 있다</li>
+<li>수집된 데이터를 바탕으로 개별화된 치료 프로그램을 수립하는 가능성을 제시한다</li>
+</ul>
+<p>다만 이 시스템 단독으로 임상적 유효성을 검증하기에는 한계가 있다. 측정 데이터가 실제 재활 효과와 어떻게 연결되는지, 어떤 지표가 의미 있는지는 후속 연구가 필요한 부분이다.</p>
+<h2 id="느낀-점">느낀 점<a hidden class="anchor" aria-hidden="true" href="#느낀-점">#</a></h2>
+<p>학부 과정에서 진행한 첫 번째 프로젝트였다. 회로를 직접 설계하고 소자를 선택하고 납땜까지 혼자 해본 것도 처음이었다.</p>
+<p>처음에는 브레드보드로 시작했다. 회로가 동작은 했지만 노이즈가 심해서 로드셀 데이터가 심하게 흔들렸다. 접촉 저항과 긴 점프선이 아날로그 신호에 그대로 실렸다. 결국 만능기판에 납땜하기로 했다.</p>
+<p>처음 만든 기판은 넓었다. 배선이 많으니 여유 있게 쓴 게 당연하다고 생각했는데, 지도교수님께 노이즈가 많이 탄다는 피드백을 받았다. 배선이 길수록 안테나처럼 동작해 외부 노이즈를 더 잘 잡는다.</p>
+<p><img alt="1차 기판" loading="lazy" src="/images/esp32/rehab-pcb-board-v1.jpeg">
+<em>ADS1232 보드를 일렬로 배치한 첫 번째 버전. 배선이 길고 레이아웃이 비효율적이었다.</em></p>
+<p>부품 간 거리를 최대한 줄이고, ESP32를 중앙에 두고 ADS1232 4개를 상하좌우 대칭으로 재배치했다. 신호선과 전원선을 분리하고, 다시 만들었다.</p>
+<p><img alt="2차 기판" loading="lazy" src="/images/esp32/rehab-pcb-board.jpeg">
+<em>대칭 배치로 배선 길이를 균일하게 줄인 수정본. 노이즈가 눈에 띄게 줄었다.</em></p>
+<p>소형화된 기판에 납땜하는 건 생각보다 훨씬 어려웠다. 인두를 오래 대고 있으면 피복이 녹았고, 좁은 패드에 납이 번지면 옆 선과 쇼트가 났다. 몇 번을 다시 뜯어내고 다시 납땜했다. 교과서에서 배운 회로 이론과 실제로 납땜 인두를 잡고 앉아있는 것은 완전히 다른 영역이었다.</p>
+<p>캘리브레이션도 처음 해봤다. 센서에서 숫자가 나온다는 건 알았지만, 그 숫자가 실제 물리량과 어떻게 대응되는지는 막연했다. 분동을 올려놓고 raw 값을 읽어서 기울기를 구하고, 그게 kg으로 변환되는 과정을 직접 해보면서 ADC 출력이 어떻게 의미 있는 값이 되는지 처음으로 이해했다. 센서를 쓴다는 것이 단순히 라이브러리를 호출하는 게 아니라는 걸 그때 알았다.</p>
+<p>소프트웨어만 공부하던 시점에서, 하드웨어와 소프트웨어가 만나는 지점에서 직접 무언가를 만들어본 경험이었다. 납땜 불량으로 신호가 끊기거나, 배선 실수로 부팅이 안 되거나, 이런 것들을 겪으면서 임베디드 시스템이 왜 까다로운지 몸으로 배웠다.</p>
+<hr>
+<p>이 시리즈를 통해 하드웨어 설계부터 ISR, PSRAM, 캘리브레이션, WebSocket, 데이터 저장까지 전 과정을 기록했다. 코드를 다시 뜯어보며 당시에 왜 그렇게 했는지 기억나는 것, 기억나지 않는 것을 모두 포함해서 썼다. 완벽한 시스템은 아니었지만, 문제를 정의하고 제한된 자원 안에서 동작하는 시스템을 만들었다는 것으로 충분하다고 생각한다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/esp32/">ESP32</a></li>
+      <li><a href="http://localhost:1313/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/">재활자전거</a></li>
+      <li><a href="http://localhost:1313/tags/iot/">IoT</a></li>
+      <li><a href="http://localhost:1313/tags/%ED%97%AC%EC%8A%A4%EC%BC%80%EC%96%B4/">헬스케어</a></li>
+      <li><a href="http://localhost:1313/tags/%ED%9A%8C%EA%B3%A0/">회고</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+  </a>
+</nav>
+
+  </footer><div class="comments">
+  <script src="https://giscus.app/client.js"
+    data-repo="bromine1997/bromine1997.github.io"
+    data-repo-id="R_kgDOR1bAsg"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOR1bAss4C52wg"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="ko"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+
+</article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

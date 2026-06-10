@@ -6,12 +6,12 @@
     <description>Recent content in 데이터수집 on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 03 Apr 2026 01:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 23 May 2026 20:53:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%88%98%EC%A7%91/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조</title>
+      <title>PSRAM 버퍼링과 센서 데이터 저장 구조</title>
       <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</link>
-      <pubDate>Fri, 03 Apr 2026 01:00:00 +0900</pubDate>
+      <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</guid>
       <description>40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.</description>
     </item>

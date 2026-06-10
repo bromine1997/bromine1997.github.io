@@ -6,41 +6,34 @@
     <description>Recent content in Categories on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 08 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jun 2026 23:00:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Algorithm</title>
-      <link>http://localhost:1313/categories/algorithm/</link>
-      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/categories/algorithm/</guid>
+      <title>Embedded</title>
+      <link>http://localhost:1313/categories/embedded/</link>
+      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/categories/embedded/</guid>
       <description></description>
     </item>
     <item>
       <title>Embedded Basic</title>
       <link>http://localhost:1313/categories/embedded-basic/</link>
-      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
       <guid>http://localhost:1313/categories/embedded-basic/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Embedded</title>
-      <link>http://localhost:1313/categories/embedded/</link>
-      <pubDate>Fri, 03 Apr 2026 02:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/categories/embedded/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Notes</title>
-      <link>http://localhost:1313/categories/notes/</link>
-      <pubDate>Tue, 31 Mar 2026 12:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/categories/notes/</guid>
       <description></description>
     </item>
     <item>
       <title>Paper Review</title>
       <link>http://localhost:1313/categories/paper-review/</link>
-      <pubDate>Tue, 31 Mar 2026 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 16 May 2026 20:31:00 +0900</pubDate>
       <guid>http://localhost:1313/categories/paper-review/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Algorithm</title>
+      <link>http://localhost:1313/categories/algorithm/</link>
+      <pubDate>Wed, 15 Apr 2026 20:08:00 +0900</pubDate>
+      <guid>http://localhost:1313/categories/algorithm/</guid>
       <description></description>
     </item>
   </channel>

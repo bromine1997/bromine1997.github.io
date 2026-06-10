@@ -6,12 +6,12 @@
     <description>Recent content in Ziegler-Nichols on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 21 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 May 2026 20:49:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/ziegler-nichols/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[Paper Review] Optimum Settings for Automatic Controllers</title>
+      <title>Optimum Settings for Automatic Controllers</title>
       <link>http://localhost:1313/posts/paper-review/zn-paper-review/</link>
-      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 06 May 2026 20:49:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/paper-review/zn-paper-review/</guid>
       <description>PID 제어기의 최적 파라미터를 실험적으로 결정하는 Z-N 튜닝 방법을 제안한 1942년 고전 논문. Ultimate sensitivity와 process reaction curve 두 가지 방법을 통해 현장에서 빠르게 최적 설정을 도출하는 절차를 제시한다.</description>
     </item>

@@ -6,12 +6,12 @@
     <description>Recent content in C on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 08 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Apr 2026 20:08:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/c/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[자료구조] 1편 - 배열과 동적 배열: 메모리를 직접 다루다</title>
+      <title>자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</title>
       <link>http://localhost:1313/posts/algorithm/algorithm-01-array/</link>
-      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 15 Apr 2026 20:08:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/algorithm/algorithm-01-array/</guid>
       <description>int arr[10]부터 malloc()을 이용한 동적 배열까지. C언어에서 데이터를 저장하는 가장 기본적인 방법과 메모리 구조를 정리한다.</description>
     </item>

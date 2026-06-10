@@ -6,19 +6,19 @@
     <description>Recent content in Register on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 31 Mar 2026 12:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 20:19:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/register/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</title>
+      <title>HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</title>
       <link>http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/</link>
-      <pubDate>Tue, 31 Mar 2026 12:00:00 +0900</pubDate>
+      <pubDate>Wed, 22 Apr 2026 20:19:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/</guid>
       <description>HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글</description>
     </item>
     <item>
-      <title>[STM32] GPIO 기본개념 및 입출력 실습</title>
+      <title>GPIO 기본개념 및 입출력 실습</title>
       <link>http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/</link>
-      <pubDate>Mon, 16 Mar 2026 22:56:00 +0900</pubDate>
+      <pubDate>Sat, 18 Apr 2026 20:42:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/</guid>
       <description>GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 실습한 글</description>
     </item>

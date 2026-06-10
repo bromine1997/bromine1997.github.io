@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라 | bromine1997</title>
+<meta name="keywords" content="embedded, ARM, Cortex-M, interrupt, NVIC, ISR, STM32, volatile">
+<meta name="description" content="폴링과 인터럽트의 차이, Cortex-M NVIC 구조와 우선순위 시스템, volatile 키워드의 필요성까지 인터럽트의 핵심 개념을 정리한다.">
+<meta name="author" content="서보민">
+<link rel="canonical" href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
+<meta property="og:url" content="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/">
+  <meta property="og:site_name" content="bromine1997">
+  <meta property="og:title" content="임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라">
+  <meta property="og:description" content="폴링과 인터럽트의 차이, Cortex-M NVIC 구조와 우선순위 시스템, volatile 키워드의 필요성까지 인터럽트의 핵심 개념을 정리한다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-05-28T20:38:00+09:00">
+    <meta property="article:modified_time" content="2026-05-28T20:38:00+09:00">
+    <meta property="article:tag" content="Embedded">
+    <meta property="article:tag" content="ARM">
+    <meta property="article:tag" content="Cortex-M">
+    <meta property="article:tag" content="Interrupt">
+    <meta property="article:tag" content="NVIC">
+    <meta property="article:tag" content="ISR">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라">
+  <meta name="twitter:description" content="폴링과 인터럽트의 차이, Cortex-M NVIC 구조와 우선순위 시스템, volatile 키워드의 필요성까지 인터럽트의 핵심 개념을 정리한다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "임베디드 기초",
+      "item": "http://localhost:1313/posts/basics/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라",
+      "item": "http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라",
+  "name": "임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라",
+  "description": "폴링과 인터럽트의 차이, Cortex-M NVIC 구조와 우선순위 시스템, volatile 키워드의 필요성까지 인터럽트의 핵심 개념을 정리한다.",
+  "keywords": [
+    "embedded", "ARM", "Cortex-M", "interrupt", "NVIC", "ISR", "STM32", "volatile"
+  ],
+  "articleBody": "들어가며 4편에서 벡터 테이블을 다뤘다. [0]은 MSP, [1]은 Reset_Handler 주소였고, 나머지 항목들(NMI_Handler, HardFault_Handler, TIM2_IRQHandler…)은 그냥 지나쳤다.\n이것들이 전부 인터럽트 핸들러다. 임베디드 코드의 상당 부분이 이 핸들러들 안에서 돌아간다.\n폴링 vs 인터럽트 외부 이벤트(버튼 입력, 센서 데이터 도착 등)를 처리하는 방법은 두 가지다.\n폴링 (Polling) 1 2 3 4 5 6 while (1) { if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET) { // 버튼 눌림 처리 } do_something_else(); } CPU가 주기적으로 상태를 직접 확인한다. CPU가 루프를 돌며 GPIO를 계속 읽어야 하고, 짧은 펄스나 빠른 이벤트를 놓칠 수 있다. 확인할 이벤트가 늘어날수록 반응 속도도 느려진다.\n인터럽트 (Interrupt) 하드웨어가 이벤트 발생 시 CPU에게 직접 신호를 보낸다. CPU는 하던 작업을 멈추고 핸들러를 실행한 뒤 원래 위치로 돌아온다.\n1 2 3 4 5 6 7 8 9 10 11 메인 코드 실행 중 ↓ 이벤트 발생 (버튼, UART 수신, 타이머 만료...) ↓ 하드웨어가 CPU에 인터럽트 신호 전달 ↓ CPU: 현재 컨텍스트 저장 (PC, xPSR, R0-R3, R12, LR) ↓ 벡터 테이블에서 핸들러 주소 읽기 → 핸들러 실행 ↓ 핸들러 완료 → 컨텍스트 복원 → 원래 코드로 복귀 Cortex-M은 컨텍스트 저장/복원을 하드웨어가 자동으로 처리한다. 핸들러는 일반 C 함수처럼 작성하면 된다.\nCortex-M 예외 모델 4편에서 벡터 테이블의 항목이 예외 번호(exception number) 순으로 배치된다고 설명했다.\n예외(Exception) 는 인터럽트를 포함하는 더 넓은 개념이다.\n예외 번호 이름 발생 원인 1 Reset 전원 인가, 리셋 핀 2 NMI Non-Maskable Interrupt — 무조건 처리 3 HardFault 처리되지 않은 예외의 에스컬레이션 4 MemManage MPU 위반 5 BusFault 버스 접근 오류 6 UsageFault 미정의 명령어, 정렬 오류 등 11 SVCall SVC 명령어 (RTOS에서 시스템 콜) 14 PendSV RTOS 컨텍스트 스위칭 15 SysTick 시스템 타이머 (HAL_Delay 기반) 16+ IRQ0~ 외부 주변장치 인터럽트 (UART, TIM, EXTI…) 예외 번호 16번부터가 MCU 제조사가 정의하는 영역이다. STM32F4에서 EXTI0는 IRQ 6번(예외 번호 22번)이다.\nNVIC (Nested Vectored Interrupt Controller) 모든 인터럽트는 NVIC를 통해 관리된다. Cortex-M 코어에 내장된 하드웨어 모듈이다.\n인터럽트 활성화 1 2 3 4 5 6 7 // HAL 방식 HAL_NVIC_SetPriority(EXTI0_IRQn, 1, 0); HAL_NVIC_EnableIRQ(EXTI0_IRQn); // 레지스터 직접 접근 (CMSIS) NVIC_SetPriority(EXTI0_IRQn, 1); NVIC_EnableIRQ(EXTI0_IRQn); 활성화하지 않ㄱ으면 인터럽트 요청이 발생해도 CPU가 처리하지 않는다.\n우선순위 STM32F4는 4비트(0~15단계) 우선순위를 사용한다. 숫자가 낮을수록 우선순위가 높다.\n1 2 3 HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0); // 가장 높음 HAL_NVIC_SetPriority(USART1_IRQn, 5, 0); HAL_NVIC_SetPriority(TIM2_IRQn, 15, 0); // 가장 낮음 우선순위는 두 부분으로 나뉜다.\nPreemption Priority: 현재 실행 중인 핸들러를 중단하고 끼어들 수 있는지 결정 Sub-Priority: 같은 Preemption Priority에서 대기 중인 인터럽트들의 처리 순서 1 2 3 4 5 // 상위 2비트 = Preemption, 하위 2비트 = Sub HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_2); HAL_NVIC_SetPriority(EXTI0_IRQn, 1, 0); // preemption=1 HAL_NVIC_SetPriority(USART1_IRQn, 2, 0); // preemption=2 USART1 핸들러 실행 중 EXTI0 인터럽트가 발생하면? EXTI0의 Preemption Priority(1)가 더 높으므로 USART1을 중단하고 EXTI0를 먼저 처리한다. 이것이 Nested(중첩) 인터럽트다.\n인터럽트 핸들러 작성 EXTI (외부 핀 인터럽트) 1 2 3 4 5 6 7 8 9 10 11 12 // startup 파일에 이미 약하게 정의된 이름을 override void EXTI0_IRQHandler(void) { // pending bit를 클리어하지 않으면 인터럽트가 계속 발생한다 HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0); } // HAL이 pending bit 클리어 후 이 콜백을 호출한다 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) { if (GPIO_Pin == GPIO_PIN_0) { // 처리 } } 핸들러 안에서 하면 안 되는 것들 1 2 3 4 5 6 7 void EXTI0_IRQHandler(void) { HAL_Delay(100); // 금지: SysTick 기반 → 데드락 printf(\"triggered\\n\"); // 금지: 느리고 재진입 불안전 HAL_UART_Transmit(...); // 금지: blocking 함수 malloc(size); // 금지: 재진입 불안전 HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0); } 핸들러는 최대한 짧게 작성한다. 플래그만 세우고 실제 처리는 메인 루프에서 한다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 volatile uint8_t button_flag = 0; void EXTI0_IRQHandler(void) { button_flag = 1; // 플래그만 세운다 HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0); } int main(void) { while (1) { if (button_flag) { button_flag = 0; do_heavy_work(); // 메인 루프에서 처리 } } } volatile — 인터럽트에서 왜 중요한가 2편에서 volatile을 레지스터 접근에서 언급했다. 인터럽트에서도 같은 이유로 필요하다.\n1 2 3 4 5 6 7 8 9 10 uint8_t flag = 0; // volatile 없음 void EXTI0_IRQHandler(void) { flag = 1; HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0); } int main(void) { while (!flag) { } // -O2 이상에서 무한루프 탈출 불가 } -O2로 컴파일하면 컴파일러는 flag가 루프 안에서 변경되지 않는다고 판단한다. 처음 읽은 값 0을 레지스터에 유지하고, 인터럽트에서 메모리의 flag를 1로 바꿔도 CPU는 레지스터의 0을 계속 본다.\n1 volatile uint8_t flag = 0; // 매번 메모리에서 읽도록 강제 인터럽트와 메인 루프 사이에서 공유되는 모든 변수는 volatile이어야 한다.\n최적화 없이(-O0) 개발하다가 릴리즈 빌드(-O2)로 바꿀 때 갑자기 버그가 생기는 경우, volatile 누락이 원인인 경우가 많다.\n실무에서 자주 만나는 상황 SysTick과 HAL_Delay HAL_Delay()는 SysTick 인터럽트(예외 번호 15)가 발생할 때마다 내부 카운터를 증가시키는 방식으로 동작한다. 인터럽트 핸들러 안에서 HAL_Delay()를 호출하면?\nSysTick 인터럽트가 현재 핸들러보다 우선순위가 낮으면 SysTick이 발생하지 않아 카운터가 증가하지 않는다 → 무한 대기.\n해결: 핸들러 안에서 delay가 필요하면 하드웨어 타이머를 쓰거나, 구조를 바꿔서 핸들러 밖에서 처리한다.\nUART 수신 인터럽트 1 2 3 4 5 6 7 uint8_t rx_buf[64]; volatile uint8_t rx_len = 0; void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) { rx_len++; HAL_UART_Receive_IT(\u0026huart1, \u0026rx_buf[rx_len], 1); } 수신 완료마다 콜백이 호출되고, 다음 1바이트 수신을 다시 등록한다. 인터럽트 기반으로 CPU 점유 없이 데이터를 받을 수 있다.\n",
+  "wordCount" : "797",
+  "inLanguage": "en",
+  "datePublished": "2026-05-28T20:38:00+09:00",
+  "dateModified": "2026-05-28T20:38:00+09:00",
+  "author":{
+    "@type": "Person",
+    "name": "서보민"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "bromine1997",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li class="has-dropdown">
+                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                    <span>Algorithm</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                    <span>Paper Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link active">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/basics/">임베디드 기초</a></div>
+    <h1 class="post-title entry-hint-parent">
+      임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라
+    </h1>
+    <div class="post-description">
+      폴링과 인터럽트의 차이, Cortex-M NVIC 구조와 우선순위 시스템, volatile 키워드의 필요성까지 인터럽트의 핵심 개념을 정리한다.
+    </div>
+    <div class="post-meta"><span title='2026-05-28 20:38:00 +0900 KST'>May 28, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/basics/embedded-05-interrupt-nvic.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
+</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#들어가며">들어가며</a></li>
+    <li><a href="#폴링-vs-인터럽트">폴링 vs 인터럽트</a>
+      <ul>
+        <li><a href="#폴링-polling">폴링 (Polling)</a></li>
+        <li><a href="#인터럽트-interrupt">인터럽트 (Interrupt)</a></li>
+      </ul>
+    </li>
+    <li><a href="#cortex-m-예외-모델">Cortex-M 예외 모델</a></li>
+    <li><a href="#nvic-nested-vectored-interrupt-controller">NVIC (Nested Vectored Interrupt Controller)</a>
+      <ul>
+        <li><a href="#인터럽트-활성화">인터럽트 활성화</a></li>
+        <li><a href="#우선순위">우선순위</a></li>
+      </ul>
+    </li>
+    <li><a href="#인터럽트-핸들러-작성">인터럽트 핸들러 작성</a>
+      <ul>
+        <li><a href="#exti-외부-핀-인터럽트">EXTI (외부 핀 인터럽트)</a></li>
+        <li><a href="#핸들러-안에서-하면-안-되는-것들">핸들러 안에서 하면 안 되는 것들</a></li>
+      </ul>
+    </li>
+    <li><a href="#volatile--인터럽트에서-왜-중요한가">volatile — 인터럽트에서 왜 중요한가</a></li>
+    <li><a href="#실무에서-자주-만나는-상황">실무에서 자주 만나는 상황</a>
+      <ul>
+        <li><a href="#systick과-hal_delay">SysTick과 HAL_Delay</a></li>
+        <li><a href="#uart-수신-인터럽트">UART 수신 인터럽트</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="들어가며">들어가며<a hidden class="anchor" aria-hidden="true" href="#들어가며">#</a></h2>
+<p>4편에서 벡터 테이블을 다뤘다. <code>[0]</code>은 MSP, <code>[1]</code>은 Reset_Handler 주소였고, 나머지 항목들(NMI_Handler, HardFault_Handler, TIM2_IRQHandler&hellip;)은 그냥 지나쳤다.</p>
+<p>이것들이 전부 <strong>인터럽트 핸들러</strong>다. 임베디드 코드의 상당 부분이 이 핸들러들 안에서 돌아간다.</p>
+<hr>
+<h2 id="폴링-vs-인터럽트">폴링 vs 인터럽트<a hidden class="anchor" aria-hidden="true" href="#폴링-vs-인터럽트">#</a></h2>
+<p>외부 이벤트(버튼 입력, 센서 데이터 도착 등)를 처리하는 방법은 두 가지다.</p>
+<h3 id="폴링-polling">폴링 (Polling)<a hidden class="anchor" aria-hidden="true" href="#폴링-polling">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-0-1"><a class="lnlinks" href="#hl-0-1">1</a>
+</span><span class="lnt" id="hl-0-2"><a class="lnlinks" href="#hl-0-2">2</a>
+</span><span class="lnt" id="hl-0-3"><a class="lnlinks" href="#hl-0-3">3</a>
+</span><span class="lnt" id="hl-0-4"><a class="lnlinks" href="#hl-0-4">4</a>
+</span><span class="lnt" id="hl-0-5"><a class="lnlinks" href="#hl-0-5">5</a>
+</span><span class="lnt" id="hl-0-6"><a class="lnlinks" href="#hl-0-6">6</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nf">HAL_GPIO_ReadPin</span><span class="p">(</span><span class="n">GPIOC</span><span class="p">,</span> <span class="n">GPIO_PIN_13</span><span class="p">)</span> <span class="o">==</span> <span class="n">GPIO_PIN_RESET</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 버튼 눌림 처리
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">do_something_else</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>CPU가 주기적으로 상태를 직접 확인한다. CPU가 루프를 돌며 GPIO를 계속 읽어야 하고, 짧은 펄스나 빠른 이벤트를 놓칠 수 있다. 확인할 이벤트가 늘어날수록 반응 속도도 느려진다.</p>
+<h3 id="인터럽트-interrupt">인터럽트 (Interrupt)<a hidden class="anchor" aria-hidden="true" href="#인터럽트-interrupt">#</a></h3>
+<p>하드웨어가 이벤트 발생 시 CPU에게 직접 신호를 보낸다. CPU는 하던 작업을 멈추고 핸들러를 실행한 뒤 원래 위치로 돌아온다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-1-1"><a class="lnlinks" href="#hl-1-1"> 1</a>
+</span><span class="lnt" id="hl-1-2"><a class="lnlinks" href="#hl-1-2"> 2</a>
+</span><span class="lnt" id="hl-1-3"><a class="lnlinks" href="#hl-1-3"> 3</a>
+</span><span class="lnt" id="hl-1-4"><a class="lnlinks" href="#hl-1-4"> 4</a>
+</span><span class="lnt" id="hl-1-5"><a class="lnlinks" href="#hl-1-5"> 5</a>
+</span><span class="lnt" id="hl-1-6"><a class="lnlinks" href="#hl-1-6"> 6</a>
+</span><span class="lnt" id="hl-1-7"><a class="lnlinks" href="#hl-1-7"> 7</a>
+</span><span class="lnt" id="hl-1-8"><a class="lnlinks" href="#hl-1-8"> 8</a>
+</span><span class="lnt" id="hl-1-9"><a class="lnlinks" href="#hl-1-9"> 9</a>
+</span><span class="lnt" id="hl-1-10"><a class="lnlinks" href="#hl-1-10">10</a>
+</span><span class="lnt" id="hl-1-11"><a class="lnlinks" href="#hl-1-11">11</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">메인 코드 실행 중
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">이벤트 발생 (버튼, UART 수신, 타이머 만료...)
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">하드웨어가 CPU에 인터럽트 신호 전달
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">CPU: 현재 컨텍스트 저장 (PC, xPSR, R0-R3, R12, LR)
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">벡터 테이블에서 핸들러 주소 읽기 → 핸들러 실행
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">핸들러 완료 → 컨텍스트 복원 → 원래 코드로 복귀
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Cortex-M은 컨텍스트 저장/복원을 <strong>하드웨어가 자동으로</strong> 처리한다. 핸들러는 일반 C 함수처럼 작성하면 된다.</p>
+<hr>
+<h2 id="cortex-m-예외-모델">Cortex-M 예외 모델<a hidden class="anchor" aria-hidden="true" href="#cortex-m-예외-모델">#</a></h2>
+<p>4편에서 벡터 테이블의 항목이 예외 번호(exception number) 순으로 배치된다고 설명했다.</p>
+<p><strong>예외(Exception)</strong> 는 인터럽트를 포함하는 더 넓은 개념이다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>예외 번호</th>
+          <th>이름</th>
+          <th>발생 원인</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>Reset</td>
+          <td>전원 인가, 리셋 핀</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>NMI</td>
+          <td>Non-Maskable Interrupt — 무조건 처리</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>HardFault</td>
+          <td>처리되지 않은 예외의 에스컬레이션</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>MemManage</td>
+          <td>MPU 위반</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>BusFault</td>
+          <td>버스 접근 오류</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>UsageFault</td>
+          <td>미정의 명령어, 정렬 오류 등</td>
+      </tr>
+      <tr>
+          <td>11</td>
+          <td>SVCall</td>
+          <td><code>SVC</code> 명령어 (RTOS에서 시스템 콜)</td>
+      </tr>
+      <tr>
+          <td>14</td>
+          <td>PendSV</td>
+          <td>RTOS 컨텍스트 스위칭</td>
+      </tr>
+      <tr>
+          <td>15</td>
+          <td>SysTick</td>
+          <td>시스템 타이머 (HAL_Delay 기반)</td>
+      </tr>
+      <tr>
+          <td>16+</td>
+          <td>IRQ0~</td>
+          <td>외부 주변장치 인터럽트 (UART, TIM, EXTI&hellip;)</td>
+      </tr>
+  </tbody>
+</table>
+<p>예외 번호 16번부터가 MCU 제조사가 정의하는 영역이다. STM32F4에서 EXTI0는 IRQ 6번(예외 번호 22번)이다.</p>
+<hr>
+<h2 id="nvic-nested-vectored-interrupt-controller">NVIC (Nested Vectored Interrupt Controller)<a hidden class="anchor" aria-hidden="true" href="#nvic-nested-vectored-interrupt-controller">#</a></h2>
+<p>모든 인터럽트는 NVIC를 통해 관리된다. Cortex-M 코어에 내장된 하드웨어 모듈이다.</p>
+<h3 id="인터럽트-활성화">인터럽트 활성화<a hidden class="anchor" aria-hidden="true" href="#인터럽트-활성화">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-2-1"><a class="lnlinks" href="#hl-2-1">1</a>
+</span><span class="lnt" id="hl-2-2"><a class="lnlinks" href="#hl-2-2">2</a>
+</span><span class="lnt" id="hl-2-3"><a class="lnlinks" href="#hl-2-3">3</a>
+</span><span class="lnt" id="hl-2-4"><a class="lnlinks" href="#hl-2-4">4</a>
+</span><span class="lnt" id="hl-2-5"><a class="lnlinks" href="#hl-2-5">5</a>
+</span><span class="lnt" id="hl-2-6"><a class="lnlinks" href="#hl-2-6">6</a>
+</span><span class="lnt" id="hl-2-7"><a class="lnlinks" href="#hl-2-7">7</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// HAL 방식
+</span></span></span><span class="line"><span class="cl"><span class="nf">HAL_NVIC_SetPriority</span><span class="p">(</span><span class="n">EXTI0_IRQn</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nf">HAL_NVIC_EnableIRQ</span><span class="p">(</span><span class="n">EXTI0_IRQn</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 레지스터 직접 접근 (CMSIS)
+</span></span></span><span class="line"><span class="cl"><span class="nf">NVIC_SetPriority</span><span class="p">(</span><span class="n">EXTI0_IRQn</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nf">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">EXTI0_IRQn</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>활성화하지 않ㄱ으면 인터럽트 요청이 발생해도 CPU가 처리하지 않는다.</p>
+<h3 id="우선순위">우선순위<a hidden class="anchor" aria-hidden="true" href="#우선순위">#</a></h3>
+<p>STM32F4는 <strong>4비트(0~15단계)</strong> 우선순위를 사용한다. <strong>숫자가 낮을수록 우선순위가 높다.</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-3-1"><a class="lnlinks" href="#hl-3-1">1</a>
+</span><span class="lnt" id="hl-3-2"><a class="lnlinks" href="#hl-3-2">2</a>
+</span><span class="lnt" id="hl-3-3"><a class="lnlinks" href="#hl-3-3">3</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">HAL_NVIC_SetPriority</span><span class="p">(</span><span class="n">EXTI0_IRQn</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// 가장 높음
+</span></span></span><span class="line"><span class="cl"><span class="nf">HAL_NVIC_SetPriority</span><span class="p">(</span><span class="n">USART1_IRQn</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nf">HAL_NVIC_SetPriority</span><span class="p">(</span><span class="n">TIM2_IRQn</span><span class="p">,</span>   <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// 가장 낮음
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>우선순위는 두 부분으로 나뉜다.</p>
+<ul>
+<li><strong>Preemption Priority</strong>: 현재 실행 중인 핸들러를 중단하고 끼어들 수 있는지 결정</li>
+<li><strong>Sub-Priority</strong>: 같은 Preemption Priority에서 대기 중인 인터럽트들의 처리 순서</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-4-1"><a class="lnlinks" href="#hl-4-1">1</a>
+</span><span class="lnt" id="hl-4-2"><a class="lnlinks" href="#hl-4-2">2</a>
+</span><span class="lnt" id="hl-4-3"><a class="lnlinks" href="#hl-4-3">3</a>
+</span><span class="lnt" id="hl-4-4"><a class="lnlinks" href="#hl-4-4">4</a>
+</span><span class="lnt" id="hl-4-5"><a class="lnlinks" href="#hl-4-5">5</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 상위 2비트 = Preemption, 하위 2비트 = Sub
+</span></span></span><span class="line"><span class="cl"><span class="nf">HAL_NVIC_SetPriorityGrouping</span><span class="p">(</span><span class="n">NVIC_PRIORITYGROUP_2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">HAL_NVIC_SetPriority</span><span class="p">(</span><span class="n">EXTI0_IRQn</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// preemption=1
+</span></span></span><span class="line"><span class="cl"><span class="nf">HAL_NVIC_SetPriority</span><span class="p">(</span><span class="n">USART1_IRQn</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// preemption=2
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>USART1 핸들러 실행 중 EXTI0 인터럽트가 발생하면? EXTI0의 Preemption Priority(1)가 더 높으므로 USART1을 중단하고 EXTI0를 먼저 처리한다. 이것이 <strong>Nested(중첩)</strong> 인터럽트다.</p>
+<hr>
+<h2 id="인터럽트-핸들러-작성">인터럽트 핸들러 작성<a hidden class="anchor" aria-hidden="true" href="#인터럽트-핸들러-작성">#</a></h2>
+<h3 id="exti-외부-핀-인터럽트">EXTI (외부 핀 인터럽트)<a hidden class="anchor" aria-hidden="true" href="#exti-외부-핀-인터럽트">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-5-1"><a class="lnlinks" href="#hl-5-1"> 1</a>
+</span><span class="lnt" id="hl-5-2"><a class="lnlinks" href="#hl-5-2"> 2</a>
+</span><span class="lnt" id="hl-5-3"><a class="lnlinks" href="#hl-5-3"> 3</a>
+</span><span class="lnt" id="hl-5-4"><a class="lnlinks" href="#hl-5-4"> 4</a>
+</span><span class="lnt" id="hl-5-5"><a class="lnlinks" href="#hl-5-5"> 5</a>
+</span><span class="lnt" id="hl-5-6"><a class="lnlinks" href="#hl-5-6"> 6</a>
+</span><span class="lnt" id="hl-5-7"><a class="lnlinks" href="#hl-5-7"> 7</a>
+</span><span class="lnt" id="hl-5-8"><a class="lnlinks" href="#hl-5-8"> 8</a>
+</span><span class="lnt" id="hl-5-9"><a class="lnlinks" href="#hl-5-9"> 9</a>
+</span><span class="lnt" id="hl-5-10"><a class="lnlinks" href="#hl-5-10">10</a>
+</span><span class="lnt" id="hl-5-11"><a class="lnlinks" href="#hl-5-11">11</a>
+</span><span class="lnt" id="hl-5-12"><a class="lnlinks" href="#hl-5-12">12</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// startup 파일에 이미 약하게 정의된 이름을 override
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">EXTI0_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// pending bit를 클리어하지 않으면 인터럽트가 계속 발생한다
+</span></span></span><span class="line"><span class="cl">    <span class="nf">HAL_GPIO_EXTI_IRQHandler</span><span class="p">(</span><span class="n">GPIO_PIN_0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// HAL이 pending bit 클리어 후 이 콜백을 호출한다
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">HAL_GPIO_EXTI_Callback</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">GPIO_Pin</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">GPIO_Pin</span> <span class="o">==</span> <span class="n">GPIO_PIN_0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 처리
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="핸들러-안에서-하면-안-되는-것들">핸들러 안에서 하면 안 되는 것들<a hidden class="anchor" aria-hidden="true" href="#핸들러-안에서-하면-안-되는-것들">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-6-1"><a class="lnlinks" href="#hl-6-1">1</a>
+</span><span class="lnt" id="hl-6-2"><a class="lnlinks" href="#hl-6-2">2</a>
+</span><span class="lnt" id="hl-6-3"><a class="lnlinks" href="#hl-6-3">3</a>
+</span><span class="lnt" id="hl-6-4"><a class="lnlinks" href="#hl-6-4">4</a>
+</span><span class="lnt" id="hl-6-5"><a class="lnlinks" href="#hl-6-5">5</a>
+</span><span class="lnt" id="hl-6-6"><a class="lnlinks" href="#hl-6-6">6</a>
+</span><span class="lnt" id="hl-6-7"><a class="lnlinks" href="#hl-6-7">7</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">EXTI0_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">HAL_Delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>        <span class="c1">// 금지: SysTick 기반 → 데드락
+</span></span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;triggered</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="c1">// 금지: 느리고 재진입 불안전
+</span></span></span><span class="line"><span class="cl">    <span class="nf">HAL_UART_Transmit</span><span class="p">(...);</span> <span class="c1">// 금지: blocking 함수
+</span></span></span><span class="line"><span class="cl">    <span class="nf">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>           <span class="c1">// 금지: 재진입 불안전
+</span></span></span><span class="line"><span class="cl">    <span class="nf">HAL_GPIO_EXTI_IRQHandler</span><span class="p">(</span><span class="n">GPIO_PIN_0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>핸들러는 <strong>최대한 짧게</strong> 작성한다. 플래그만 세우고 실제 처리는 메인 루프에서 한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-7-1"><a class="lnlinks" href="#hl-7-1"> 1</a>
+</span><span class="lnt" id="hl-7-2"><a class="lnlinks" href="#hl-7-2"> 2</a>
+</span><span class="lnt" id="hl-7-3"><a class="lnlinks" href="#hl-7-3"> 3</a>
+</span><span class="lnt" id="hl-7-4"><a class="lnlinks" href="#hl-7-4"> 4</a>
+</span><span class="lnt" id="hl-7-5"><a class="lnlinks" href="#hl-7-5"> 5</a>
+</span><span class="lnt" id="hl-7-6"><a class="lnlinks" href="#hl-7-6"> 6</a>
+</span><span class="lnt" id="hl-7-7"><a class="lnlinks" href="#hl-7-7"> 7</a>
+</span><span class="lnt" id="hl-7-8"><a class="lnlinks" href="#hl-7-8"> 8</a>
+</span><span class="lnt" id="hl-7-9"><a class="lnlinks" href="#hl-7-9"> 9</a>
+</span><span class="lnt" id="hl-7-10"><a class="lnlinks" href="#hl-7-10">10</a>
+</span><span class="lnt" id="hl-7-11"><a class="lnlinks" href="#hl-7-11">11</a>
+</span><span class="lnt" id="hl-7-12"><a class="lnlinks" href="#hl-7-12">12</a>
+</span><span class="lnt" id="hl-7-13"><a class="lnlinks" href="#hl-7-13">13</a>
+</span><span class="lnt" id="hl-7-14"><a class="lnlinks" href="#hl-7-14">14</a>
+</span><span class="lnt" id="hl-7-15"><a class="lnlinks" href="#hl-7-15">15</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">volatile</span> <span class="kt">uint8_t</span> <span class="n">button_flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">EXTI0_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">button_flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 플래그만 세운다
+</span></span></span><span class="line"><span class="cl">    <span class="nf">HAL_GPIO_EXTI_IRQHandler</span><span class="p">(</span><span class="n">GPIO_PIN_0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">button_flag</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">button_flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">do_heavy_work</span><span class="p">();</span>  <span class="c1">// 메인 루프에서 처리
+</span></span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="volatile--인터럽트에서-왜-중요한가">volatile — 인터럽트에서 왜 중요한가<a hidden class="anchor" aria-hidden="true" href="#volatile--인터럽트에서-왜-중요한가">#</a></h2>
+<p>2편에서 <code>volatile</code>을 레지스터 접근에서 언급했다. 인터럽트에서도 같은 이유로 필요하다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-8-1"><a class="lnlinks" href="#hl-8-1"> 1</a>
+</span><span class="lnt" id="hl-8-2"><a class="lnlinks" href="#hl-8-2"> 2</a>
+</span><span class="lnt" id="hl-8-3"><a class="lnlinks" href="#hl-8-3"> 3</a>
+</span><span class="lnt" id="hl-8-4"><a class="lnlinks" href="#hl-8-4"> 4</a>
+</span><span class="lnt" id="hl-8-5"><a class="lnlinks" href="#hl-8-5"> 5</a>
+</span><span class="lnt" id="hl-8-6"><a class="lnlinks" href="#hl-8-6"> 6</a>
+</span><span class="lnt" id="hl-8-7"><a class="lnlinks" href="#hl-8-7"> 7</a>
+</span><span class="lnt" id="hl-8-8"><a class="lnlinks" href="#hl-8-8"> 8</a>
+</span><span class="lnt" id="hl-8-9"><a class="lnlinks" href="#hl-8-9"> 9</a>
+</span><span class="lnt" id="hl-8-10"><a class="lnlinks" href="#hl-8-10">10</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// volatile 없음
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">EXTI0_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">HAL_GPIO_EXTI_IRQHandler</span><span class="p">(</span><span class="n">GPIO_PIN_0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">flag</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>  <span class="c1">// -O2 이상에서 무한루프 탈출 불가
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>-O2</code>로 컴파일하면 컴파일러는 <code>flag</code>가 루프 안에서 변경되지 않는다고 판단한다. 처음 읽은 값 0을 레지스터에 유지하고, 인터럽트에서 메모리의 <code>flag</code>를 1로 바꿔도 CPU는 레지스터의 0을 계속 본다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-9-1"><a class="lnlinks" href="#hl-9-1">1</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">volatile</span> <span class="kt">uint8_t</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// 매번 메모리에서 읽도록 강제
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>인터럽트와 메인 루프 사이에서 공유되는 모든 변수는 <code>volatile</code>이어야 한다.</strong></p>
+<p>최적화 없이(<code>-O0</code>) 개발하다가 릴리즈 빌드(<code>-O2</code>)로 바꿀 때 갑자기 버그가 생기는 경우, <code>volatile</code> 누락이 원인인 경우가 많다.</p>
+<hr>
+<h2 id="실무에서-자주-만나는-상황">실무에서 자주 만나는 상황<a hidden class="anchor" aria-hidden="true" href="#실무에서-자주-만나는-상황">#</a></h2>
+<h3 id="systick과-hal_delay">SysTick과 HAL_Delay<a hidden class="anchor" aria-hidden="true" href="#systick과-hal_delay">#</a></h3>
+<p><code>HAL_Delay()</code>는 SysTick 인터럽트(예외 번호 15)가 발생할 때마다 내부 카운터를 증가시키는 방식으로 동작한다. 인터럽트 핸들러 안에서 <code>HAL_Delay()</code>를 호출하면?</p>
+<p>SysTick 인터럽트가 현재 핸들러보다 우선순위가 낮으면 SysTick이 발생하지 않아 카운터가 증가하지 않는다 → <strong>무한 대기</strong>.</p>
+<p>해결: 핸들러 안에서 delay가 필요하면 하드웨어 타이머를 쓰거나, 구조를 바꿔서 핸들러 밖에서 처리한다.</p>
+<h3 id="uart-수신-인터럽트">UART 수신 인터럽트<a hidden class="anchor" aria-hidden="true" href="#uart-수신-인터럽트">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-10-1"><a class="lnlinks" href="#hl-10-1">1</a>
+</span><span class="lnt" id="hl-10-2"><a class="lnlinks" href="#hl-10-2">2</a>
+</span><span class="lnt" id="hl-10-3"><a class="lnlinks" href="#hl-10-3">3</a>
+</span><span class="lnt" id="hl-10-4"><a class="lnlinks" href="#hl-10-4">4</a>
+</span><span class="lnt" id="hl-10-5"><a class="lnlinks" href="#hl-10-5">5</a>
+</span><span class="lnt" id="hl-10-6"><a class="lnlinks" href="#hl-10-6">6</a>
+</span><span class="lnt" id="hl-10-7"><a class="lnlinks" href="#hl-10-7">7</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">volatile</span> <span class="kt">uint8_t</span> <span class="n">rx_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">HAL_UART_RxCpltCallback</span><span class="p">(</span><span class="n">UART_HandleTypeDef</span> <span class="o">*</span><span class="n">huart</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rx_len</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">HAL_UART_Receive_IT</span><span class="p">(</span><span class="o">&amp;</span><span class="n">huart1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rx_buf</span><span class="p">[</span><span class="n">rx_len</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>수신 완료마다 콜백이 호출되고, 다음 1바이트 수신을 다시 등록한다. 인터럽트 기반으로 CPU 점유 없이 데이터를 받을 수 있다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/embedded/">Embedded</a></li>
+      <li><a href="http://localhost:1313/tags/arm/">ARM</a></li>
+      <li><a href="http://localhost:1313/tags/cortex-m/">Cortex-M</a></li>
+      <li><a href="http://localhost:1313/tags/interrupt/">Interrupt</a></li>
+      <li><a href="http://localhost:1313/tags/nvic/">NVIC</a></li>
+      <li><a href="http://localhost:1313/tags/isr/">ISR</a></li>
+      <li><a href="http://localhost:1313/tags/stm32/">STM32</a></li>
+      <li><a href="http://localhost:1313/tags/volatile/">Volatile</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/">
+    <span class="title">Next »</span>
+    <br>
+    <span>4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+  </a>
+</nav>
+
+  </footer><div class="comments">
+  <script src="https://giscus.app/client.js"
+    data-repo="bromine1997/bromine1997.github.io"
+    data-repo-id="R_kgDOR1bAsg"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOR1bAss4C52wg"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="ko"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+
+</article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

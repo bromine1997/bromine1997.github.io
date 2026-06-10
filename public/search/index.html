@@ -10,7 +10,7 @@
 <meta name="description" content="search">
 <meta name="author" content="서보민">
 <link rel="canonical" href="http://localhost:1313/search/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style"><link crossorigin="anonymous" rel="preload" as="fetch" href="../index.json">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style"><link crossorigin="anonymous" rel="preload" as="fetch" href="../index.json">
 <script defer crossorigin="anonymous" src="/assets/js/search.d0ea29bc5e8d36bf888e0166f8c85d0d81d1052b751c7b9e78593a6ecd546ed2.js" integrity="sha256-0OopvF6NNr&#43;IjgFm&#43;MhdDYHRBSt1HHueeFk6bs1UbtI="></script>
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -71,7 +71,10 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
 <meta property="og:url" content="http://localhost:1313/search/">
   <meta property="og:site_name" content="bromine1997">
   <meta property="og:title" content="Search">
@@ -161,10 +164,38 @@
             </div>
         </div>
         <ul id="menu">
-            <li>
+            <li class="has-dropdown">
                 <a href="http://localhost:1313/categories/embedded/" title="Embedded">
-                    <span>Embedded</span>
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
                 </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
@@ -174,11 +205,6 @@
             <li>
                 <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
                     <span>Paper Review</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/notes/" title="Notes">
-                    <span>Notes</span>
                 </a>
             </li>
             <li>

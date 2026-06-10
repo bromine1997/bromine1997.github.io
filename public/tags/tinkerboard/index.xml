@@ -6,12 +6,12 @@
     <description>Recent content in TinkerBoard on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 03 Apr 2026 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 30 May 2026 20:41:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/tinkerboard/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한</title>
+      <title>SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</title>
       <link>http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/</link>
-      <pubDate>Fri, 03 Apr 2026 00:00:00 +0900</pubDate>
+      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/</guid>
       <description>ASUS Tinker Board 2S에서 SPI 통신 파형이 왜곡되는 문제를 겪었다. 원인은 하드웨어가 아닌 Digital Isolator의 주파수 제한이었다.</description>
     </item>

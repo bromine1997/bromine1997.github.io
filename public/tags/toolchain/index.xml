@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Toolchain on bromine1997</title>
+    <link>http://localhost:1313/tags/toolchain/</link>
+    <description>Recent content in Toolchain on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Thu, 14 May 2026 20:29:00 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/toolchain/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</title>
+      <link>http://localhost:1313/posts/basics/embedded-03-build-process/</link>
+      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/basics/embedded-03-build-process/</guid>
+      <description>C 소스 파일이 MCU 플래시에 올라가기까지 전처리→컴파일→어셈블→링크 과정과 ARM Cortex-M 툴체인, ELF 포맷을 정리한다.</description>
+    </item>
+  </channel>
+</rss>

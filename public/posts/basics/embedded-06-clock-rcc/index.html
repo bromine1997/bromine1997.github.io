@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가 | bromine1997</title>
+<meta name="keywords" content="embedded, STM32, clock, RCC, PLL, HSE, HSI, APB">
+<meta name="description" content="크리스탈에서 100MHz까지 — STM32F411의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다.">
+<meta name="author" content="서보민">
+<link rel="canonical" href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
+<meta property="og:url" content="http://localhost:1313/posts/basics/embedded-06-clock-rcc/">
+  <meta property="og:site_name" content="bromine1997">
+  <meta property="og:title" content="임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가">
+  <meta property="og:description" content="크리스탈에서 100MHz까지 — STM32F411의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-06-03T20:22:00+09:00">
+    <meta property="article:modified_time" content="2026-06-03T20:22:00+09:00">
+    <meta property="article:tag" content="Embedded">
+    <meta property="article:tag" content="STM32">
+    <meta property="article:tag" content="Clock">
+    <meta property="article:tag" content="RCC">
+    <meta property="article:tag" content="PLL">
+    <meta property="article:tag" content="HSE">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가">
+  <meta name="twitter:description" content="크리스탈에서 100MHz까지 — STM32F411의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "임베디드 기초",
+      "item": "http://localhost:1313/posts/basics/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가",
+      "item": "http://localhost:1313/posts/basics/embedded-06-clock-rcc/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가",
+  "name": "임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가",
+  "description": "크리스탈에서 100MHz까지 — STM32F411의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다.",
+  "keywords": [
+    "embedded", "STM32", "clock", "RCC", "PLL", "HSE", "HSI", "APB"
+  ],
+  "articleBody": "들어가며 UART 보드레이트를 설정할 때 115200을 입력한다. SPI 속도를 설정할 때 분주비(prescaler)를 고른다. 이 숫자들의 근거가 뭘까.\n전부 클럭(Clock) 에서 나온다. MCU 안의 모든 주변장치는 클럭 신호를 기반으로 동작하고, 그 클럭이 얼마인지에 따라 통신 속도가 결정된다.\n클럭 소스 (Clock Source) MCU는 기준 클럭을 어딘가에서 공급받아야 한다. STM32F4의 주요 클럭 소스는 두 가지다.\nHSI (High Speed Internal) MCU 내부 RC 오실레이터 16 MHz 고정 외부 부품 불필요 정밀도 낮음 — 온도와 전압에 따라 ±1% 수준의 오차 리셋 직후 기본으로 사용되는 클럭 소스 오차가 있는데도 HSI를 쓰는 이유가 있다.\n크리스탈은 MCU 외부에 붙는 부품이다. 크리스탈 본체뿐 아니라 로드 커패시터(보통 2개)와 배선이 추가된다. 부품 수가 늘면 PCB 공간, 원가, 조립 공정이 모두 늘어난다. 수백만 개를 양산하는 제품이라면 크리스탈 하나가 무시할 수 없는 비용이 된다.\n거기에 크리스탈은 진동과 충격에 약하고, 전원 인가 후 안정적인 주파수에 도달하기까지 기동 시간(startup time) 이 필요하다. 산업용·차량용 기기처럼 진동이 심하거나 빠른 기동이 필요한 환경에서는 HSI가 더 유리할 수 있다.\n결국 선택 기준은 이렇다:\nHSI: LED, 버튼, 단순 GPIO 제어처럼 타이밍 정밀도가 불필요한 경우. 원가·설계 단순화가 중요한 경우. HSE: UART, SPI, I2C, USB처럼 상대방 장치와 정확한 속도를 맞춰야 하는 경우. 보드레이트 오차가 통신 오류로 직결된다. HSE (High Speed External) 외부 크리스탈 또는 오실레이터를 보드에 연결 4 ~ 26 MHz 범위 정밀도 높음 — 크리스탈 기준 ±20ppm 수준 STM32F4-NUCLEO 보드는 8 MHz 크리스탈 장착 리셋 직후에는 HSI로 동작하다가, SystemInit()이 HSE와 PLL을 설정해 원하는 속도로 올린다. 4편에서 Reset_Handler가 main() 전에 SystemInit()을 호출한다고 설명했다.\nCortex-M 시리즈별 클럭 비교 같은 ARM 코어라도 시리즈마다 최대 클럭과 기능이 다르다.\n코어 대표 MCU 최대 클럭 FPU DSP 명령어 주요 용도 Cortex-M3 STM32F1 (F103) 72 MHz 없음 없음 범용 제어, 저전력 Cortex-M4 STM32F4 (F411) 100 MHz 단정밀도 SIMD / MAC 모터 제어, 오디오, DSP Cortex-M7 STM32F7 / H7 216 ~ 480 MHz 단/배정밀도 강화 DSP 고성능 처리, 그래픽 F407은 최대 168 MHz, H743은 480 MHz — 같은 Cortex-M4/M7 코어라도 MCU 설계에 따라 최대 클럭이 다르다. 이 시리즈는 STM32F411RE (Nucleo-64, 최대 100 MHz) 기준으로 진행한다.\nPLL (Phase-Locked Loop) 8 MHz 크리스탈로 100 MHz를 만들려면 12.5배를 올려야 한다. 이를 담당하는 것이 PLL이다.\nPLL은 입력 클럭을 분주(divide)하고 체배(multiply)해서 원하는 주파수를 만든다. STM32F4의 메인 PLL은 M, N, P 세 파라미터로 제어한다.\n1 2 3 VCO 입력 = HSE / M VCO 클럭 = VCO 입력 × N SYSCLK = VCO 클럭 / P STM32F411 100 MHz 설정 예:\n1 2 3 4 5 VCO 입력 = 8 MHz / 4 = 2 MHz VCO 클럭 = 2 MHz × 200 = 400 MHz SYSCLK = 400 MHz / 4 = 100 MHz → M=4, N=200, P=4 VCO(Voltage Controlled Oscillator)가 내부에서 실제로 주파수를 만들고, P로 나눠 최종 SYSCLK를 출력한다. VCO 클럭은 192 ~ 432 MHz 범위여야 한다는 제약이 있다.\nCubeMX를 쓰면 이 계산을 자동으로 해주지만, 값이 어떻게 나왔는지 이해하고 있어야 디버깅할 때 막히지 않는다.\nRM0383 6.3.2 — RCC_PLLCFGR: M/N/P/Q 파라미터가 실제로 설정되는 레지스터\n클럭 트리 (Clock Tree) SYSCLK 하나로 모든 주변장치가 동작하지는 않는다. 버스와 주변장치마다 허용 최대 클럭이 다르기 때문에 분주해서 여러 클럭을 만든다.\nSTM32F411RE (Nucleo-64) 클럭 트리 — HSE 8 MHz → PLL → SYSCLK 100 MHz → HCLK → APB1/APB2 분배\n같은 UART라도 번호에 따라 연결된 APB가 다르다. UART2는 APB1(50 MHz)을, UART1은 APB2(100 MHz)를 기준으로 보드레이트를 계산한다. 같은 115200 설정이어도 내부 레지스터 값이 다르다.\nRM0383 Figure 12 — STM32F411 전체 클럭 트리 (HSI/HSE → PLL → SYSCLK → AHB/APB 분배)\nRM0383 6.3.3 — RCC_CFGR: AHB/APB1/APB2 분주비가 설정되는 레지스터\nRCC (Reset and Clock Control) 클럭 트리를 설정하는 STM32 모듈이다. 이름대로 리셋 제어와 클럭 제어를 담당한다.\n클럭 활성화 각 주변장치는 RCC에서 클럭을 켜줘야 동작한다. 이걸 빠뜨리면 레지스터에 값을 써도 아무 반응이 없다.\n1 2 3 4 5 6 7 8 // GPIO 클럭 활성화 __HAL_RCC_GPIOA_CLK_ENABLE(); // UART2 클럭 활성화 __HAL_RCC_USART2_CLK_ENABLE(); // SPI1 클럭 활성화 __HAL_RCC_SPI1_CLK_ENABLE(); HAL 라이브러리의 HAL_UART_Init() 같은 함수는 내부에서 자동으로 클럭을 켜주는 경우가 있다. 하지만 MX_USART2_UART_Init()처럼 CubeMX가 생성하는 코드는 따로 __HAL_RCC_USART2_CLK_ENABLE()을 호출한다. 레지스터를 직접 다룰 때는 반드시 수동으로 켜야 한다.\nPLL 설정 코드 system_stm32f4xx.c의 SystemInit() 혹은 CubeMX가 생성하는 SystemClock_Config()에서 실제 설정이 이루어진다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 RCC_OscInitTypeDef RCC_OscInitStruct = {0}; RCC_ClkInitTypeDef RCC_ClkInitStruct = {0}; // HSE + PLL 설정 RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE; RCC_OscInitStruct.HSEState = RCC_HSE_ON; RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON; RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE; RCC_OscInitStruct.PLL.PLLM = 4; RCC_OscInitStruct.PLL.PLLN = 200; RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4; RCC_OscInitStruct.PLL.PLLQ = 8; HAL_RCC_OscConfig(\u0026RCC_OscInitStruct); // AHB/APB 분주비 설정 RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2; RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1; // HCLK = 100MHz RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2; // PCLK1 = 50MHz RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1; // PCLK2 = 100MHz HAL_RCC_ClockConfig(\u0026RCC_ClkInitStruct, FLASH_LATENCY_3); STM32CubeMX Clock Configuration — HSE, PLL, AHB/APB 분주비를 시각적으로 설정할 수 있다\n클럭 설정 실수 HSE_VALUE 불일치 stm32f4xx_hal_conf.h에 HSE 주파수를 정의하는 매크로가 있다.\n1 #define HSE_VALUE 8000000U // 보드 크리스탈 주파수와 일치해야 함 보드에 12 MHz 크리스탈이 달려있는데 이 값이 8000000이면, PLL M/N/P 계산 기준이 틀려서 SYSCLK가 엉뚱한 값이 된다. HAL_Delay(1000)이 1초가 아니거나, UART 보드레이트가 맞지 않는 증상으로 나타난다.\n주변장치 클럭 미활성화 1 2 3 // 이 줄 없으면 GPIOA 핀이 동작 안 함 __HAL_RCC_GPIOA_CLK_ENABLE(); GPIOA-\u003eMODER |= (1 \u003c\u003c 10); HAL 초기화 함수를 쓰지 않고 레지스터를 직접 건드릴 때 가장 자주 만나는 실수다. 클럭이 꺼진 주변장치는 레지스터 접근 자체가 무시되거나 버스 오류를 일으킨다.\n",
+  "wordCount" : "840",
+  "inLanguage": "en",
+  "datePublished": "2026-06-03T20:22:00+09:00",
+  "dateModified": "2026-06-03T20:22:00+09:00",
+  "author":{
+    "@type": "Person",
+    "name": "서보민"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/basics/embedded-06-clock-rcc/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "bromine1997",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li class="has-dropdown">
+                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                    <span>Algorithm</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                    <span>Paper Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link active">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/basics/">임베디드 기초</a></div>
+    <h1 class="post-title entry-hint-parent">
+      임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가
+    </h1>
+    <div class="post-description">
+      크리스탈에서 100MHz까지 — STM32F411의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다.
+    </div>
+    <div class="post-meta"><span title='2026-06-03 20:22:00 +0900 KST'>June 3, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/basics/embedded-06-clock-rcc.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
+</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#들어가며">들어가며</a></li>
+    <li><a href="#클럭-소스-clock-source">클럭 소스 (Clock Source)</a>
+      <ul>
+        <li><a href="#hsi-high-speed-internal">HSI (High Speed Internal)</a></li>
+        <li><a href="#hse-high-speed-external">HSE (High Speed External)</a></li>
+      </ul>
+    </li>
+    <li><a href="#cortex-m-시리즈별-클럭-비교">Cortex-M 시리즈별 클럭 비교</a></li>
+    <li><a href="#pll-phase-locked-loop">PLL (Phase-Locked Loop)</a></li>
+    <li><a href="#클럭-트리-clock-tree">클럭 트리 (Clock Tree)</a></li>
+    <li><a href="#rcc-reset-and-clock-control">RCC (Reset and Clock Control)</a>
+      <ul>
+        <li><a href="#클럭-활성화">클럭 활성화</a></li>
+        <li><a href="#pll-설정-코드">PLL 설정 코드</a></li>
+      </ul>
+    </li>
+    <li><a href="#클럭-설정-실수">클럭 설정 실수</a>
+      <ul>
+        <li><a href="#hse_value-불일치">HSE_VALUE 불일치</a></li>
+        <li><a href="#주변장치-클럭-미활성화">주변장치 클럭 미활성화</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="들어가며">들어가며<a hidden class="anchor" aria-hidden="true" href="#들어가며">#</a></h2>
+<p>UART 보드레이트를 설정할 때 <code>115200</code>을 입력한다. SPI 속도를 설정할 때 분주비(prescaler)를 고른다. 이 숫자들의 근거가 뭘까.</p>
+<p>전부 <strong>클럭(Clock)</strong> 에서 나온다. MCU 안의 모든 주변장치는 클럭 신호를 기반으로 동작하고, 그 클럭이 얼마인지에 따라 통신 속도가 결정된다.</p>
+<hr>
+<h2 id="클럭-소스-clock-source">클럭 소스 (Clock Source)<a hidden class="anchor" aria-hidden="true" href="#클럭-소스-clock-source">#</a></h2>
+<p>MCU는 기준 클럭을 어딘가에서 공급받아야 한다. STM32F4의 주요 클럭 소스는 두 가지다.</p>
+<h3 id="hsi-high-speed-internal">HSI (High Speed Internal)<a hidden class="anchor" aria-hidden="true" href="#hsi-high-speed-internal">#</a></h3>
+<ul>
+<li>MCU <strong>내부</strong> RC 오실레이터</li>
+<li><strong>16 MHz</strong> 고정</li>
+<li>외부 부품 불필요</li>
+<li>정밀도 낮음 — 온도와 전압에 따라 ±1% 수준의 오차</li>
+<li>리셋 직후 기본으로 사용되는 클럭 소스</li>
+</ul>
+<p>오차가 있는데도 HSI를 쓰는 이유가 있다.</p>
+<p>크리스탈은 MCU 외부에 붙는 부품이다. 크리스탈 본체뿐 아니라 로드 커패시터(보통 2개)와 배선이 추가된다. 부품 수가 늘면 PCB 공간, 원가, 조립 공정이 모두 늘어난다. 수백만 개를 양산하는 제품이라면 크리스탈 하나가 무시할 수 없는 비용이 된다.</p>
+<p>거기에 크리스탈은 <strong>진동과 충격에 약하고</strong>, 전원 인가 후 안정적인 주파수에 도달하기까지 <strong>기동 시간(startup time)</strong> 이 필요하다. 산업용·차량용 기기처럼 진동이 심하거나 빠른 기동이 필요한 환경에서는 HSI가 더 유리할 수 있다.</p>
+<p>결국 선택 기준은 이렇다:</p>
+<ul>
+<li><strong>HSI</strong>: LED, 버튼, 단순 GPIO 제어처럼 타이밍 정밀도가 불필요한 경우. 원가·설계 단순화가 중요한 경우.</li>
+<li><strong>HSE</strong>: UART, SPI, I2C, USB처럼 상대방 장치와 정확한 속도를 맞춰야 하는 경우. 보드레이트 오차가 통신 오류로 직결된다.</li>
+</ul>
+<h3 id="hse-high-speed-external">HSE (High Speed External)<a hidden class="anchor" aria-hidden="true" href="#hse-high-speed-external">#</a></h3>
+<ul>
+<li>외부 <strong>크리스탈</strong> 또는 오실레이터를 보드에 연결</li>
+<li>4 ~ 26 MHz 범위</li>
+<li>정밀도 높음 — 크리스탈 기준 ±20ppm 수준</li>
+<li>STM32F4-NUCLEO 보드는 8 MHz 크리스탈 장착</li>
+</ul>
+<p>리셋 직후에는 HSI로 동작하다가, <code>SystemInit()</code>이 HSE와 PLL을 설정해 원하는 속도로 올린다. 4편에서 Reset_Handler가 <code>main()</code> 전에 <code>SystemInit()</code>을 호출한다고 설명했다.</p>
+<hr>
+<h2 id="cortex-m-시리즈별-클럭-비교">Cortex-M 시리즈별 클럭 비교<a hidden class="anchor" aria-hidden="true" href="#cortex-m-시리즈별-클럭-비교">#</a></h2>
+<p>같은 ARM 코어라도 시리즈마다 최대 클럭과 기능이 다르다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>코어</th>
+          <th>대표 MCU</th>
+          <th>최대 클럭</th>
+          <th>FPU</th>
+          <th>DSP 명령어</th>
+          <th>주요 용도</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Cortex-M3</td>
+          <td>STM32F1 (F103)</td>
+          <td>72 MHz</td>
+          <td>없음</td>
+          <td>없음</td>
+          <td>범용 제어, 저전력</td>
+      </tr>
+      <tr>
+          <td>Cortex-M4</td>
+          <td>STM32F4 (F411)</td>
+          <td>100 MHz</td>
+          <td>단정밀도</td>
+          <td>SIMD / MAC</td>
+          <td>모터 제어, 오디오, DSP</td>
+      </tr>
+      <tr>
+          <td>Cortex-M7</td>
+          <td>STM32F7 / H7</td>
+          <td>216 ~ 480 MHz</td>
+          <td>단/배정밀도</td>
+          <td>강화 DSP</td>
+          <td>고성능 처리, 그래픽</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>F407은 최대 168 MHz, H743은 480 MHz — 같은 Cortex-M4/M7 코어라도 MCU 설계에 따라 최대 클럭이 다르다. 이 시리즈는 <strong>STM32F411RE (Nucleo-64, 최대 100 MHz)</strong> 기준으로 진행한다.</p>
+</blockquote>
+<hr>
+<h2 id="pll-phase-locked-loop">PLL (Phase-Locked Loop)<a hidden class="anchor" aria-hidden="true" href="#pll-phase-locked-loop">#</a></h2>
+<p>8 MHz 크리스탈로 100 MHz를 만들려면 12.5배를 올려야 한다. 이를 담당하는 것이 PLL이다.</p>
+<p>PLL은 입력 클럭을 분주(divide)하고 체배(multiply)해서 원하는 주파수를 만든다. STM32F4의 메인 PLL은 M, N, P 세 파라미터로 제어한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-0-1"><a class="lnlinks" href="#hl-0-1">1</a>
+</span><span class="lnt" id="hl-0-2"><a class="lnlinks" href="#hl-0-2">2</a>
+</span><span class="lnt" id="hl-0-3"><a class="lnlinks" href="#hl-0-3">3</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">VCO 입력  = HSE / M
+</span></span><span class="line"><span class="cl">VCO 클럭  = VCO 입력 × N
+</span></span><span class="line"><span class="cl">SYSCLK    = VCO 클럭 / P
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>STM32F411 100 MHz 설정 예:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-1-1"><a class="lnlinks" href="#hl-1-1">1</a>
+</span><span class="lnt" id="hl-1-2"><a class="lnlinks" href="#hl-1-2">2</a>
+</span><span class="lnt" id="hl-1-3"><a class="lnlinks" href="#hl-1-3">3</a>
+</span><span class="lnt" id="hl-1-4"><a class="lnlinks" href="#hl-1-4">4</a>
+</span><span class="lnt" id="hl-1-5"><a class="lnlinks" href="#hl-1-5">5</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">VCO 입력 = 8 MHz / 4    = 2 MHz
+</span></span><span class="line"><span class="cl">VCO 클럭 = 2 MHz × 200  = 400 MHz
+</span></span><span class="line"><span class="cl">SYSCLK   = 400 MHz / 4  = 100 MHz
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">→ M=4, N=200, P=4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>VCO(Voltage Controlled Oscillator)가 내부에서 실제로 주파수를 만들고, P로 나눠 최종 SYSCLK를 출력한다. VCO 클럭은 192 ~ 432 MHz 범위여야 한다는 제약이 있다.</p>
+<p>CubeMX를 쓰면 이 계산을 자동으로 해주지만, 값이 어떻게 나왔는지 이해하고 있어야 디버깅할 때 막히지 않는다.</p>
+<p><img alt="RCC_PLLCFGR 레지스터" loading="lazy" src="/images/basics/rm0383-rcc-pllcfgr.png">
+<em>RM0383 6.3.2 — RCC_PLLCFGR: M/N/P/Q 파라미터가 실제로 설정되는 레지스터</em></p>
+<hr>
+<h2 id="클럭-트리-clock-tree">클럭 트리 (Clock Tree)<a hidden class="anchor" aria-hidden="true" href="#클럭-트리-clock-tree">#</a></h2>
+<p>SYSCLK 하나로 모든 주변장치가 동작하지는 않는다. 버스와 주변장치마다 허용 최대 클럭이 다르기 때문에 분주해서 여러 클럭을 만든다.</p>
+<p><img alt="STM32F411 클럭 트리 다이어그램" loading="lazy" src="/images/basics/clock-tree-f411.png">
+<em>STM32F411RE (Nucleo-64) 클럭 트리 — HSE 8 MHz → PLL → SYSCLK 100 MHz → HCLK → APB1/APB2 분배</em></p>
+<p>같은 UART라도 번호에 따라 연결된 APB가 다르다. UART2는 APB1(50 MHz)을, UART1은 APB2(100 MHz)를 기준으로 보드레이트를 계산한다. 같은 <code>115200</code> 설정이어도 내부 레지스터 값이 다르다.</p>
+<p><img alt="STM32F411 클럭 트리" loading="lazy" src="/images/basics/rm0383-clock-tree-full.png">
+<em>RM0383 Figure 12 — STM32F411 전체 클럭 트리 (HSI/HSE → PLL → SYSCLK → AHB/APB 분배)</em></p>
+<p><img alt="AHB/APB 분주비 레지스터" loading="lazy" src="/images/basics/rm0383-rcc-cfgr-prescaler.png">
+<em>RM0383 6.3.3 — RCC_CFGR: AHB/APB1/APB2 분주비가 설정되는 레지스터</em></p>
+<hr>
+<h2 id="rcc-reset-and-clock-control">RCC (Reset and Clock Control)<a hidden class="anchor" aria-hidden="true" href="#rcc-reset-and-clock-control">#</a></h2>
+<p>클럭 트리를 설정하는 STM32 모듈이다. 이름대로 리셋 제어와 클럭 제어를 담당한다.</p>
+<h3 id="클럭-활성화">클럭 활성화<a hidden class="anchor" aria-hidden="true" href="#클럭-활성화">#</a></h3>
+<p>각 주변장치는 RCC에서 클럭을 켜줘야 동작한다. 이걸 빠뜨리면 레지스터에 값을 써도 아무 반응이 없다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-2-1"><a class="lnlinks" href="#hl-2-1">1</a>
+</span><span class="lnt" id="hl-2-2"><a class="lnlinks" href="#hl-2-2">2</a>
+</span><span class="lnt" id="hl-2-3"><a class="lnlinks" href="#hl-2-3">3</a>
+</span><span class="lnt" id="hl-2-4"><a class="lnlinks" href="#hl-2-4">4</a>
+</span><span class="lnt" id="hl-2-5"><a class="lnlinks" href="#hl-2-5">5</a>
+</span><span class="lnt" id="hl-2-6"><a class="lnlinks" href="#hl-2-6">6</a>
+</span><span class="lnt" id="hl-2-7"><a class="lnlinks" href="#hl-2-7">7</a>
+</span><span class="lnt" id="hl-2-8"><a class="lnlinks" href="#hl-2-8">8</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// GPIO 클럭 활성화
+</span></span></span><span class="line"><span class="cl"><span class="nf">__HAL_RCC_GPIOA_CLK_ENABLE</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// UART2 클럭 활성화
+</span></span></span><span class="line"><span class="cl"><span class="nf">__HAL_RCC_USART2_CLK_ENABLE</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// SPI1 클럭 활성화
+</span></span></span><span class="line"><span class="cl"><span class="nf">__HAL_RCC_SPI1_CLK_ENABLE</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>HAL 라이브러리의 <code>HAL_UART_Init()</code> 같은 함수는 내부에서 자동으로 클럭을 켜주는 경우가 있다. 하지만 <code>MX_USART2_UART_Init()</code>처럼 CubeMX가 생성하는 코드는 따로 <code>__HAL_RCC_USART2_CLK_ENABLE()</code>을 호출한다. 레지스터를 직접 다룰 때는 반드시 수동으로 켜야 한다.</p>
+<h3 id="pll-설정-코드">PLL 설정 코드<a hidden class="anchor" aria-hidden="true" href="#pll-설정-코드">#</a></h3>
+<p><code>system_stm32f4xx.c</code>의 <code>SystemInit()</code> 혹은 CubeMX가 생성하는 <code>SystemClock_Config()</code>에서 실제 설정이 이루어진다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-3-1"><a class="lnlinks" href="#hl-3-1"> 1</a>
+</span><span class="lnt" id="hl-3-2"><a class="lnlinks" href="#hl-3-2"> 2</a>
+</span><span class="lnt" id="hl-3-3"><a class="lnlinks" href="#hl-3-3"> 3</a>
+</span><span class="lnt" id="hl-3-4"><a class="lnlinks" href="#hl-3-4"> 4</a>
+</span><span class="lnt" id="hl-3-5"><a class="lnlinks" href="#hl-3-5"> 5</a>
+</span><span class="lnt" id="hl-3-6"><a class="lnlinks" href="#hl-3-6"> 6</a>
+</span><span class="lnt" id="hl-3-7"><a class="lnlinks" href="#hl-3-7"> 7</a>
+</span><span class="lnt" id="hl-3-8"><a class="lnlinks" href="#hl-3-8"> 8</a>
+</span><span class="lnt" id="hl-3-9"><a class="lnlinks" href="#hl-3-9"> 9</a>
+</span><span class="lnt" id="hl-3-10"><a class="lnlinks" href="#hl-3-10">10</a>
+</span><span class="lnt" id="hl-3-11"><a class="lnlinks" href="#hl-3-11">11</a>
+</span><span class="lnt" id="hl-3-12"><a class="lnlinks" href="#hl-3-12">12</a>
+</span><span class="lnt" id="hl-3-13"><a class="lnlinks" href="#hl-3-13">13</a>
+</span><span class="lnt" id="hl-3-14"><a class="lnlinks" href="#hl-3-14">14</a>
+</span><span class="lnt" id="hl-3-15"><a class="lnlinks" href="#hl-3-15">15</a>
+</span><span class="lnt" id="hl-3-16"><a class="lnlinks" href="#hl-3-16">16</a>
+</span><span class="lnt" id="hl-3-17"><a class="lnlinks" href="#hl-3-17">17</a>
+</span><span class="lnt" id="hl-3-18"><a class="lnlinks" href="#hl-3-18">18</a>
+</span><span class="lnt" id="hl-3-19"><a class="lnlinks" href="#hl-3-19">19</a>
+</span><span class="lnt" id="hl-3-20"><a class="lnlinks" href="#hl-3-20">20</a>
+</span><span class="lnt" id="hl-3-21"><a class="lnlinks" href="#hl-3-21">21</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">RCC_OscInitTypeDef</span> <span class="n">RCC_OscInitStruct</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_ClkInitTypeDef</span> <span class="n">RCC_ClkInitStruct</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// HSE + PLL 설정
+</span></span></span><span class="line"><span class="cl"><span class="n">RCC_OscInitStruct</span><span class="p">.</span><span class="n">OscillatorType</span> <span class="o">=</span> <span class="n">RCC_OSCILLATORTYPE_HSE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_OscInitStruct</span><span class="p">.</span><span class="n">HSEState</span>       <span class="o">=</span> <span class="n">RCC_HSE_ON</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_OscInitStruct</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLState</span>   <span class="o">=</span> <span class="n">RCC_PLL_ON</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_OscInitStruct</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLSource</span>  <span class="o">=</span> <span class="n">RCC_PLLSOURCE_HSE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_OscInitStruct</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLM</span>       <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_OscInitStruct</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLN</span>       <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_OscInitStruct</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLP</span>       <span class="o">=</span> <span class="n">RCC_PLLP_DIV4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_OscInitStruct</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLQ</span>       <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">HAL_RCC_OscConfig</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RCC_OscInitStruct</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// AHB/APB 분주비 설정
+</span></span></span><span class="line"><span class="cl"><span class="n">RCC_ClkInitStruct</span><span class="p">.</span><span class="n">ClockType</span>      <span class="o">=</span> <span class="n">RCC_CLOCKTYPE_HCLK</span> <span class="o">|</span> <span class="n">RCC_CLOCKTYPE_PCLK1</span> <span class="o">|</span> <span class="n">RCC_CLOCKTYPE_PCLK2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_ClkInitStruct</span><span class="p">.</span><span class="n">SYSCLKSource</span>   <span class="o">=</span> <span class="n">RCC_SYSCLKSOURCE_PLLCLK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RCC_ClkInitStruct</span><span class="p">.</span><span class="n">AHBCLKDivider</span>  <span class="o">=</span> <span class="n">RCC_SYSCLK_DIV1</span><span class="p">;</span>   <span class="c1">// HCLK  = 100MHz
+</span></span></span><span class="line"><span class="cl"><span class="n">RCC_ClkInitStruct</span><span class="p">.</span><span class="n">APB1CLKDivider</span> <span class="o">=</span> <span class="n">RCC_HCLK_DIV2</span><span class="p">;</span>     <span class="c1">// PCLK1 = 50MHz
+</span></span></span><span class="line"><span class="cl"><span class="n">RCC_ClkInitStruct</span><span class="p">.</span><span class="n">APB2CLKDivider</span> <span class="o">=</span> <span class="n">RCC_HCLK_DIV1</span><span class="p">;</span>     <span class="c1">// PCLK2 = 100MHz
+</span></span></span><span class="line"><span class="cl"><span class="nf">HAL_RCC_ClockConfig</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RCC_ClkInitStruct</span><span class="p">,</span> <span class="n">FLASH_LATENCY_3</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img alt="CubeMX 클럭 설정 화면" loading="lazy" src="/images/basics/clock-cubemx-config.png">
+<em>STM32CubeMX Clock Configuration — HSE, PLL, AHB/APB 분주비를 시각적으로 설정할 수 있다</em></p>
+<hr>
+<h2 id="클럭-설정-실수">클럭 설정 실수<a hidden class="anchor" aria-hidden="true" href="#클럭-설정-실수">#</a></h2>
+<h3 id="hse_value-불일치">HSE_VALUE 불일치<a hidden class="anchor" aria-hidden="true" href="#hse_value-불일치">#</a></h3>
+<p><code>stm32f4xx_hal_conf.h</code>에 HSE 주파수를 정의하는 매크로가 있다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-4-1"><a class="lnlinks" href="#hl-4-1">1</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define HSE_VALUE  8000000U  </span><span class="c1">// 보드 크리스탈 주파수와 일치해야 함
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>보드에 12 MHz 크리스탈이 달려있는데 이 값이 8000000이면, PLL M/N/P 계산 기준이 틀려서 SYSCLK가 엉뚱한 값이 된다. <code>HAL_Delay(1000)</code>이 1초가 아니거나, UART 보드레이트가 맞지 않는 증상으로 나타난다.</p>
+<h3 id="주변장치-클럭-미활성화">주변장치 클럭 미활성화<a hidden class="anchor" aria-hidden="true" href="#주변장치-클럭-미활성화">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-5-1"><a class="lnlinks" href="#hl-5-1">1</a>
+</span><span class="lnt" id="hl-5-2"><a class="lnlinks" href="#hl-5-2">2</a>
+</span><span class="lnt" id="hl-5-3"><a class="lnlinks" href="#hl-5-3">3</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 이 줄 없으면 GPIOA 핀이 동작 안 함
+</span></span></span><span class="line"><span class="cl"><span class="nf">__HAL_RCC_GPIOA_CLK_ENABLE</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">GPIOA</span><span class="o">-&gt;</span><span class="n">MODER</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>HAL 초기화 함수를 쓰지 않고 레지스터를 직접 건드릴 때 가장 자주 만나는 실수다. 클럭이 꺼진 주변장치는 레지스터 접근 자체가 무시되거나 버스 오류를 일으킨다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/embedded/">Embedded</a></li>
+      <li><a href="http://localhost:1313/tags/stm32/">STM32</a></li>
+      <li><a href="http://localhost:1313/tags/clock/">Clock</a></li>
+      <li><a href="http://localhost:1313/tags/rcc/">RCC</a></li>
+      <li><a href="http://localhost:1313/tags/pll/">PLL</a></li>
+      <li><a href="http://localhost:1313/tags/hse/">HSE</a></li>
+      <li><a href="http://localhost:1313/tags/hsi/">HSI</a></li>
+      <li><a href="http://localhost:1313/tags/apb/">APB</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/">
+    <span class="title">Next »</span>
+    <br>
+    <span>SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+  </a>
+</nav>
+
+  </footer><div class="comments">
+  <script src="https://giscus.app/client.js"
+    data-repo="bromine1997/bromine1997.github.io"
+    data-repo-id="R_kgDOR1bAsg"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOR1bAss4C52wg"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="ko"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+
+</article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

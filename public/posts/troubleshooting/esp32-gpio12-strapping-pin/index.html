@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다 | bromine1997</title>
+<meta name="keywords" content="ESP32, GPIO, 부팅, 스트래핑핀, 트러블슈팅, Feather V2">
+<meta name="description" content="ESP32 Feather V2에서 GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다. 원인은 코드나 회로 문제가 아니라 스트래핑 핀이었다.">
+<meta name="author" content="서보민">
+<link rel="canonical" href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
+<meta property="og:url" content="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/">
+  <meta property="og:site_name" content="bromine1997">
+  <meta property="og:title" content="GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다">
+  <meta property="og:description" content="ESP32 Feather V2에서 GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다. 원인은 코드나 회로 문제가 아니라 스트래핑 핀이었다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-06-04T20:52:00+09:00">
+    <meta property="article:modified_time" content="2026-06-04T20:52:00+09:00">
+    <meta property="article:tag" content="ESP32">
+    <meta property="article:tag" content="GPIO">
+    <meta property="article:tag" content="부팅">
+    <meta property="article:tag" content="스트래핑핀">
+    <meta property="article:tag" content="트러블슈팅">
+    <meta property="article:tag" content="Feather V2">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다">
+  <meta name="twitter:description" content="ESP32 Feather V2에서 GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다. 원인은 코드나 회로 문제가 아니라 스트래핑 핀이었다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Troubleshooting",
+      "item": "http://localhost:1313/posts/troubleshooting/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다",
+      "item": "http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다",
+  "name": "GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다",
+  "description": "ESP32 Feather V2에서 GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다. 원인은 코드나 회로 문제가 아니라 스트래핑 핀이었다.",
+  "keywords": [
+    "ESP32", "GPIO", "부팅", "스트래핑핀", "트러블슈팅", "Feather V2"
+  ],
+  "articleBody": "ESP32 Feather V2로 재활자전거 프로젝트를 진행하면서 핀을 배치할 때 GPIO 12에 외부 회로를 연결한 적이 있다. 코드도 문제없고 회로도 맞는 것 같은데 부팅이 안 됐다. 시리얼 모니터에는 flash read err, 1000 같은 에러 메시지가 반복해서 찍히며 리셋 루프에 빠졌다.\n원인은 스트래핑 핀이었다.\n스트래핑 핀이란 ESP32는 부팅할 때 특정 GPIO의 상태를 읽어서 동작 모드를 결정한다. 이 핀들을 스트래핑 핀(Strapping Pin) 이라고 부른다.\nESP32에서 주의해야 할 스트래핑 핀은 다음과 같다.\nGPIO 기능 부팅 시 요구 상태 GPIO 0 부트 모드 선택 HIGH → 정상 실행, LOW → 다운로드 모드 GPIO 2 다운로드 모드 조건 다운로드 모드 진입 시 LOW여야 함 GPIO 12 플래시 전압 선택 LOW → 3.3V (정상), HIGH → 1.8V (부팅 실패) GPIO 15 부팅 로그 출력 HIGH → 출력, LOW → 억제 이 중 GPIO 12가 가장 흔히 문제를 일으킨다.\nGPIO 12가 특히 위험한 이유 GPIO 12(MTDI)는 부팅 시 내부 레귤레이터의 출력 전압을 결정하는 핀이다. 이 레귤레이터는 플래시 메모리와 PSRAM에 전원을 공급한다.\n1 2 GPIO 12 = LOW (기본) → 플래시 전압 3.3V → 정상 부팅 GPIO 12 = HIGH → 플래시 전압 1.8V → 플래시 읽기 실패 → 부팅 안 됨 GPIO 12에는 내부 풀다운이 내장되어 있다. 아무것도 연결하지 않으면 LOW로 유지되어 문제가 없다.\n문제는 외부 회로를 연결했을 때다. 외부 회로가 부팅 순간에 GPIO 12를 HIGH로 당기면 ESP32가 플래시를 1.8V로 읽으려 하고, 실제 플래시는 3.3V 전용이라 데이터를 읽지 못한다. 그 결과 ROM 부트로더가 flash read err, 1000 에러를 출력하고 리셋을 반복한다.\n더 까다로운 점은 증상이 일관적이지 않을 수 있다는 것이다. 커패시터 충전 타이밍에 따라 부팅 성공/실패가 들쭉날쭉하면 원인을 찾기가 더 어렵다.\n해결 방법 방법 1: GPIO 12를 아예 피하기 (가장 확실)\n핀이 충분하다면 처음부터 GPIO 12를 배치에서 제외하는 것이 가장 안전하다. 스트래핑 핀은 ESP32 데이터시트에 명시돼 있으니 핀 배치를 잡기 전에 미리 확인해두는 것이 좋다.\n방법 2: 출력(OUTPUT)으로만 사용하기\n스트래핑 핀 값은 부팅 직후, 코드가 실행되기 전에 읽힌다. 이 시점에 GPIO 12는 아직 코드의 제어를 받지 않으므로, 핵심은 외부 회로가 부팅 순간에 GPIO 12를 HIGH로 당기느냐다.\nGPIO 12를 출력으로 사용한다면, 연결된 부품(모터 드라이버 EN 핀, 트랜지스터 베이스 등)이 부팅 시점에 LOW나 플로팅 상태인 경우가 많아 문제가 생기지 않는다. 반면 입력으로 사용할 경우 상대 회로가 부팅 순간 HIGH를 출력하면 위험하다.\n연결된 부품이 부팅 시 HIGH를 출력할 가능성이 있다면 아래 방법 3을 함께 적용한다.\n방법 3: 풀다운 저항 추가 (입력으로 써야 한다면)\nGPIO 12에 10kΩ 풀다운을 추가해 부팅 시 LOW를 보장한다.\n1 2 GPIO 12 ──┬── 외부 회로 └── 10kΩ ── GND 정리 항목 내용 증상 외부 회로 연결 후 부팅 불가, 시리얼에 flash read err 에러 반복 출력 원인 GPIO 12 스트래핑 핀 — 부팅 시 HIGH면 플래시 전압이 1.8V로 설정됨 해결 GPIO 12 미사용 / 출력 전용으로 사용 / 풀다운 저항 추가 ESP32 핀 배치를 잡을 때는 스트래핑 핀 목록을 먼저 확인해두는 게 좋다. 특히 GPIO 12는 내부 풀다운이 있어서 단독으로는 문제없지만, 외부 회로가 붙는 순간 부팅 타이밍과 맞물려 아무 이유 없이 안 켜지는 것처럼 보일 수 있다.\n",
+  "wordCount" : "470",
+  "inLanguage": "en",
+  "datePublished": "2026-06-04T20:52:00+09:00",
+  "dateModified": "2026-06-04T20:52:00+09:00",
+  "author":{
+    "@type": "Person",
+    "name": "서보민"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "bromine1997",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li class="has-dropdown">
+                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                    <span>Algorithm</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                    <span>Paper Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link active">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/troubleshooting/">Troubleshooting</a></div>
+    <h1 class="post-title entry-hint-parent">
+      GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다
+    </h1>
+    <div class="post-meta"><span title='2026-06-04 20:52:00 +0900 KST'>June 4, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/troubleshooting/esp32-gpio12-strapping-pin.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
+</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#스트래핑-핀이란">스트래핑 핀이란</a></li>
+    <li><a href="#gpio-12가-특히-위험한-이유">GPIO 12가 특히 위험한 이유</a></li>
+    <li><a href="#해결-방법">해결 방법</a></li>
+    <li><a href="#정리">정리</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>ESP32 Feather V2로 재활자전거 프로젝트를 진행하면서 핀을 배치할 때 GPIO 12에 외부 회로를 연결한 적이 있다. 코드도 문제없고 회로도 맞는 것 같은데 부팅이 안 됐다. 시리얼 모니터에는 <code>flash read err, 1000</code> 같은 에러 메시지가 반복해서 찍히며 리셋 루프에 빠졌다.</p>
+<p>원인은 스트래핑 핀이었다.</p>
+<h2 id="스트래핑-핀이란">스트래핑 핀이란<a hidden class="anchor" aria-hidden="true" href="#스트래핑-핀이란">#</a></h2>
+<p>ESP32는 부팅할 때 특정 GPIO의 상태를 읽어서 동작 모드를 결정한다. 이 핀들을 <strong>스트래핑 핀(Strapping Pin)</strong> 이라고 부른다.</p>
+<p>ESP32에서 주의해야 할 스트래핑 핀은 다음과 같다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>GPIO</th>
+          <th>기능</th>
+          <th>부팅 시 요구 상태</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>GPIO 0</td>
+          <td>부트 모드 선택</td>
+          <td>HIGH → 정상 실행, LOW → 다운로드 모드</td>
+      </tr>
+      <tr>
+          <td>GPIO 2</td>
+          <td>다운로드 모드 조건</td>
+          <td>다운로드 모드 진입 시 LOW여야 함</td>
+      </tr>
+      <tr>
+          <td><strong>GPIO 12</strong></td>
+          <td><strong>플래시 전압 선택</strong></td>
+          <td><strong>LOW → 3.3V (정상), HIGH → 1.8V (부팅 실패)</strong></td>
+      </tr>
+      <tr>
+          <td>GPIO 15</td>
+          <td>부팅 로그 출력</td>
+          <td>HIGH → 출력, LOW → 억제</td>
+      </tr>
+  </tbody>
+</table>
+<p>이 중 GPIO 12가 가장 흔히 문제를 일으킨다.</p>
+<h2 id="gpio-12가-특히-위험한-이유">GPIO 12가 특히 위험한 이유<a hidden class="anchor" aria-hidden="true" href="#gpio-12가-특히-위험한-이유">#</a></h2>
+<p>GPIO 12(MTDI)는 부팅 시 내부 레귤레이터의 출력 전압을 결정하는 핀이다. 이 레귤레이터는 플래시 메모리와 PSRAM에 전원을 공급한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-0-1"><a class="lnlinks" href="#hl-0-1">1</a>
+</span><span class="lnt" id="hl-0-2"><a class="lnlinks" href="#hl-0-2">2</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">GPIO 12 = LOW (기본) → 플래시 전압 3.3V → 정상 부팅
+</span></span><span class="line"><span class="cl">GPIO 12 = HIGH       → 플래시 전압 1.8V → 플래시 읽기 실패 → 부팅 안 됨
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>GPIO 12에는 <strong>내부 풀다운</strong>이 내장되어 있다. 아무것도 연결하지 않으면 LOW로 유지되어 문제가 없다.</p>
+<p>문제는 외부 회로를 연결했을 때다. 외부 회로가 부팅 순간에 GPIO 12를 HIGH로 당기면 ESP32가 플래시를 1.8V로 읽으려 하고, 실제 플래시는 3.3V 전용이라 데이터를 읽지 못한다. 그 결과 ROM 부트로더가 <code>flash read err, 1000</code> 에러를 출력하고 리셋을 반복한다.</p>
+<p>더 까다로운 점은 <strong>증상이 일관적이지 않을 수 있다</strong>는 것이다. 커패시터 충전 타이밍에 따라 부팅 성공/실패가 들쭉날쭉하면 원인을 찾기가 더 어렵다.</p>
+<h2 id="해결-방법">해결 방법<a hidden class="anchor" aria-hidden="true" href="#해결-방법">#</a></h2>
+<p><strong>방법 1: GPIO 12를 아예 피하기 (가장 확실)</strong></p>
+<p>핀이 충분하다면 처음부터 GPIO 12를 배치에서 제외하는 것이 가장 안전하다. 스트래핑 핀은 ESP32 데이터시트에 명시돼 있으니 핀 배치를 잡기 전에 미리 확인해두는 것이 좋다.</p>
+<p><strong>방법 2: 출력(OUTPUT)으로만 사용하기</strong></p>
+<p>스트래핑 핀 값은 부팅 직후, 코드가 실행되기 전에 읽힌다. 이 시점에 GPIO 12는 아직 코드의 제어를 받지 않으므로, 핵심은 외부 회로가 부팅 순간에 GPIO 12를 HIGH로 당기느냐다.</p>
+<p>GPIO 12를 출력으로 사용한다면, 연결된 부품(모터 드라이버 EN 핀, 트랜지스터 베이스 등)이 부팅 시점에 LOW나 플로팅 상태인 경우가 많아 문제가 생기지 않는다. 반면 입력으로 사용할 경우 상대 회로가 부팅 순간 HIGH를 출력하면 위험하다.</p>
+<p>연결된 부품이 부팅 시 HIGH를 출력할 가능성이 있다면 아래 방법 3을 함께 적용한다.</p>
+<p><strong>방법 3: 풀다운 저항 추가 (입력으로 써야 한다면)</strong></p>
+<p>GPIO 12에 10kΩ 풀다운을 추가해 부팅 시 LOW를 보장한다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt" id="hl-1-1"><a class="lnlinks" href="#hl-1-1">1</a>
+</span><span class="lnt" id="hl-1-2"><a class="lnlinks" href="#hl-1-2">2</a>
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">GPIO 12 ──┬── 외부 회로
+</span></span><span class="line"><span class="cl">           └── 10kΩ ── GND
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="정리">정리<a hidden class="anchor" aria-hidden="true" href="#정리">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>증상</td>
+          <td>외부 회로 연결 후 부팅 불가, 시리얼에 <code>flash read err</code> 에러 반복 출력</td>
+      </tr>
+      <tr>
+          <td>원인</td>
+          <td>GPIO 12 스트래핑 핀 — 부팅 시 HIGH면 플래시 전압이 1.8V로 설정됨</td>
+      </tr>
+      <tr>
+          <td>해결</td>
+          <td>GPIO 12 미사용 / 출력 전용으로 사용 / 풀다운 저항 추가</td>
+      </tr>
+  </tbody>
+</table>
+<p>ESP32 핀 배치를 잡을 때는 스트래핑 핀 목록을 먼저 확인해두는 게 좋다. 특히 GPIO 12는 내부 풀다운이 있어서 단독으로는 문제없지만, 외부 회로가 붙는 순간 부팅 타이밍과 맞물려 아무 이유 없이 안 켜지는 것처럼 보일 수 있다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/esp32/">ESP32</a></li>
+      <li><a href="http://localhost:1313/tags/gpio/">GPIO</a></li>
+      <li><a href="http://localhost:1313/tags/%EB%B6%80%ED%8C%85/">부팅</a></li>
+      <li><a href="http://localhost:1313/tags/%EC%8A%A4%ED%8A%B8%EB%9E%98%ED%95%91%ED%95%80/">스트래핑핀</a></li>
+      <li><a href="http://localhost:1313/tags/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/">트러블슈팅</a></li>
+      <li><a href="http://localhost:1313/tags/feather-v2/">Feather V2</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/">
+    <span class="title">Next »</span>
+    <br>
+    <span>임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+  </a>
+</nav>
+
+  </footer><div class="comments">
+  <script src="https://giscus.app/client.js"
+    data-repo="bromine1997/bromine1997.github.io"
+    data-repo-id="R_kgDOR1bAsg"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOR1bAss4C52wg"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="ko"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+
+</article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

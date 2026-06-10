@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>[Paper Review] PID Control System Analysis, Design, and Technology | bromine1997</title>
+<title>PID Control System Analysis, Design, and Technology | bromine1997</title>
 <meta name="keywords" content="PID, control, embedded, firmware">
 <meta name="description" content="PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리.">
 <meta name="author" content="서보민">
 <link rel="canonical" href="http://localhost:1313/posts/paper-review/pid-paper-review/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -70,38 +70,37 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    renderMathInElement(document.body, {
-      delimiters: [
-        { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false }
-      ],
-      throwOnError: false
-    });
-  });
-</script>
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ],
+    throwOnError: false
+  });"></script>
 
 <meta property="og:url" content="http://localhost:1313/posts/paper-review/pid-paper-review/">
   <meta property="og:site_name" content="bromine1997">
-  <meta property="og:title" content="[Paper Review] PID Control System Analysis, Design, and Technology">
+  <meta property="og:title" content="PID Control System Analysis, Design, and Technology">
   <meta property="og:description" content="PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리.">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-04-15T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-04-15T00:00:00+00:00">
+    <meta property="article:published_time" content="2026-05-02T20:22:00+09:00">
+    <meta property="article:modified_time" content="2026-05-02T20:22:00+09:00">
     <meta property="article:tag" content="PID">
     <meta property="article:tag" content="Control">
     <meta property="article:tag" content="Embedded">
     <meta property="article:tag" content="Firmware">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="[Paper Review] PID Control System Analysis, Design, and Technology">
+  <meta name="twitter:title" content="PID Control System Analysis, Design, and Technology">
   <meta name="twitter:description" content="PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리.">
 
 
@@ -119,7 +118,13 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "[Paper Review] PID Control System Analysis, Design, and Technology",
+      "name": "Paper Review",
+      "item": "http://localhost:1313/posts/paper-review/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "PID Control System Analysis, Design, and Technology",
       "item": "http://localhost:1313/posts/paper-review/pid-paper-review/"
     }
   ]
@@ -129,17 +134,17 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "[Paper Review] PID Control System Analysis, Design, and Technology",
-  "name": "[Paper Review] PID Control System Analysis, Design, and Technology",
+  "headline": "PID Control System Analysis, Design, and Technology",
+  "name": "PID Control System Analysis, Design, and Technology",
   "description": "PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리.",
   "keywords": [
     "PID", "control", "embedded", "firmware"
   ],
-  "articleBody": " 한 줄 요약: 산업 현장에서 90% 이상 사용되는 PID 제어기는 단순한 구조 덕분에 살아남았지만, derivative 항 하나를 잘못 튜닝하면 오히려 시스템을 불안정하게 만들 수 있다.\n📌 논문 정보 항목 내용 제목 PID Control System Analysis, Design, and Technology 저자 Kiam Heong Ang, Gregory Chong, Yun Li 저널 / 학회 IEEE Transactions on Control Systems Technology 연도 2005 DOI / 링크 https://doi.org/10.1109/TCST.2005.847331 분야 control embedded 🎯 읽게 된 이유 석사 연구 중에 HBOT 챔버 회사에 재직 중인 선배님께 조언을 구할 기회가 있었다. 그때 선배님이 짧게 한마디 하셨다. “미분항은 실제로 잘 안 써요.”\n그 말을 듣고 당시 나는 그냥 넘겼다. 왜인지를 파고들 여유가 없었다. 솔직히 말하면, 그 시점의 나는 제어 이론보다 졸업이 더 급했다. 챔버 압력 제어 로직을 어떻게든 돌아가게 만드는 것이 목표였고, $K_D$는 노이즈가 튀어서 disabled 처리하고 넘어갔다.\n그런데 졸업 이후에도 그 말이 계속 머릿속에 남았다. 현장에서 수십 년 일한 엔지니어가 왜 그렇게 말했을까. 단순히 “노이즈 때문에\"라는 설명만으로는 뭔가 부족한 느낌이었다. 이 논문을 읽고 나서야 그 이유를 수식으로 이해했다. Dead time이 있는 플랜트에서 $K_D$를 올리면 오히려 시스템이 불안정해질 수 있다는 것, 그래서 산업 현장의 80%가 derivative 항을 비활성화 상태로 운용한다는 것.\n선배님의 그 한마디가 이론적으로 근거가 있었다는 걸, 조금 늦게 확인한 셈이다.\n🔍 핵심 개념 PID의 세 가지 항 — 역할 분리 PID 전달 함수의 병렬(Parallel) 형태:\n$$G(s) = K_P + K_I \\frac{1}{s} + K_D s$$\n이상(Ideal) 형태로 쓰면:\n$$G(s) = K_P \\left(1 + \\frac{1}{T_I s} + T_D s\\right)$$\n각 항의 역할을 직관적으로 보면:\nP항: 현재 오차에 비례해서 즉각 반응한다. 빠르지만, 정상상태 오차는 남는다. I항: 오차를 시간적으로 누적해서 0으로 끌어당긴다. 정상상태 오차를 제거하지만, 위상 지연을 추가해서 시스템을 더 진동하게 만든다. D항: 오차의 변화율을 미리 예측해서 앞서 대응한다. 위상 선행(phase lead)을 주지만, 고주파 잡음을 증폭한다. Integral Windup — 왜 anti-windup이 필요한가 actuator에 포화(saturation)가 생기면 I항은 계속 오차를 누적하는데, 실제 출력은 한계에 걸려 반응을 못 한다. 포화가 풀리는 순간 누적된 I항이 한꺼번에 터져 저주파 진동과 불안정을 유발한다.\n소프트웨어로 구현하는 anti-windup의 표준 방식:\n$$U_I’(s) = \\frac{1}{T_I s} \\left[ K_P E(s) - \\frac{U(s) - \\tilde{U}(s)}{\\gamma} \\right]$$\n$\\tilde{U}(s)$는 포화된 실제 출력, $\\gamma \\in [0.1, 1.0]$는 보정 계수다.\n직관적으로 보면, “integrator가 포화된 만큼만 역방향으로 빼줘서 누적이 계속 쌓이지 않도록 억제하는 음수 피드백“이다. 펌웨어에서는 단순히 아래 한 줄로 구현한다.\n1 if (output \u003e MAX) integral -= (output - MAX) / gamma; Derivative 항이 오히려 불안정을 만드는 조건 이 논문의 핵심 반전이다. 일반적으로 D항을 올리면 안정성이 좋아진다고 알려져 있지만, transport delay(dead time)가 있는 1차 플랜트에서는 다르다.\n1차 지연 + 순수 지연 플랜트:\n$$G(s) = \\frac{K}{1+Ts}e^{-Ls}$$\n여기에 PD 제어기를 붙이면 개루프 게인은:\n$$\\left|G(j\\omega)G_{PD}(j\\omega)\\right| = KK_P\\sqrt{\\frac{1 + T_D^2 \\omega^2}{1 + T^2 \\omega^2}} \\geq KK_P \\min\\left(1, \\frac{T_D}{T}\\right)$$\n$T_D \\geq T$ 이거나 $KK_P \\leq 1$ 이면, 위 식은 모든 주파수에서 게인이 0 dB 이상임을 뜻한다. 이 경우 게인 교차 주파수 $\\omega_c$ 가 무한대이고, 거기서의 위상은:\n$$\\angle G = \\frac{\\pi}{2} - \\frac{\\pi}{2} - \\infty \u003c -\\pi$$\nBode/Nyquist 기준으로 안정 마진이 사라져 시스템이 불안정해진다.\nDerivative 필터링 — 실제 구현 순수 미분기 $T_D s$ 는 고주파에서 게인이 무한대다. 실제 구현에서는 low-pass filter를 직렬 연결한다.\n$$G_D’(s) = \\frac{T_D s}{1 + \\frac{T_D}{\\beta} s}$$\n산업용 하드웨어에서 $\\beta$ 설정 범위는 1–33이고, 대부분 8–16 사이에서 사용한다. 임베디드에서는 이를 discretize해서 difference equation으로 구현한다.\nTuning 방법 5가지 분류 방법 원리 특징 Analytical (IMC/Lambda) 모델 → 수식 직접 계산 정확하지만 모델 정확도에 의존 Heuristic (Ziegler-Nichols) 경험 기반 공식 빠르지만 최적과 거리 있음 Frequency Response 루프 셰이핑 안정성에 강인하나 offline 위주 Optimization 수치 최적화 다목적 가능하나 느림 Adaptive 실시간 식별 + 위 방법 혼합 자동화 가능하나 복잡 📊 파라미터/변수의 의미 아래 표는 $K_P$, $K_I$, $K_D$ 각각이 독립적으로 closed-loop 응답에 미치는 영향이다 (논문 Table I 기준, 안정적인 open-loop 플랜트 한정).\n파라미터 Rise Time Overshoot Settling Time SS Error Stability Kp 증가 감소 ↓ 증가 ↑ 약간 증가 감소 ↓ 저하 Ki 증가 약간 감소 증가 ↑ 증가 ↑ → 0 (제거) 저하 Kd 증가 약간 감소 감소 ↓ 감소 ↓ 미세 변화 개선 (without dead time) ⚠️ 위 표는 각 항을 독립적으로 조정했을 때의 경향이다. 실제로는 $K_P$, $T_I$, $T_D$ 가 상호의존적으로 동작한다. 특히 $K_D$ 의 “stability 개선\"은 dead time이 없는 경우에만 유효하다.\n💡 직관적 유도 \u0026 인사이트 “D항이 안정을 해친다\"는 게 맞는 말인가? P항만 쓰다가 D항을 추가하면 두 가지가 동시에 일어난다.\n위상 앞당김(phase lead) → 위상 마진 증가 → 안정성 ↑ 게인 증가 → 게인 마진 감소 → 안정성 ↓ 이 두 효과가 서로 충돌하는데, dead time이 클수록 게인 증가의 부정적 영향이 압도한다. 비유하자면, 자동차 핸들을 1초 뒤에야 반응하는 파워스티어링으로 바꿨는데, 거기다가 핸들 감도까지 올린 것과 같다. 반응이 빨라지는 게 아니라 오버슈트가 폭발한다.\nAnti-windup을 적용하지 않으면 어떻게 되나 직관적으로: “목표 지점 근처에 도착했는데도 브레이크가 걸리지 않는 차“다. I항이 계속 누적되어 있으면, 오차가 0이 되어도 출력이 계속 올라간다. 결국 반대 방향 오차가 크게 생겨야 I항이 줄기 시작한다. 이 lag가 저주파 진동의 원인이다.\n왜 IMC/Lambda tuning이 소프트웨어에서 지배적인가 IMC는 플랜트를 $\\frac{K}{1+Ts}e^{-Ls}$ 로 근사하고, 원하는 closed-loop 응답 시정수 $\\lambda$ 를 설정하면 $K_P$, $T_I$, $T_D$ 가 수식으로 바로 나온다. “모델 → 파라미터\"가 closed form이라 실시간 계산이 가능하고, $\\lambda$ 하나로 빠름/느림 트레이드오프를 조절할 수 있어서 현장에서 쓰기 편하다.\n✅ 정리 D항 비활성화는 충분히 합리적인 선택이다. 산업 현장의 80%가 이미 그렇게 운용하고 있고, dead time이 있는 플랜트에서는 $K_D$ 를 올리는 것이 오히려 불안정을 유발할 수 있다는 수학적 증명이 논문에 명확히 나와 있다. HBOT 챔버에서 D항을 비활성화한 것은 맞는 판단이었다.\nAnti-windup은 선택이 아니라 필수다. 4–20mA 비례 밸브처럼 actuator saturation이 발생하는 시스템에서 anti-windup 없이 PID를 운용하면 저주파 진동이 반드시 나타난다. 소프트웨어 구현에서 $\\gamma \\in [0.1, 1.0]$ 범위면 대부분 잘 동작한다.\n튜닝 방법론은 상황에 따라 선택해야 한다. Ziegler-Nichols는 초기 파라미터 추정에 적합하고, IMC/Lambda는 closed-form 공식이라 온라인 튜닝에 유리하다. 최적 성능이 필요하면 optimization 기반을 써야 하지만, 그만큼 계산 비용과 모델 정확도를 요구한다.\n표준화 부재가 현장의 가장 큰 문제다. ABB, Foxboro, Honeywell, Yokogawa 각각의 PID 구조와 튜닝 규칙이 달라서, 학계에서 제안한 튜닝 공식이 특정 하드웨어에서 동작하지 않는 이유가 여기 있다. 논문은 이를 해결하기 위해 표준 PID 구조 위에서 “plug-and-play” 방식의 자동 튜닝을 지향하는 PIDeasy를 제안하는 것으로 마무리된다.\n💬 내 생각 / 인사이트 그렇다면 80%가 비활성화한다는 D항은 도대체 어떤 경우에 쓰는 걸까. 논문과 제어 공학 일반 지식을 종합하면 세 가지 케이스가 나온다.\nDead time이 거의 없는 2차 이상 플랜트: 모터 속도 제어, 서보 시스템처럼 응답이 빠르고 지연이 작은 시스템. Dead time이 없으면 D항의 위상 선행 효과가 순수하게 안정성을 높인다. 공장 압력/온도 제어와 반대되는 케이스다.\nOvershoot을 절대 허용 못 하는 경우: 로봇 관절 제어, CNC 공작기계처럼 위치 정밀도가 중요한 시스템. D항으로 오차 변화율을 미리 감지해서 목표값 도달 직전에 브레이크를 건다.\n부하 변동이 갑작스럽게 발생하는 경우: 부하가 순간적으로 바뀔 때 P항만으로는 반응이 늦다. D항이 변화율을 감지해서 빠르게 대응한다.\nHBOT 챔버 맥락에서 보면, 압력 제어는 전형적인 1차 플랜트 + dead time 구조라 D항이 오히려 해롭다. 반면 챔버 내부 온도 제어처럼 열용량이 커서 응답이 느린 2차 특성을 띠는 경우엔 D항이 유효할 수 있다. 결국 “응답이 빠르고 dead time이 작은 시스템일수록 D항이 유효하고, 느리고 지연이 큰 공정일수록 D항은 독이 된다.\"\n🔖 개인적 메모: 다음에 STM32에서 PID 루프를 다시 구현한다면, (1) anti-windup을 반드시 포함하고, (2) D항은 low-pass filter를 직렬 연결해서 $\\beta = 10$ 정도로 고주파 차단, (3) 초기 $K_P$ 는 Z-N으로 추정하고 IMC 공식으로 전환하는 순서로 접근할 것이다.\n🔗 관련 논문 Ziegler JG, Nichols NB. Optimum settings for automatic controllers. Trans ASME 1942 Åström KJ, Hägglund T. PID Controllers: Theory, Design, and Tuning. ISA 1995 Shinskey FG. Feedback Controllers for the Process Industries. McGraw-Hill 1994 ",
-  "wordCount" : "1161",
+  "articleBody": " 한 줄 요약: 산업 현장에서 90% 이상 사용되는 PID 제어기는 단순한 구조 덕분에 살아남았지만, derivative 항 하나를 잘못 튜닝하면 오히려 시스템을 불안정하게 만들 수 있다.\n논문 정보 항목 내용 제목 PID Control System Analysis, Design, and Technology 저자 Kiam Heong Ang, Gregory Chong, Yun Li 저널 / 학회 IEEE Transactions on Control Systems Technology 연도 2005 DOI / 링크 https://doi.org/10.1109/TCST.2005.847331 분야 control embedded 읽게 된 이유 석사 연구 중에 HBOT 챔버 회사에 재직 중인 선배님께 조언을 구할 기회가 있었다. 그때 선배님이 짧게 한마디 하셨다. “미분항은 실제로 잘 안 써요.”\n그 말을 듣고 당시 나는 그냥 넘겼다. 왜인지를 파고들 여유가 없었다. 솔직히 말하면, 그 시점의 나는 제어 이론보다 졸업이 더 급했다. 챔버 압력 제어 로직을 어떻게든 돌아가게 만드는 것이 목표였고, $K_D$는 노이즈가 튀어서 disabled 처리하고 넘어갔다.\n그런데 졸업 이후에도 그 말이 계속 머릿속에 남았다. 현장에서 수십 년 일한 엔지니어가 왜 그렇게 말했을까. 단순히 “노이즈 때문에\"라는 설명만으로는 뭔가 부족한 느낌이었다. 이 논문을 읽고 나서야 그 이유를 수식으로 이해했다. Dead time이 있는 플랜트에서 $K_D$를 올리면 오히려 시스템이 불안정해질 수 있다는 것, 그래서 산업 현장의 80%가 derivative 항을 비활성화 상태로 운용한다는 것.\n선배님의 그 한마디가 이론적으로 근거가 있었다는 걸, 조금 늦게 확인한 셈이다.\n핵심 개념 PID의 세 가지 항 — 역할 분리 PID 전달 함수의 병렬(Parallel) 형태:\n$$G(s) = K_P + K_I \\frac{1}{s} + K_D s$$이상(Ideal) 형태로 쓰면:\n$$G(s) = K_P \\left(1 + \\frac{1}{T_I s} + T_D s\\right)$$각 항의 역할을 직관적으로 보면:\nP항: 현재 오차에 비례해서 즉각 반응한다. 빠르지만, 정상상태 오차는 남는다. I항: 오차를 시간적으로 누적해서 0으로 끌어당긴다. 정상상태 오차를 제거하지만, 위상 지연을 추가해서 시스템을 더 진동하게 만든다. D항: 오차의 변화율을 미리 예측해서 앞서 대응한다. 위상 선행(phase lead)을 주지만, 고주파 잡음을 증폭한다. Integral Windup — 왜 anti-windup이 필요한가 actuator에 포화(saturation)가 생기면 I항은 계속 오차를 누적하는데, 실제 출력은 한계에 걸려 반응을 못 한다. 포화가 풀리는 순간 누적된 I항이 한꺼번에 터져 저주파 진동과 불안정을 유발한다.\n소프트웨어로 구현하는 anti-windup의 표준 방식:\n$$U_I'(s) = \\frac{1}{T_I s} \\left[ K_P E(s) - \\frac{U(s) - \\tilde{U}(s)}{\\gamma} \\right]$$$\\tilde{U}(s)$는 포화된 실제 출력, $\\gamma \\in [0.1, 1.0]$는 보정 계수다.\n직관적으로 보면, “integrator가 포화된 만큼만 역방향으로 빼줘서 누적이 계속 쌓이지 않도록 억제하는 음수 피드백“이다. 펌웨어에서는 단순히 아래 한 줄로 구현한다.\n1 if (output \u003e MAX) integral -= (output - MAX) / gamma; Derivative 항이 오히려 불안정을 만드는 조건 이 논문의 핵심 반전이다. 일반적으로 D항을 올리면 안정성이 좋아진다고 알려져 있지만, transport delay(dead time)가 있는 1차 플랜트에서는 다르다.\n1차 지연 + 순수 지연 플랜트:\n$$G(s) = \\frac{K}{1+Ts}e^{-Ls}$$여기에 PD 제어기를 붙이면 개루프 게인은:\n$$\\left|G(j\\omega)G_{PD}(j\\omega)\\right| = KK_P\\sqrt{\\frac{1 + T_D^2 \\omega^2}{1 + T^2 \\omega^2}} \\geq KK_P \\min\\left(1, \\frac{T_D}{T}\\right)$$$T_D \\geq T$ 이거나 $KK_P \\leq 1$ 이면, 위 식은 모든 주파수에서 게인이 0 dB 이상임을 뜻한다. 이 경우 게인 교차 주파수 $\\omega_c$ 가 무한대이고, 거기서의 위상은:\n$$\\angle G = \\frac{\\pi}{2} - \\frac{\\pi}{2} - \\infty \u003c -\\pi$$Bode/Nyquist 기준으로 안정 마진이 사라져 시스템이 불안정해진다.\nDerivative 필터링 — 실제 구현 순수 미분기 $T_D s$ 는 고주파에서 게인이 무한대다. 실제 구현에서는 low-pass filter를 직렬 연결한다.\n$$G_D'(s) = \\frac{T_D s}{1 + \\frac{T_D}{\\beta} s}$$산업용 하드웨어에서 $\\beta$ 설정 범위는 1–33이고, 대부분 8–16 사이에서 사용한다. 임베디드에서는 이를 discretize해서 difference equation으로 구현한다.\nTuning 방법 5가지 분류 방법 원리 특징 Analytical (IMC/Lambda) 모델 → 수식 직접 계산 정확하지만 모델 정확도에 의존 Heuristic (Ziegler-Nichols) 경험 기반 공식 빠르지만 최적과 거리 있음 Frequency Response 루프 셰이핑 안정성에 강인하나 offline 위주 Optimization 수치 최적화 다목적 가능하나 느림 Adaptive 실시간 식별 + 위 방법 혼합 자동화 가능하나 복잡 파라미터/변수의 의미 아래 표는 $K_P$, $K_I$, $K_D$ 각각이 독립적으로 closed-loop 응답에 미치는 영향이다 (논문 Table I 기준, 안정적인 open-loop 플랜트 한정).\n파라미터 Rise Time Overshoot Settling Time SS Error Stability Kp 증가 감소 ↓ 증가 ↑ 약간 증가 감소 ↓ 저하 Ki 증가 약간 감소 증가 ↑ 증가 ↑ → 0 (제거) 저하 Kd 증가 약간 감소 감소 ↓ 감소 ↓ 미세 변화 개선 (without dead time) ⚠️ 위 표는 각 항을 독립적으로 조정했을 때의 경향이다. 실제로는 $K_P$, $T_I$, $T_D$ 가 상호의존적으로 동작한다. 특히 $K_D$ 의 “stability 개선\"은 dead time이 없는 경우에만 유효하다.\n직관적 유도 \u0026 인사이트 “D항이 안정을 해친다\"는 게 맞는 말인가? P항만 쓰다가 D항을 추가하면 두 가지가 동시에 일어난다.\n위상 앞당김(phase lead) → 위상 마진 증가 → 안정성 ↑ 게인 증가 → 게인 마진 감소 → 안정성 ↓ 이 두 효과가 서로 충돌하는데, dead time이 클수록 게인 증가의 부정적 영향이 압도한다. 비유하자면, 자동차 핸들을 1초 뒤에야 반응하는 파워스티어링으로 바꿨는데, 거기다가 핸들 감도까지 올린 것과 같다. 반응이 빨라지는 게 아니라 오버슈트가 폭발한다.\nAnti-windup을 적용하지 않으면 어떻게 되나 직관적으로: “목표 지점 근처에 도착했는데도 브레이크가 걸리지 않는 차“다. I항이 계속 누적되어 있으면, 오차가 0이 되어도 출력이 계속 올라간다. 결국 반대 방향 오차가 크게 생겨야 I항이 줄기 시작한다. 이 lag가 저주파 진동의 원인이다.\n왜 IMC/Lambda tuning이 소프트웨어에서 지배적인가 IMC는 플랜트를 $\\frac{K}{1+Ts}e^{-Ls}$ 로 근사하고, 원하는 closed-loop 응답 시정수 $\\lambda$ 를 설정하면 $K_P$, $T_I$, $T_D$ 가 수식으로 바로 나온다. “모델 → 파라미터\"가 closed form이라 실시간 계산이 가능하고, $\\lambda$ 하나로 빠름/느림 트레이드오프를 조절할 수 있어서 현장에서 쓰기 편하다.\n정리 D항 비활성화는 충분히 합리적인 선택이다. 산업 현장의 80%가 이미 그렇게 운용하고 있고, dead time이 있는 플랜트에서는 $K_D$ 를 올리는 것이 오히려 불안정을 유발할 수 있다는 수학적 증명이 논문에 명확히 나와 있다. HBOT 챔버에서 D항을 비활성화한 것은 맞는 판단이었다.\nAnti-windup은 선택이 아니라 필수다. 4–20mA 비례 밸브처럼 actuator saturation이 발생하는 시스템에서 anti-windup 없이 PID를 운용하면 저주파 진동이 반드시 나타난다. 소프트웨어 구현에서 $\\gamma \\in [0.1, 1.0]$ 범위면 대부분 잘 동작한다.\n튜닝 방법론은 상황에 따라 선택해야 한다. Ziegler-Nichols는 초기 파라미터 추정에 적합하고, IMC/Lambda는 closed-form 공식이라 온라인 튜닝에 유리하다. 최적 성능이 필요하면 optimization 기반을 써야 하지만, 그만큼 계산 비용과 모델 정확도를 요구한다.\n표준화 부재가 현장의 가장 큰 문제다. ABB, Foxboro, Honeywell, Yokogawa 각각의 PID 구조와 튜닝 규칙이 달라서, 학계에서 제안한 튜닝 공식이 특정 하드웨어에서 동작하지 않는 이유가 여기 있다. 논문은 이를 해결하기 위해 표준 PID 구조 위에서 “plug-and-play” 방식의 자동 튜닝을 지향하는 PIDeasy를 제안하는 것으로 마무리된다.\n내 생각 / 인사이트 그렇다면 80%가 비활성화한다는 D항은 도대체 어떤 경우에 쓰는 걸까. 논문과 제어 공학 일반 지식을 종합하면 세 가지 케이스가 나온다.\nDead time이 거의 없는 2차 이상 플랜트: 모터 속도 제어, 서보 시스템처럼 응답이 빠르고 지연이 작은 시스템. Dead time이 없으면 D항의 위상 선행 효과가 순수하게 안정성을 높인다. 공장 압력/온도 제어와 반대되는 케이스다.\nOvershoot을 절대 허용 못 하는 경우: 로봇 관절 제어, CNC 공작기계처럼 위치 정밀도가 중요한 시스템. D항으로 오차 변화율을 미리 감지해서 목표값 도달 직전에 브레이크를 건다.\n부하 변동이 갑작스럽게 발생하는 경우: 부하가 순간적으로 바뀔 때 P항만으로는 반응이 늦다. D항이 변화율을 감지해서 빠르게 대응한다.\nHBOT 챔버 맥락에서 보면, 압력 제어는 전형적인 1차 플랜트 + dead time 구조라 D항이 오히려 해롭다. 반면 챔버 내부 온도 제어처럼 열용량이 커서 응답이 느린 2차 특성을 띠는 경우엔 D항이 유효할 수 있다. 결국 “응답이 빠르고 dead time이 작은 시스템일수록 D항이 유효하고, 느리고 지연이 큰 공정일수록 D항은 독이 된다.\"\n🔖 개인적 메모: 다음에 STM32에서 PID 루프를 다시 구현한다면, (1) anti-windup을 반드시 포함하고, (2) D항은 low-pass filter를 직렬 연결해서 $\\beta = 10$ 정도로 고주파 차단, (3) 초기 $K_P$ 는 Z-N으로 추정하고 IMC 공식으로 전환하는 순서로 접근할 것이다.\n관련 논문 Ziegler JG, Nichols NB. Optimum settings for automatic controllers. Trans ASME 1942 Åström KJ, Hägglund T. PID Controllers: Theory, Design, and Tuning. ISA 1995 Shinskey FG. Feedback Controllers for the Process Industries. McGraw-Hill 1994 ",
+  "wordCount" : "1146",
   "inLanguage": "en",
-  "datePublished": "2025-04-15T00:00:00Z",
-  "dateModified": "2025-04-15T00:00:00Z",
+  "datePublished": "2026-05-02T20:22:00+09:00",
+  "dateModified": "2026-05-02T20:22:00+09:00",
   "author":{
     "@type": "Person",
     "name": "서보민"
@@ -188,10 +193,38 @@
             </div>
         </div>
         <ul id="menu">
-            <li>
+            <li class="has-dropdown">
                 <a href="http://localhost:1313/categories/embedded/" title="Embedded">
-                    <span>Embedded</span>
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
                 </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
@@ -201,11 +234,6 @@
             <li>
                 <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
                     <span>Paper Review</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/notes/" title="Notes">
-                    <span>Notes</span>
                 </a>
             </li>
             <li>
@@ -223,16 +251,254 @@
 </header>
 <main class="main">
 
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link active">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/paper-review/">Paper Review</a></div>
     <h1 class="post-title entry-hint-parent">
-      [Paper Review] PID Control System Analysis, Design, and Technology
+      PID Control System Analysis, Design, and Technology
     </h1>
     <div class="post-description">
       PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리.
     </div>
-    <div class="post-meta"><span title='2025-04-15 00:00:00 +0000 UTC'>April 15, 2025</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <div class="post-meta"><span title='2026-05-02 20:22:00 +0900 KST'>May 2, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
     <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/paper-review/pid-paper-review.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
 </span>
 
@@ -245,9 +511,9 @@
 
         <div class="inner"><nav id="TableOfContents">
   <ul>
-    <li><a href="#-논문-정보">📌 논문 정보</a></li>
-    <li><a href="#-읽게-된-이유">🎯 읽게 된 이유</a></li>
-    <li><a href="#-핵심-개념">🔍 핵심 개념</a>
+    <li><a href="#논문-정보">논문 정보</a></li>
+    <li><a href="#읽게-된-이유">읽게 된 이유</a></li>
+    <li><a href="#핵심-개념">핵심 개념</a>
       <ul>
         <li><a href="#pid의-세-가지-항--역할-분리">PID의 세 가지 항 — 역할 분리</a></li>
         <li><a href="#integral-windup--왜-anti-windup이-필요한가">Integral Windup — 왜 anti-windup이 필요한가</a></li>
@@ -256,17 +522,17 @@
         <li><a href="#tuning-방법-5가지-분류">Tuning 방법 5가지 분류</a></li>
       </ul>
     </li>
-    <li><a href="#-파라미터변수의-의미">📊 파라미터/변수의 의미</a></li>
-    <li><a href="#-직관적-유도--인사이트">💡 직관적 유도 &amp; 인사이트</a>
+    <li><a href="#파라미터변수의-의미">파라미터/변수의 의미</a></li>
+    <li><a href="#직관적-유도--인사이트">직관적 유도 &amp; 인사이트</a>
       <ul>
         <li><a href="#d항이-안정을-해친다는-게-맞는-말인가">&ldquo;D항이 안정을 해친다&quot;는 게 맞는 말인가?</a></li>
         <li><a href="#anti-windup을-적용하지-않으면-어떻게-되나">Anti-windup을 적용하지 않으면 어떻게 되나</a></li>
         <li><a href="#왜-imclambda-tuning이-소프트웨어에서-지배적인가">왜 IMC/Lambda tuning이 소프트웨어에서 지배적인가</a></li>
       </ul>
     </li>
-    <li><a href="#-정리">✅ 정리</a></li>
-    <li><a href="#-내-생각--인사이트">💬 내 생각 / 인사이트</a></li>
-    <li><a href="#-관련-논문">🔗 관련 논문</a></li>
+    <li><a href="#정리">정리</a></li>
+    <li><a href="#내-생각--인사이트">내 생각 / 인사이트</a></li>
+    <li><a href="#관련-논문">관련 논문</a></li>
   </ul>
 </nav>
         </div>
@@ -277,7 +543,7 @@
 <p><strong>한 줄 요약</strong>: 산업 현장에서 90% 이상 사용되는 PID 제어기는 단순한 구조 덕분에 살아남았지만, <mark>derivative 항 하나를 잘못 튜닝하면 오히려 시스템을 불안정하게 만들 수 있다.</mark></p>
 </blockquote>
 <hr>
-<h2 id="-논문-정보">📌 논문 정보<a hidden class="anchor" aria-hidden="true" href="#-논문-정보">#</a></h2>
+<h2 id="논문-정보">논문 정보<a hidden class="anchor" aria-hidden="true" href="#논문-정보">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -313,19 +579,17 @@
   </tbody>
 </table>
 <hr>
-<h2 id="-읽게-된-이유">🎯 읽게 된 이유<a hidden class="anchor" aria-hidden="true" href="#-읽게-된-이유">#</a></h2>
+<h2 id="읽게-된-이유">읽게 된 이유<a hidden class="anchor" aria-hidden="true" href="#읽게-된-이유">#</a></h2>
 <p>석사 연구 중에 HBOT 챔버 회사에 재직 중인 선배님께 조언을 구할 기회가 있었다. 그때 선배님이 짧게 한마디 하셨다. <em>&ldquo;미분항은 실제로 잘 안 써요.&rdquo;</em></p>
 <p>그 말을 듣고 당시 나는 그냥 넘겼다. 왜인지를 파고들 여유가 없었다. 솔직히 말하면, 그 시점의 나는 제어 이론보다 졸업이 더 급했다. 챔버 압력 제어 로직을 어떻게든 돌아가게 만드는 것이 목표였고, $K_D$는 노이즈가 튀어서 disabled 처리하고 넘어갔다.</p>
 <p>그런데 졸업 이후에도 그 말이 계속 머릿속에 남았다. <em>현장에서 수십 년 일한 엔지니어가 왜 그렇게 말했을까.</em> 단순히 &ldquo;노이즈 때문에&quot;라는 설명만으로는 뭔가 부족한 느낌이었다. 이 논문을 읽고 나서야 그 이유를 수식으로 이해했다. Dead time이 있는 플랜트에서 $K_D$를 올리면 오히려 시스템이 불안정해질 수 있다는 것, 그래서 <mark>산업 현장의 80%가 derivative 항을 비활성화 상태로 운용한다</mark>는 것.</p>
 <p>선배님의 그 한마디가 이론적으로 근거가 있었다는 걸, 조금 늦게 확인한 셈이다.</p>
 <hr>
-<h2 id="-핵심-개념">🔍 핵심 개념<a hidden class="anchor" aria-hidden="true" href="#-핵심-개념">#</a></h2>
+<h2 id="핵심-개념">핵심 개념<a hidden class="anchor" aria-hidden="true" href="#핵심-개념">#</a></h2>
 <h3 id="pid의-세-가지-항--역할-분리">PID의 세 가지 항 — 역할 분리<a hidden class="anchor" aria-hidden="true" href="#pid의-세-가지-항--역할-분리">#</a></h3>
 <p>PID 전달 함수의 병렬(Parallel) 형태:</p>
-<p>$$G(s) = K_P + K_I \frac{1}{s} + K_D s$$</p>
-<p>이상(Ideal) 형태로 쓰면:</p>
-<p>$$G(s) = K_P \left(1 + \frac{1}{T_I s} + T_D s\right)$$</p>
-<p>각 항의 역할을 직관적으로 보면:</p>
+$$G(s) = K_P + K_I \frac{1}{s} + K_D s$$<p>이상(Ideal) 형태로 쓰면:</p>
+$$G(s) = K_P \left(1 + \frac{1}{T_I s} + T_D s\right)$$<p>각 항의 역할을 직관적으로 보면:</p>
 <ul>
 <li><strong>P항</strong>: 현재 오차에 비례해서 즉각 반응한다. 빠르지만, 정상상태 오차는 남는다.</li>
 <li><strong>I항</strong>: 오차를 시간적으로 누적해서 0으로 끌어당긴다. 정상상태 오차를 제거하지만, 위상 지연을 추가해서 시스템을 더 진동하게 만든다.</li>
@@ -335,8 +599,7 @@
 <h3 id="integral-windup--왜-anti-windup이-필요한가">Integral Windup — 왜 anti-windup이 필요한가<a hidden class="anchor" aria-hidden="true" href="#integral-windup--왜-anti-windup이-필요한가">#</a></h3>
 <p>actuator에 포화(saturation)가 생기면 I항은 계속 오차를 누적하는데, 실제 출력은 한계에 걸려 반응을 못 한다. 포화가 풀리는 순간 누적된 I항이 한꺼번에 터져 저주파 진동과 불안정을 유발한다.</p>
 <p>소프트웨어로 구현하는 anti-windup의 표준 방식:</p>
-<p>$$U_I&rsquo;(s) = \frac{1}{T_I s} \left[ K_P E(s) - \frac{U(s) - \tilde{U}(s)}{\gamma} \right]$$</p>
-<p>$\tilde{U}(s)$는 포화된 실제 출력, $\gamma \in [0.1, 1.0]$는 보정 계수다.</p>
+$$U_I'(s) = \frac{1}{T_I s} \left[ K_P E(s) - \frac{U(s) - \tilde{U}(s)}{\gamma} \right]$$<p>$\tilde{U}(s)$는 포화된 실제 출력, $\gamma \in [0.1, 1.0]$는 보정 계수다.</p>
 <p>직관적으로 보면, &ldquo;<strong>integrator가 포화된 만큼만 역방향으로 빼줘서 누적이 계속 쌓이지 않도록 억제하는 음수 피드백</strong>&ldquo;이다. 펌웨어에서는 단순히 아래 한 줄로 구현한다.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -350,17 +613,13 @@
 <h3 id="derivative-항이-오히려-불안정을-만드는-조건">Derivative 항이 오히려 불안정을 만드는 조건<a hidden class="anchor" aria-hidden="true" href="#derivative-항이-오히려-불안정을-만드는-조건">#</a></h3>
 <p>이 논문의 핵심 반전이다. 일반적으로 D항을 올리면 안정성이 좋아진다고 알려져 있지만, <strong>transport delay(dead time)가 있는 1차 플랜트</strong>에서는 다르다.</p>
 <p>1차 지연 + 순수 지연 플랜트:</p>
-<p>$$G(s) = \frac{K}{1+Ts}e^{-Ls}$$</p>
-<p>여기에 PD 제어기를 붙이면 개루프 게인은:</p>
-<p>$$\left|G(j\omega)G_{PD}(j\omega)\right| = KK_P\sqrt{\frac{1 + T_D^2 \omega^2}{1 + T^2 \omega^2}} \geq KK_P \min\left(1, \frac{T_D}{T}\right)$$</p>
-<p>$T_D \geq T$ 이거나 $KK_P \leq 1$ 이면, 위 식은 <strong>모든 주파수에서 게인이 0 dB 이상</strong>임을 뜻한다. 이 경우 게인 교차 주파수 $\omega_c$ 가 무한대이고, 거기서의 위상은:</p>
-<p>$$\angle G = \frac{\pi}{2} - \frac{\pi}{2} - \infty &lt; -\pi$$</p>
-<p>Bode/Nyquist 기준으로 안정 마진이 사라져 <strong>시스템이 불안정</strong>해진다.</p>
+$$G(s) = \frac{K}{1+Ts}e^{-Ls}$$<p>여기에 PD 제어기를 붙이면 개루프 게인은:</p>
+$$\left|G(j\omega)G_{PD}(j\omega)\right| = KK_P\sqrt{\frac{1 + T_D^2 \omega^2}{1 + T^2 \omega^2}} \geq KK_P \min\left(1, \frac{T_D}{T}\right)$$<p>$T_D \geq T$ 이거나 $KK_P \leq 1$ 이면, 위 식은 <strong>모든 주파수에서 게인이 0 dB 이상</strong>임을 뜻한다. 이 경우 게인 교차 주파수 $\omega_c$ 가 무한대이고, 거기서의 위상은:</p>
+$$\angle G = \frac{\pi}{2} - \frac{\pi}{2} - \infty < -\pi$$<p>Bode/Nyquist 기준으로 안정 마진이 사라져 <strong>시스템이 불안정</strong>해진다.</p>
 <hr>
 <h3 id="derivative-필터링--실제-구현">Derivative 필터링 — 실제 구현<a hidden class="anchor" aria-hidden="true" href="#derivative-필터링--실제-구현">#</a></h3>
 <p>순수 미분기 $T_D s$ 는 고주파에서 게인이 무한대다. 실제 구현에서는 low-pass filter를 직렬 연결한다.</p>
-<p>$$G_D&rsquo;(s) = \frac{T_D s}{1 + \frac{T_D}{\beta} s}$$</p>
-<p>산업용 하드웨어에서 $\beta$ 설정 범위는 1–33이고, 대부분 8–16 사이에서 사용한다. 임베디드에서는 이를 discretize해서 difference equation으로 구현한다.</p>
+$$G_D'(s) = \frac{T_D s}{1 + \frac{T_D}{\beta} s}$$<p>산업용 하드웨어에서 $\beta$ 설정 범위는 1–33이고, 대부분 8–16 사이에서 사용한다. 임베디드에서는 이를 discretize해서 difference equation으로 구현한다.</p>
 <hr>
 <h3 id="tuning-방법-5가지-분류">Tuning 방법 5가지 분류<a hidden class="anchor" aria-hidden="true" href="#tuning-방법-5가지-분류">#</a></h3>
 <table>
@@ -400,7 +659,7 @@
   </tbody>
 </table>
 <hr>
-<h2 id="-파라미터변수의-의미">📊 파라미터/변수의 의미<a hidden class="anchor" aria-hidden="true" href="#-파라미터변수의-의미">#</a></h2>
+<h2 id="파라미터변수의-의미">파라미터/변수의 의미<a hidden class="anchor" aria-hidden="true" href="#파라미터변수의-의미">#</a></h2>
 <p>아래 표는 $K_P$, $K_I$, $K_D$ 각각이 독립적으로 closed-loop 응답에 미치는 영향이다 (논문 Table I 기준, 안정적인 open-loop 플랜트 한정).</p>
 <table>
   <thead>
@@ -444,7 +703,7 @@
 <p>⚠️ 위 표는 각 항을 <strong>독립적으로</strong> 조정했을 때의 경향이다. 실제로는 $K_P$, $T_I$, $T_D$ 가 상호의존적으로 동작한다. 특히 $K_D$ 의 &ldquo;stability 개선&quot;은 <strong>dead time이 없는 경우에만</strong> 유효하다.</p>
 </blockquote>
 <hr>
-<h2 id="-직관적-유도--인사이트">💡 직관적 유도 &amp; 인사이트<a hidden class="anchor" aria-hidden="true" href="#-직관적-유도--인사이트">#</a></h2>
+<h2 id="직관적-유도--인사이트">직관적 유도 &amp; 인사이트<a hidden class="anchor" aria-hidden="true" href="#직관적-유도--인사이트">#</a></h2>
 <h3 id="d항이-안정을-해친다는-게-맞는-말인가">&ldquo;D항이 안정을 해친다&quot;는 게 맞는 말인가?<a hidden class="anchor" aria-hidden="true" href="#d항이-안정을-해친다는-게-맞는-말인가">#</a></h3>
 <p>P항만 쓰다가 D항을 추가하면 두 가지가 동시에 일어난다.</p>
 <ul>
@@ -457,7 +716,7 @@
 <h3 id="왜-imclambda-tuning이-소프트웨어에서-지배적인가">왜 IMC/Lambda tuning이 소프트웨어에서 지배적인가<a hidden class="anchor" aria-hidden="true" href="#왜-imclambda-tuning이-소프트웨어에서-지배적인가">#</a></h3>
 <p>IMC는 플랜트를 $\frac{K}{1+Ts}e^{-Ls}$ 로 근사하고, 원하는 closed-loop 응답 시정수 $\lambda$ 를 설정하면 $K_P$, $T_I$, $T_D$ 가 수식으로 바로 나온다. &ldquo;모델 → 파라미터&quot;가 closed form이라 실시간 계산이 가능하고, $\lambda$ 하나로 빠름/느림 트레이드오프를 조절할 수 있어서 현장에서 쓰기 편하다.</p>
 <hr>
-<h2 id="-정리">✅ 정리<a hidden class="anchor" aria-hidden="true" href="#-정리">#</a></h2>
+<h2 id="정리">정리<a hidden class="anchor" aria-hidden="true" href="#정리">#</a></h2>
 <ul>
 <li>
 <p><strong>D항 비활성화는 충분히 합리적인 선택이다.</strong> 산업 현장의 80%가 이미 그렇게 운용하고 있고, dead time이 있는 플랜트에서는 $K_D$ 를 올리는 것이 오히려 불안정을 유발할 수 있다는 수학적 증명이 논문에 명확히 나와 있다. HBOT 챔버에서 D항을 비활성화한 것은 맞는 판단이었다.</p>
@@ -473,7 +732,7 @@
 </li>
 </ul>
 <hr>
-<h2 id="-내-생각--인사이트">💬 내 생각 / 인사이트<a hidden class="anchor" aria-hidden="true" href="#-내-생각--인사이트">#</a></h2>
+<h2 id="내-생각--인사이트">내 생각 / 인사이트<a hidden class="anchor" aria-hidden="true" href="#내-생각--인사이트">#</a></h2>
 <p>그렇다면 80%가 비활성화한다는 D항은 도대체 어떤 경우에 쓰는 걸까. 논문과 제어 공학 일반 지식을 종합하면 세 가지 케이스가 나온다.</p>
 <ol>
 <li>
@@ -491,7 +750,7 @@
 <p>🔖 <strong>개인적 메모</strong>: 다음에 STM32에서 PID 루프를 다시 구현한다면, (1) anti-windup을 반드시 포함하고, (2) D항은 low-pass filter를 직렬 연결해서 $\beta = 10$ 정도로 고주파 차단, (3) 초기 $K_P$ 는 Z-N으로 추정하고 IMC 공식으로 전환하는 순서로 접근할 것이다.</p>
 </blockquote>
 <hr>
-<h2 id="-관련-논문">🔗 관련 논문<a hidden class="anchor" aria-hidden="true" href="#-관련-논문">#</a></h2>
+<h2 id="관련-논문">관련 논문<a hidden class="anchor" aria-hidden="true" href="#관련-논문">#</a></h2>
 <ul>
 <li>Ziegler JG, Nichols NB. Optimum settings for automatic controllers. <em>Trans ASME</em> 1942</li>
 <li>Åström KJ, Hägglund T. PID Controllers: Theory, Design, and Tuning. <em>ISA</em> 1995</li>
@@ -512,12 +771,12 @@
   <a class="prev" href="http://localhost:1313/posts/paper-review/zn-paper-review/">
     <span class="title">« Prev</span>
     <br>
-    <span>[Paper Review] Optimum Settings for Automatic Controllers</span>
+    <span>Optimum Settings for Automatic Controllers</span>
   </a>
-  <a class="next" href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/">
+  <a class="next" href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/">
     <span class="title">Next »</span>
     <br>
-    <span>[Paper Review] Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+    <span>MCU 소개 및 개발환경 설정</span>
   </a>
 </nav>
 
@@ -541,6 +800,26 @@
 </div>
 
 </article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
     </main>
     
 <footer class="footer">

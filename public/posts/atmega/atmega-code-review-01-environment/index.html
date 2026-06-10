@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>[ATMEGA4809] MCU 소개 및 개발환경 설정 | bromine1997</title>
+<title>MCU 소개 및 개발환경 설정 | bromine1997</title>
 <meta name="keywords" content="ATmega, ATmega4809, C언어, Microchip Studio, 개발환경, AVR">
 <meta name="description" content="본격적인 코드리뷰에 앞서 제가 사용한 ATmega4809 MCU와 Microchip Studio 개발환경을 간단하게 소개합니다.">
 <meta name="author" content="서보민">
 <link rel="canonical" href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -70,16 +70,19 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
 <meta property="og:url" content="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/">
   <meta property="og:site_name" content="bromine1997">
-  <meta property="og:title" content="[ATMEGA4809] MCU 소개 및 개발환경 설정">
+  <meta property="og:title" content="MCU 소개 및 개발환경 설정">
   <meta property="og:description" content="본격적인 코드리뷰에 앞서 제가 사용한 ATmega4809 MCU와 Microchip Studio 개발환경을 간단하게 소개합니다.">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-04-02T01:00:00+09:00">
-    <meta property="article:modified_time" content="2026-04-02T01:00:00+09:00">
+    <meta property="article:published_time" content="2026-04-29T20:35:00+09:00">
+    <meta property="article:modified_time" content="2026-04-29T20:35:00+09:00">
     <meta property="article:tag" content="ATmega">
     <meta property="article:tag" content="ATmega4809">
     <meta property="article:tag" content="C언어">
@@ -88,7 +91,7 @@
     <meta property="article:tag" content="AVR">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="[ATMEGA4809] MCU 소개 및 개발환경 설정">
+  <meta name="twitter:title" content="MCU 소개 및 개발환경 설정">
   <meta name="twitter:description" content="본격적인 코드리뷰에 앞서 제가 사용한 ATmega4809 MCU와 Microchip Studio 개발환경을 간단하게 소개합니다.">
 
 
@@ -106,7 +109,13 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "[ATMEGA4809] MCU 소개 및 개발환경 설정",
+      "name": "ATmega",
+      "item": "http://localhost:1313/posts/atmega/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "MCU 소개 및 개발환경 설정",
       "item": "http://localhost:1313/posts/atmega/atmega-code-review-01-environment/"
     }
   ]
@@ -116,17 +125,17 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "[ATMEGA4809] MCU 소개 및 개발환경 설정",
-  "name": "[ATMEGA4809] MCU 소개 및 개발환경 설정",
+  "headline": "MCU 소개 및 개발환경 설정",
+  "name": "MCU 소개 및 개발환경 설정",
   "description": "본격적인 코드리뷰에 앞서 제가 사용한 ATmega4809 MCU와 Microchip Studio 개발환경을 간단하게 소개합니다.",
   "keywords": [
     "ATmega", "ATmega4809", "C언어", "Microchip Studio", "개발환경", "AVR"
   ],
-  "articleBody": "첫 번째 글은 본격적인 코드리뷰에 들어가기 전에, 제가 사용한 MCU와 개발환경을 간단하게 정리해보려고 합니다.\n개발을 할 때마다 느끼는 거지만 개발환경 설정하는 게 정말 귀찮고 어렵습니다. 처음이면 아무것도 모르는데, 적응하면 또 적응하더라고요. 한번 같이 친해져봅시다.\n사용한 MCU: ATmega4809 보통 펌웨어를 처음 배우면 AVR 계열 MCU로 많이 학습하는 것 같습니다. 그 중에서도 ATmega128이 제일 많이 사용되는 것 같습니다. 저는 그 중 ATmega4809 시리즈를 사용했습니다.\n보통 MCU 뒤에 붙는 숫자들은 포트의 수나 메모리 크기 등 스펙을 의미합니다.\n실제 사용한 ATmega4809 개발 보드\n개발환경: Microchip Studio 개발환경은 Microchip Studio를 사용했습니다.\nAVR 계열 MCU를 다룰 때 가장 흔하게 쓰이는 IDE입니다. 프로젝트 생성부터 빌드, 디버깅까지 비교적 깔끔한 UI를 가지고 있습니다. 저는 꽤 만족스러웠던 개발환경이었습니다.\n특히 디버깅 환경이 편해서 문제를 찾기 수월했습니다.\nMicrochip Studio IDE 화면\n마무리 기본적인 소개는 여기까지입니다.\n다음 글부터 본격적인 코드리뷰를 시작하겠습니다.\n",
-  "wordCount" : "128",
+  "articleBody": "첫 번째 글은 본격적인 코드리뷰에 들어가기 전에, 제가 사용한 MCU와 개발환경을 간단하게 정리해보려고 합니다.\n개발을 할 때마다 느끼는 거지만 개발환경 설정하는 게 정말 귀찮고 어렵습니다. 처음이면 아무것도 모르는데, 하다 보면 익숙해지더라고요. 한번 같이 친해져봅시다.\n사용한 MCU: ATmega4809 보통 펌웨어를 처음 배우면 AVR 계열 MCU로 많이 학습합니다. 그 중에서도 ATmega128이 제일 많이 사용되는 것 같습니다. 저는 그 중 ATmega4809 시리즈를 사용했습니다.\n보통 MCU 뒤에 붙는 숫자들은 포트의 수나 메모리 크기 등 스펙을 의미합니다.\n실제 사용한 ATmega4809 개발 보드\n개발환경: Microchip Studio 개발환경은 Microchip Studio를 사용했습니다.\nAVR 계열 MCU를 다룰 때 가장 흔하게 쓰이는 IDE입니다. 프로젝트 생성부터 빌드, 디버깅까지 비교적 깔끔한 UI를 가지고 있습니다. 개인적으로는 꽤 만족스러운 환경이었습니다.\n특히 디버깅 환경이 편해서 문제를 찾기 수월했습니다.\nMicrochip Studio IDE 화면\n",
+  "wordCount" : "117",
   "inLanguage": "en",
-  "datePublished": "2026-04-02T01:00:00+09:00",
-  "dateModified": "2026-04-02T01:00:00+09:00",
+  "datePublished": "2026-04-29T20:35:00+09:00",
+  "dateModified": "2026-04-29T20:35:00+09:00",
   "author":{
     "@type": "Person",
     "name": "서보민"
@@ -175,10 +184,38 @@
             </div>
         </div>
         <ul id="menu">
-            <li>
+            <li class="has-dropdown">
                 <a href="http://localhost:1313/categories/embedded/" title="Embedded">
-                    <span>Embedded</span>
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
                 </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
@@ -188,11 +225,6 @@
             <li>
                 <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
                     <span>Paper Review</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/notes/" title="Notes">
-                    <span>Notes</span>
                 </a>
             </li>
             <li>
@@ -210,13 +242,251 @@
 </header>
 <main class="main">
 
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link active">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/atmega/">ATmega</a></div>
     <h1 class="post-title entry-hint-parent">
-      [ATMEGA4809] MCU 소개 및 개발환경 설정
+      MCU 소개 및 개발환경 설정
     </h1>
-    <div class="post-meta"><span title='2026-04-02 01:00:00 +0900 KST'>April 2, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <div class="post-meta"><span title='2026-04-29 20:35:00 +0900 KST'>April 29, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
     <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/atmega/atmega-code-review-01-environment.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
 </span>
 
@@ -231,7 +501,6 @@
   <ul>
     <li><a href="#사용한-mcu-atmega4809">사용한 MCU: ATmega4809</a></li>
     <li><a href="#개발환경-microchip-studio">개발환경: Microchip Studio</a></li>
-    <li><a href="#마무리">마무리</a></li>
   </ul>
 </nav>
         </div>
@@ -239,23 +508,20 @@
 </div>
 
   <div class="post-content"><p>첫 번째 글은 본격적인 코드리뷰에 들어가기 전에, 제가 사용한 MCU와 개발환경을 간단하게 정리해보려고 합니다.</p>
-<p>개발을 할 때마다 느끼는 거지만 개발환경 설정하는 게 정말 귀찮고 어렵습니다. 처음이면 아무것도 모르는데, 적응하면 또 적응하더라고요. 한번 같이 친해져봅시다.</p>
+<p>개발을 할 때마다 느끼는 거지만 개발환경 설정하는 게 정말 귀찮고 어렵습니다. 처음이면 아무것도 모르는데, 하다 보면 익숙해지더라고요. 한번 같이 친해져봅시다.</p>
 <h2 id="사용한-mcu-atmega4809">사용한 MCU: ATmega4809<a hidden class="anchor" aria-hidden="true" href="#사용한-mcu-atmega4809">#</a></h2>
-<p>보통 펌웨어를 처음 배우면 AVR 계열 MCU로 많이 학습하는 것 같습니다. 그 중에서도 ATmega128이 제일 많이 사용되는 것 같습니다. 저는 그 중 <strong>ATmega4809</strong> 시리즈를 사용했습니다.</p>
+<p>보통 펌웨어를 처음 배우면 AVR 계열 MCU로 많이 학습합니다. 그 중에서도 ATmega128이 제일 많이 사용되는 것 같습니다. 저는 그 중 <strong>ATmega4809</strong> 시리즈를 사용했습니다.</p>
 <p>보통 MCU 뒤에 붙는 숫자들은 포트의 수나 메모리 크기 등 스펙을 의미합니다.</p>
 <!-- 이미지 삽입 위치: 실제 사용한 ATmega4809 개발 보드 사진 -->
 <p><img alt="ATmega4809 개발 보드" loading="lazy" src="/images/atmega4809/atmega4809-board.jpg">
 <em>실제 사용한 ATmega4809 개발 보드</em></p>
 <h2 id="개발환경-microchip-studio">개발환경: Microchip Studio<a hidden class="anchor" aria-hidden="true" href="#개발환경-microchip-studio">#</a></h2>
 <p>개발환경은 <strong>Microchip Studio</strong>를 사용했습니다.</p>
-<p>AVR 계열 MCU를 다룰 때 가장 흔하게 쓰이는 IDE입니다. 프로젝트 생성부터 빌드, 디버깅까지 비교적 깔끔한 UI를 가지고 있습니다. 저는 꽤 만족스러웠던 개발환경이었습니다.</p>
+<p>AVR 계열 MCU를 다룰 때 가장 흔하게 쓰이는 IDE입니다. 프로젝트 생성부터 빌드, 디버깅까지 비교적 깔끔한 UI를 가지고 있습니다. 개인적으로는 꽤 만족스러운 환경이었습니다.</p>
 <p>특히 디버깅 환경이 편해서 문제를 찾기 수월했습니다.</p>
 <!-- 이미지 삽입 위치: Microchip Studio 화면 캡처 -->
 <p><img alt="Microchip Studio" loading="lazy" src="/images/atmega4809/microchip-studio.png">
 <em>Microchip Studio IDE 화면</em></p>
-<h2 id="마무리">마무리<a hidden class="anchor" aria-hidden="true" href="#마무리">#</a></h2>
-<p>기본적인 소개는 여기까지입니다.</p>
-<p>다음 글부터 본격적인 코드리뷰를 시작하겠습니다.</p>
 
 
   </div>
@@ -270,15 +536,15 @@
       <li><a href="http://localhost:1313/tags/avr/">AVR</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/">
+  <a class="prev" href="http://localhost:1313/posts/paper-review/pid-paper-review/">
     <span class="title">« Prev</span>
     <br>
-    <span>[Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한</span>
+    <span>PID Control System Analysis, Design, and Technology</span>
   </a>
   <a class="next" href="http://localhost:1313/posts/atmega/atmega-code-review-intro/">
     <span class="title">Next »</span>
     <br>
-    <span>[ATMEGA4809] 시작하며</span>
+    <span>시작하며</span>
   </a>
 </nav>
 
@@ -302,6 +568,26 @@
 </div>
 
 </article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
     </main>
     
 <footer class="footer">

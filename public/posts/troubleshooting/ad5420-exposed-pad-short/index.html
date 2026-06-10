@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>만능기판 테스트 중 계속 발열이 생긴 이유 | bromine1997</title>
+<meta name="keywords" content="AD5420, TSSOP, 노출패드, 납땜, 트러블슈팅, 만능기판">
+<meta name="description" content="AD5420을 TSSOP 변환기판으로 만능기판에서 테스트하려다 전원 넣으면 발열이 심하게 생겼다. 원인은 배선이 아니라 칩 바닥 exposed pad였다.">
+<meta name="author" content="서보민">
+<link rel="canonical" href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
+<meta property="og:url" content="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/">
+  <meta property="og:site_name" content="bromine1997">
+  <meta property="og:title" content="만능기판 테스트 중 계속 발열이 생긴 이유">
+  <meta property="og:description" content="AD5420을 TSSOP 변환기판으로 만능기판에서 테스트하려다 전원 넣으면 발열이 심하게 생겼다. 원인은 배선이 아니라 칩 바닥 exposed pad였다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-06-10T12:30:00+09:00">
+    <meta property="article:modified_time" content="2026-06-10T12:30:00+09:00">
+    <meta property="article:tag" content="AD5420">
+    <meta property="article:tag" content="TSSOP">
+    <meta property="article:tag" content="노출패드">
+    <meta property="article:tag" content="납땜">
+    <meta property="article:tag" content="트러블슈팅">
+    <meta property="article:tag" content="만능기판">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="만능기판 테스트 중 계속 발열이 생긴 이유">
+  <meta name="twitter:description" content="AD5420을 TSSOP 변환기판으로 만능기판에서 테스트하려다 전원 넣으면 발열이 심하게 생겼다. 원인은 배선이 아니라 칩 바닥 exposed pad였다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Troubleshooting",
+      "item": "http://localhost:1313/posts/troubleshooting/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "만능기판 테스트 중 계속 발열이 생긴 이유",
+      "item": "http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "만능기판 테스트 중 계속 발열이 생긴 이유",
+  "name": "만능기판 테스트 중 계속 발열이 생긴 이유",
+  "description": "AD5420을 TSSOP 변환기판으로 만능기판에서 테스트하려다 전원 넣으면 발열이 심하게 생겼다. 원인은 배선이 아니라 칩 바닥 exposed pad였다.",
+  "keywords": [
+    "AD5420", "TSSOP", "노출패드", "납땜", "트러블슈팅", "만능기판"
+  ],
+  "articleBody": "고압산소치료 챔버를 개발하면서 챔버 내부 압력을 정밀하게 제어해야 하는 상황이 있다. 압력을 원하는 값으로 올리고 내리려면 유량을 조절할 수 있어야 하고, 그러려면 단순히 열고 닫는 온오프 밸브가 아닌 비례제어 밸브가 필수였다.\n비례제어 밸브는 보통 4~20mA 전류 신호로 열리는 정도를 제어한다. 0%에서 100%까지 연속적으로 조절할 수 있어서 PID 제어와 잘 맞는다. AD5420은 SPI로 명령을 받아 4~20mA 전류를 출력하는 DAC 칩으로, 이 용도에 딱 맞았다.\nAD5420을 만능기판에서 간단히 테스트해보려고 TSSOP 변환기판에 올렸다가 예상치 못한 데서 시간을 꽤 날렸다.\n칩 다리 납땜하고, 전원이랑 SPI 배선 잡고 전원을 넣었는데 어딘가에서 열이 엄청 났다. 배선 다시 확인하고, 칩 다리 테스터기로 하나씩 찍어봐도 딱히 이상한 게 안 보였다. 혹시 불량 칩인가 싶어서 교체도 해봤는데 똑같이 발열이 생기는 거다.\n한참 헤매다가 데이터시트를 다시 꺼내 패키지 그림을 봤더니, 칩 바닥에 뭔가가 있었다.\n칩 바닥 Exposed Pad AD5420은 TSSOP-24 EP 패키지다. EP가 붙은 패키지는 칩 아래쪽 가운데에 금속이 노출된 면이 있다.\n데이터시트 27페이지 패키지 다이어그램을 보면 BOTTOM VIEW에 EXPOSED PAD가 명확하게 표시돼 있다.\n그리고 핀 설명표에는 이 paddle이 AGND, 즉 analog ground라고 나와 있다.\n이 exposed pad는 칩 내부에서 AGND에 연결되어 있다. 방열 목적도 겸하지만 전기적으로는 analog ground라서, 이게 PCB GND에 연결되지 않으면 아날로그 회로 전체가 불안정해진다.\nTSSOP 변환기판을 쓰면 24개 다리는 pad에 딱 맞게 올라가는데, 바닥 exposed pad는 변환기판 PCB 표면 위에 그냥 올려진 상태가 된다. 기판 표면에 사용된 패턴이나 동박 잔류에 따라 exposed pad가 다른 신호선과 접촉해 의도치 않은 전류 경로가 생기거나, GND 연결 자체가 불안정해진다. 전류가 낮은 저항 경로로 몰리면 P = I²R에 의해 그 에너지가 열로 빠져나오기 때문에, 배선상 문제가 없어 보여도 발열이 심하게 나타날 수 있다.\n해결 바닥 exposed pad를 GND에 납땜하면 된다.\n만능기판에서 변환기판을 쓰는 경우에는, 칩을 변환기판에 올리기 전에 exposed pad 위치에 맞게 변환기판 뒷면에 구리 테이프나 도선을 붙여두고 GND에 연결해주는 방식으로 처리할 수 있다. 아니면 처음부터 exposed pad용 pad가 설계에 포함된 변환기판을 고르는 게 더 깔끔하다.\nPCB 아트웍 시 주의사항 만능기판 테스트를 넘어 실제 PCB를 설계할 때도 exposed pad를 빠뜨리면 같은 문제가 생긴다. footprint 작업 시 칩 다리 pad 외에 바닥 exposed pad 영역을 GND 동박과 연결되도록 별도로 잡아줘야 한다.\n아래 PCB에서 U9, U14가 AD5420 소자인데, 칩 바닥 중앙에 exposed pad가 보인다.\n납땜 순서도 중요하다. 칩 다리부터 납땜하면 나중에 바닥 exposed pad에 열을 가하기가 어려워진다. 열풍기로 먼저 납을 녹여 exposed pad를 GND에 붙인 다음, 칩이 자리를 잡으면 나머지 다리를 납땜하는 순서로 작업했다.\n정리 항목 내용 증상 배선상 문제없어 보이는데 전원 인가 시 과도한 발열 발생 원인 TSSOP-24 EP 패키지 바닥 exposed pad 미납땜 → GND 연결 불안정 해결 Exposed pad를 PCB GND에 납땜 / EP 지원 변환기판 사용 만능기판에서 SMD 칩을 테스트할 때 EP 패키지 여부를 미리 확인해두는 게 좋다. 다리만 납땜하면 되는 줄 알았는데, 바닥 exposed pad 하나 빠진 게 발열로 이어질 줄은 몰랐다.\n",
+  "wordCount" : "434",
+  "inLanguage": "en",
+  "datePublished": "2026-06-10T12:30:00+09:00",
+  "dateModified": "2026-06-10T12:30:00+09:00",
+  "author":{
+    "@type": "Person",
+    "name": "서보민"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "bromine1997",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li class="has-dropdown">
+                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                    <span>Algorithm</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                    <span>Paper Review</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link active">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/troubleshooting/">Troubleshooting</a></div>
+    <h1 class="post-title entry-hint-parent">
+      만능기판 테스트 중 계속 발열이 생긴 이유
+    </h1>
+    <div class="post-meta"><span title='2026-06-10 12:30:00 +0900 KST'>June 10, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/troubleshooting/ad5420-exposed-pad-short.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
+</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#칩-바닥-exposed-pad">칩 바닥 Exposed Pad</a></li>
+    <li><a href="#해결">해결</a></li>
+    <li><a href="#pcb-아트웍-시-주의사항">PCB 아트웍 시 주의사항</a></li>
+    <li><a href="#정리">정리</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>고압산소치료 챔버를 개발하면서 챔버 내부 압력을 정밀하게 제어해야 하는 상황이 있다. 압력을 원하는 값으로 올리고 내리려면 유량을 조절할 수 있어야 하고, 그러려면 단순히 열고 닫는 온오프 밸브가 아닌 비례제어 밸브가 필수였다.</p>
+<p>비례제어 밸브는 보통 4~20mA 전류 신호로 열리는 정도를 제어한다. 0%에서 100%까지 연속적으로 조절할 수 있어서 PID 제어와 잘 맞는다. AD5420은 SPI로 명령을 받아 4~20mA 전류를 출력하는 DAC 칩으로, 이 용도에 딱 맞았다.</p>
+<p>AD5420을 만능기판에서 간단히 테스트해보려고 TSSOP 변환기판에 올렸다가 예상치 못한 데서 시간을 꽤 날렸다.</p>
+<p>칩 다리 납땜하고, 전원이랑 SPI 배선 잡고 전원을 넣었는데 어딘가에서 열이 엄청 났다. 배선 다시 확인하고, 칩 다리 테스터기로 하나씩 찍어봐도 딱히 이상한 게 안 보였다. 혹시 불량 칩인가 싶어서 교체도 해봤는데 똑같이 발열이 생기는 거다.</p>
+<p>한참 헤매다가 데이터시트를 다시 꺼내 패키지 그림을 봤더니, 칩 바닥에 뭔가가 있었다.</p>
+<h2 id="칩-바닥-exposed-pad">칩 바닥 Exposed Pad<a hidden class="anchor" aria-hidden="true" href="#칩-바닥-exposed-pad">#</a></h2>
+<p>AD5420은 TSSOP-24 EP 패키지다. EP가 붙은 패키지는 칩 아래쪽 가운데에 금속이 노출된 면이 있다.</p>
+<p><img alt="AD5420 패키지 — 아래쪽 칩에서 은색 사각형으로 보이는 게 바닥 노출 패드다" loading="lazy" src="/images/troubleshooting/ad5420-exposed-pad.jpg"></p>
+<p>데이터시트 27페이지 패키지 다이어그램을 보면 BOTTOM VIEW에 EXPOSED PAD가 명확하게 표시돼 있다.</p>
+<p><img alt="AD5420 데이터시트 Figure 42 — BOTTOM VIEW에 EXPOSED PAD 표기" loading="lazy" src="/images/troubleshooting/ad5420-package-outline.png"></p>
+<p>그리고 핀 설명표에는 이 paddle이 AGND, 즉 analog ground라고 나와 있다.</p>
+<p><img alt="AD5420 데이터시트 핀 설명표 — Paddle = AGND" loading="lazy" src="/images/troubleshooting/ad5420-paddle-agnd.png"></p>
+<p>이 exposed pad는 칩 내부에서 AGND에 연결되어 있다. 방열 목적도 겸하지만 전기적으로는 analog ground라서, 이게 PCB GND에 연결되지 않으면 아날로그 회로 전체가 불안정해진다.</p>
+<p>TSSOP 변환기판을 쓰면 24개 다리는 pad에 딱 맞게 올라가는데, 바닥 exposed pad는 변환기판 PCB 표면 위에 그냥 올려진 상태가 된다. 기판 표면에 사용된 패턴이나 동박 잔류에 따라 exposed pad가 다른 신호선과 접촉해 의도치 않은 전류 경로가 생기거나, GND 연결 자체가 불안정해진다. 전류가 낮은 저항 경로로 몰리면 P = I²R에 의해 그 에너지가 열로 빠져나오기 때문에, 배선상 문제가 없어 보여도 발열이 심하게 나타날 수 있다.</p>
+<h2 id="해결">해결<a hidden class="anchor" aria-hidden="true" href="#해결">#</a></h2>
+<p>바닥 exposed pad를 GND에 납땜하면 된다.</p>
+<p>만능기판에서 변환기판을 쓰는 경우에는, 칩을 변환기판에 올리기 전에 exposed pad 위치에 맞게 변환기판 뒷면에 구리 테이프나 도선을 붙여두고 GND에 연결해주는 방식으로 처리할 수 있다. 아니면 처음부터 exposed pad용 pad가 설계에 포함된 변환기판을 고르는 게 더 깔끔하다.</p>
+<h2 id="pcb-아트웍-시-주의사항">PCB 아트웍 시 주의사항<a hidden class="anchor" aria-hidden="true" href="#pcb-아트웍-시-주의사항">#</a></h2>
+<p>만능기판 테스트를 넘어 실제 PCB를 설계할 때도 exposed pad를 빠뜨리면 같은 문제가 생긴다. footprint 작업 시 칩 다리 pad 외에 바닥 exposed pad 영역을 GND 동박과 연결되도록 별도로 잡아줘야 한다.</p>
+<p>아래 PCB에서 U9, U14가 AD5420 소자인데, 칩 바닥 중앙에 exposed pad가 보인다.</p>
+<p><img alt="실제 PCB — U9, U14 (AD5420) 의 exposed pad" loading="lazy" src="/images/troubleshooting/ad5420-pcb-exposed-pad.jpg"></p>
+<p>납땜 순서도 중요하다. 칩 다리부터 납땜하면 나중에 바닥 exposed pad에 열을 가하기가 어려워진다. 열풍기로 먼저 납을 녹여 exposed pad를 GND에 붙인 다음, 칩이 자리를 잡으면 나머지 다리를 납땜하는 순서로 작업했다.</p>
+<h2 id="정리">정리<a hidden class="anchor" aria-hidden="true" href="#정리">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>증상</td>
+          <td>배선상 문제없어 보이는데 전원 인가 시 과도한 발열 발생</td>
+      </tr>
+      <tr>
+          <td>원인</td>
+          <td>TSSOP-24 EP 패키지 바닥 exposed pad 미납땜 → GND 연결 불안정</td>
+      </tr>
+      <tr>
+          <td>해결</td>
+          <td>Exposed pad를 PCB GND에 납땜 / EP 지원 변환기판 사용</td>
+      </tr>
+  </tbody>
+</table>
+<p>만능기판에서 SMD 칩을 테스트할 때 EP 패키지 여부를 미리 확인해두는 게 좋다. 다리만 납땜하면 되는 줄 알았는데, 바닥 exposed pad 하나 빠진 게 발열로 이어질 줄은 몰랐다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/ad5420/">AD5420</a></li>
+      <li><a href="http://localhost:1313/tags/tssop/">TSSOP</a></li>
+      <li><a href="http://localhost:1313/tags/%EB%85%B8%EC%B6%9C%ED%8C%A8%EB%93%9C/">노출패드</a></li>
+      <li><a href="http://localhost:1313/tags/%EB%82%A9%EB%95%9C/">납땜</a></li>
+      <li><a href="http://localhost:1313/tags/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/">트러블슈팅</a></li>
+      <li><a href="http://localhost:1313/tags/%EB%A7%8C%EB%8A%A5%EA%B8%B0%ED%8C%90/">만능기판</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/">
+    <span class="title">Next »</span>
+    <br>
+    <span>임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+  </a>
+</nav>
+
+  </footer><div class="comments">
+  <script src="https://giscus.app/client.js"
+    data-repo="bromine1997/bromine1997.github.io"
+    data-repo-id="R_kgDOR1bAsg"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOR1bAss4C52wg"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="ko"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+
+</article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -10,7 +10,7 @@
 <meta name="description" content="ESP32 Feather V2 기반 4채널 로드셀 동기화 수집 시스템. ADS1232 × 4로 팔·다리 페달 힘을 동시 측정하고 WebSocket 기반 브라우저 실시간 모니터링을 제공한다.">
 <meta name="author" content="서보민">
 <link rel="canonical" href="http://localhost:1313/projects/rehab-bicycle/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -70,7 +70,10 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
 <meta property="og:url" content="http://localhost:1313/projects/rehab-bicycle/">
   <meta property="og:site_name" content="bromine1997">
   <meta property="og:title" content="상하지 재활 자전거 모니터링 시스템">
@@ -173,10 +176,38 @@
             </div>
         </div>
         <ul id="menu">
-            <li>
+            <li class="has-dropdown">
                 <a href="http://localhost:1313/categories/embedded/" title="Embedded">
-                    <span>Embedded</span>
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
                 </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
@@ -186,11 +217,6 @@
             <li>
                 <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
                     <span>Paper Review</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/notes/" title="Notes">
-                    <span>Notes</span>
                 </a>
             </li>
             <li>
@@ -207,6 +233,10 @@
     </nav>
 </header>
 <main class="main">
+
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar no-sidebar">
 
 <article class="post-single">
   <header class="post-header">
@@ -405,6 +435,26 @@
 
   </footer>
 </article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
     </main>
     
 <footer class="footer">

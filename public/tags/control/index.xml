@@ -6,19 +6,19 @@
     <description>Recent content in Control on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 21 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 May 2026 20:49:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/control/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[Paper Review] Optimum Settings for Automatic Controllers</title>
+      <title>Optimum Settings for Automatic Controllers</title>
       <link>http://localhost:1313/posts/paper-review/zn-paper-review/</link>
-      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 06 May 2026 20:49:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/paper-review/zn-paper-review/</guid>
       <description>PID 제어기의 최적 파라미터를 실험적으로 결정하는 Z-N 튜닝 방법을 제안한 1942년 고전 논문. Ultimate sensitivity와 process reaction curve 두 가지 방법을 통해 현장에서 빠르게 최적 설정을 도출하는 절차를 제시한다.</description>
     </item>
     <item>
-      <title>[Paper Review] PID Control System Analysis, Design, and Technology</title>
+      <title>PID Control System Analysis, Design, and Technology</title>
       <link>http://localhost:1313/posts/paper-review/pid-paper-review/</link>
-      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 02 May 2026 20:22:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/paper-review/pid-paper-review/</guid>
       <description>PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리.</description>
     </item>

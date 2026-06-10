@@ -6,12 +6,12 @@
     <description>Recent content in Flash on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 08 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 May 2026 20:43:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/flash/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[임베디드 기초] 2편 - 메모리 구조와 변수 저장 원리</title>
+      <title>임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</title>
       <link>http://localhost:1313/posts/basics/embedded-02-memory-structure/</link>
-      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 10 May 2026 20:43:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/basics/embedded-02-memory-structure/</guid>
       <description>STM32의 메모리 구조를 Flash, RAM, 섹션(.text/.data/.bss) 개념부터 링커 스크립트, Memory Map까지 정리한다.</description>
     </item>

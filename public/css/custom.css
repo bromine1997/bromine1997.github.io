@@ -1,0 +1,421 @@
+/* =========================================================
+   모던 테크 라이트 테마
+   ========================================================= */
+
+/* Pretendard 폰트 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+/* ── CSS 변수 오버라이드 (라이트) ─────────────────────── */
+:root {
+  --theme:           #f3f4f6;
+  --entry:           #ffffff;
+  --primary:         #111827;
+  --secondary:       #6b7280;
+  --tertiary:        #e5e7eb;
+  --content:         #374151;
+  --code-block-bg:   #1e1e1e;
+  --code-bg:         #f3f4f6;
+  --border:          #e5e7eb;
+
+  --accent:          #6366f1;
+  --accent-hover:    #4f46e5;
+  --accent-subtle:   #f0eeff;
+  --accent-border:   #ddd6fe;
+
+  --card-shadow:     0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --card-shadow-md:  0 4px 12px rgba(99,102,241,0.08), 0 2px 4px rgba(0,0,0,0.04);
+}
+
+/* ── CSS 변수 오버라이드 (다크) ─────────────────────── */
+:root[data-theme="dark"] {
+  --theme:           #0f1117;
+  --entry:           #1a1d24;
+  --primary:         #e8eaf0;
+  --secondary:       #8b92a4;
+  --tertiary:        #2a2d38;
+  --content:         #c8cdd8;
+  --code-block-bg:   #13151e;
+  --code-bg:         #1e2030;
+  --border:          #2a2d38;
+
+  --accent:          #818cf8;
+  --accent-hover:    #a5b4fc;
+  --accent-subtle:   #1e2040;
+  --accent-border:   #3730a3;
+
+  --card-shadow:     0 1px 3px rgba(0,0,0,0.3);
+  --card-shadow-md:  0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ── 전체 폰트 ─────────────────────────────────────────── */
+body,
+.post-content,
+.entry-content,
+.page-header,
+nav,
+button {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+code, pre, kbd, samp, .highlight, .chroma {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* ── 배경 ─────────────────────────────────────────────── */
+body {
+  background: var(--theme);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+html body.list { background: var(--theme) !important; }
+:root[data-theme="dark"] body.list { background: var(--theme) !important; }
+
+/* ── main 너비 오버라이드 ──────────────────────────────── */
+html body:not(.list) main.main {
+  max-width: 1160px !important;
+  padding: 0 1.5rem !important;
+}
+
+/* ── 읽기 진행률 바 ────────────────────────────────────── */
+#reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, #8b5cf6 100%);
+  z-index: 9999;
+  transition: width 0.08s linear;
+  border-radius: 0 2px 2px 0;
+  pointer-events: none;
+}
+
+/* ── 헤더 ─────────────────────────────────────────────── */
+.header {
+  background: rgba(255,255,255,0.9) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: 0 1px 0 var(--border), var(--card-shadow) !important;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+:root[data-theme="dark"] .header {
+  background: rgba(15,17,23,0.9) !important;
+}
+
+/* 로고 그라디언트 */
+.logo a {
+  background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700 !important;
+}
+:root[data-theme="dark"] .logo a {
+  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ── 메뉴 링크 ─────────────────────────────────────────── */
+#menu > li > a {
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+#menu > li > a:hover { background: var(--accent-subtle); color: var(--accent); }
+#menu a span.active { color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--accent); }
+
+/* ── 드롭다운 메뉴 ─────────────────────────────────────── */
+#menu li.has-dropdown {
+  position: relative;
+}
+
+/* 드롭다운 패널 */
+#menu li.has-dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06);
+  padding: 0.4rem 0;
+  min-width: 160px;
+  z-index: 500;
+  white-space: nowrap;
+  list-style: none;
+  margin: 0;
+}
+
+/* 마우스가 헤더와 드롭다운 사이 갭을 지날 때 닫히지 않도록 투명 브리지 */
+#menu li.has-dropdown::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -10px;
+  right: -10px;
+  height: 12px;
+}
+
+#menu li.has-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+#menu li.has-dropdown .dropdown-menu li {
+  margin: 0;
+}
+#menu li.has-dropdown .dropdown-menu li a {
+  display: block;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+  border-radius: 0;
+  line-height: 1.5;
+  transition: background 0.12s, color 0.12s;
+}
+#menu li.has-dropdown .dropdown-menu li a:hover {
+  background: var(--accent-subtle);
+  color: var(--accent);
+}
+#menu li.has-dropdown .dropdown-menu li + li {
+  margin: 0;
+}
+
+.dropdown-caret {
+  font-size: 0.65em;
+  margin-left: 3px;
+  opacity: 0.7;
+}
+
+/* ── 홈 포스트 목록 카드 ───────────────────────────────── */
+.post-entry {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 12px !important;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  overflow: hidden;
+}
+.post-entry:hover {
+  box-shadow: var(--card-shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--accent-border);
+}
+
+/* first-entry (홈 첫 카드 / home-info) */
+.first-entry {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 12px !important;
+  box-shadow: var(--card-shadow);
+}
+
+/* 홈 인사 카드 높이 보정 — PaperMod 기본 min-height:320px 축소 */
+.first-entry.home-info {
+  min-height: auto !important;
+  padding: 2rem 2.5rem !important;
+}
+.first-entry.home-info .entry-header h1 {
+  font-size: 1.6rem !important;
+}
+.first-entry.home-info .entry-content {
+  -webkit-line-clamp: unset;
+  font-size: 0.95rem;
+  color: var(--secondary);
+  margin: 0.6rem 0 1rem !important;
+}
+
+/* 포스트 목록 제목 */
+.entry-header h2 { font-size: 1.05rem; font-weight: 700; }
+
+/* ── 싱글 포스트 ───────────────────────────────────────── */
+.post-single {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem 2.5rem !important;
+  box-shadow: var(--card-shadow-md);
+}
+
+/* 포스트 제목 그라디언트 */
+.post-title {
+  font-size: 1.75rem !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  background: linear-gradient(135deg, var(--primary) 55%, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.6rem !important;
+}
+:root[data-theme="dark"] .post-title {
+  background: linear-gradient(135deg, var(--primary) 55%, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ── 본문 타이포그래피 ─────────────────────────────────── */
+.post-content {
+  line-height: 1.85;
+}
+
+.post-content p {
+  margin-bottom: 1.25rem;
+}
+
+.post-content ul,
+.post-content ol {
+  margin-bottom: 1.25rem;
+}
+
+.post-content li {
+  line-height: 1.85;
+}
+
+/* 소제목 (h2) — 왼쪽 인디고 보더 */
+.post-content h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding-left: 0.85rem;
+  border-left: 3.5px solid var(--accent);
+  margin-top: 2.4rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.post-content h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 1.8rem;
+  margin-bottom: 0.7rem;
+}
+
+/* ── 코드 블록 ─────────────────────────────────────────── */
+.post-content pre, .highlight > pre, .chroma {
+  border-radius: 10px !important;
+  border: 1px solid var(--accent-border) !important;
+}
+:root[data-theme="dark"] .post-content pre,
+:root[data-theme="dark"] .highlight > pre,
+:root[data-theme="dark"] .chroma {
+  border-color: #2e3155 !important;
+}
+
+/* 인라인 코드 */
+.post-content code:not(.chroma *) {
+  background: var(--accent-subtle) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 5px;
+  font-size: 0.87em;
+  padding: 0.12em 0.48em;
+  white-space: nowrap;
+}
+:root[data-theme="dark"] .post-content code:not(.chroma *) {
+  background: var(--accent-subtle) !important;
+  color: #a5b4fc !important;
+  border-color: var(--accent-border) !important;
+}
+
+/* ── 태그 — .tag-entry a 제거 (entry-link 오버레이 버그 방지) */
+.post-tags a {
+  background: var(--accent-subtle) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 20px !important;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.8rem !important;
+  transition: background 0.15s, color 0.15s;
+}
+.post-tags a:hover {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+/* ── TOC ───────────────────────────────────────────────── */
+.toc {
+  background: var(--accent-subtle) !important;
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 10px !important;
+}
+.toc details summary { color: var(--accent); font-weight: 700; }
+
+/* ── 브레드크럼 ────────────────────────────────────────── */
+.breadcrumbs a { color: var(--accent); }
+
+/* ── 포스트 메타 ───────────────────────────────────────── */
+.post-meta a { color: var(--secondary); text-decoration: none; }
+.post-meta a:hover { color: var(--accent); }
+
+/* ── 페이지네이션 ──────────────────────────────────────── */
+.pagination a {
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  color: var(--accent) !important;
+  background: var(--entry) !important;
+  padding: 0.4rem 0.9rem;
+  transition: background 0.15s;
+}
+.pagination a:hover { background: var(--accent-subtle) !important; }
+
+/* ── 링크 ──────────────────────────────────────────────── */
+.post-content a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-border);
+  text-underline-offset: 3px;
+}
+.post-content a:hover {
+  color: var(--accent-hover);
+  text-decoration-color: var(--accent);
+}
+
+/* ── 검색 ──────────────────────────────────────────────── */
+#searchbox input {
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 8px !important;
+  background: var(--entry) !important;
+}
+#searchbox input:focus {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: -1px;
+}
+
+/* ── 스크롤바 ──────────────────────────────────────────── */
+::-webkit-scrollbar-thumb { background: var(--accent-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── 코드 블록 ─────────────────────────────────────────── */
+.highlight { border-radius: 10px; overflow: hidden; }
+
+/* ── Projects 페이지 — 사이드바 없이 전체 폭 ────────────── */
+.post-with-sidebar.no-sidebar {
+  grid-template-columns: 1fr !important;
+  max-width: 1060px !important;
+  margin: 0 auto;
+}
+.post-with-sidebar.no-sidebar .post-single {
+  width: 100%;
+  max-width: none;
+}
+
+/* Projects 카드 그리드 */
+.post-single .project-grid {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+}
+
+/* ── 사이드바 너비 축소 보정 ───────────────────────────── */
+/* sidebar.css에서 260px 1fr 로 사이드바 좌측 배치 */
+

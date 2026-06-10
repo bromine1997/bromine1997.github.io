@@ -131,7 +131,7 @@ AF(Alternate Function) 모드로 설정하면 MCU 내부 peripheral(USART, SPI, 
 따라서 코드에서 `GPIO_PIN_RESET`은 버튼이 눌린 상태를 의미한다.
 
 <!-- 이미지 삽입 위치: Nucleo 보드 LED / Button 위치 사진 -->
-![STM32F411 Nucleo 보드의 LED와 버튼 위치](/images/stm32/stm32f411-nucleo-led-button.jpg)
+![STM32F411 Nucleo 보드의 LED와 버튼 위치](/images/stm32/stm32f411-nucleo-led-button.png)
 *예시: STM32F411 Nucleo 보드에서 LD2와 B1의 위치를 표시한 사진*
 
 ### CubeMX 핀 설정

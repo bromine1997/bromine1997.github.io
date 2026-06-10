@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>[STM32] GPIO 기본개념 및 입출력 실습 | bromine1997</title>
+<title>GPIO 기본개념 및 입출력 실습 | bromine1997</title>
 <meta name="keywords" content="STM32, GPIO, HAL, Register, STM32F4">
 <meta name="description" content="GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 실습한 글">
 <meta name="author" content="서보민">
 <link rel="canonical" href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -70,16 +70,19 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
 <meta property="og:url" content="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/">
   <meta property="og:site_name" content="bromine1997">
-  <meta property="og:title" content="[STM32] GPIO 기본개념 및 입출력 실습">
+  <meta property="og:title" content="GPIO 기본개념 및 입출력 실습">
   <meta property="og:description" content="GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 실습한 글">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-03-16T22:56:00+09:00">
-    <meta property="article:modified_time" content="2026-03-16T22:56:00+09:00">
+    <meta property="article:published_time" content="2026-04-18T20:42:00+09:00">
+    <meta property="article:modified_time" content="2026-04-18T20:42:00+09:00">
     <meta property="article:tag" content="STM32">
     <meta property="article:tag" content="GPIO">
     <meta property="article:tag" content="HAL">
@@ -87,7 +90,7 @@
     <meta property="article:tag" content="STM32F4">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="[STM32] GPIO 기본개념 및 입출력 실습">
+  <meta name="twitter:title" content="GPIO 기본개념 및 입출력 실습">
   <meta name="twitter:description" content="GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 실습한 글">
 
 
@@ -105,7 +108,13 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "[STM32] GPIO 기본개념 및 입출력 실습",
+      "name": "STM32",
+      "item": "http://localhost:1313/posts/stm32/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "GPIO 기본개념 및 입출력 실습",
       "item": "http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/"
     }
   ]
@@ -115,17 +124,17 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "[STM32] GPIO 기본개념 및 입출력 실습",
-  "name": "[STM32] GPIO 기본개념 및 입출력 실습",
+  "headline": "GPIO 기본개념 및 입출력 실습",
+  "name": "GPIO 기본개념 및 입출력 실습",
   "description": "GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 실습한 글",
   "keywords": [
     "STM32", "GPIO", "HAL", "Register", "STM32F4"
   ],
-  "articleBody": "GPIO(General Purpose Input/Output)는 MCU가 외부 세계와 신호를 주고받는 가장 기본적인 수단이다.\n이름 그대로 특정 기능에 고정되지 않고, 소프트웨어 설정에 따라 입력 또는 출력으로 사용할 수 있다.\n크게 두 가지 역할이 있다.\nInput: 외부 신호(버튼, 센서 등)를 MCU가 읽어들임 Output: MCU가 외부 장치(LED, 모터 드라이버 등)에 신호를 인가함 출력 모드: Push-Pull vs Open-Drain Push-Pull MCU가 핀을 High와 Low 모두 직접 drive하는 방식이다. 내부에 PMOS와 NMOS 트랜지스터가 한 쌍으로 연결되어 있어서, High 명령이 오면 PMOS가 켜져 핀을 VDD에 연결하고, Low 명령이 오면 NMOS가 켜져 핀을 GND에 연결한다.\n외부 저항 없이도 원하는 레벨을 정확하게 출력할 수 있어서, 일반적인 LED 제어나 디지털 출력에 기본으로 사용한다.\nOpen-Drain NMOS 하나만 사용하는 방식이다. Low는 직접 drive할 수 있지만, High는 스스로 만들지 못한다. 대신 핀을 그냥 놔버리는데(Hi-Z), 이때 외부에 연결된 Pull-up 저항이 핀을 High로 끌어올린다.\n왜 Open-Drain을 사용할까? 대표적인 예가 I2C다. 여러 장치가 같은 버스 선 하나를 공유할 때, 누군가 Low를 당기면 버스 전체가 Low가 된다.\n만약 Push-Pull이었다면 문제가 생긴다. 장치 A가 High를 output하는 동시에 장치 B가 Low를 output하면, VDD와 GND가 직접 연결되는 short가 발생하기 때문이다.\nOpen-Drain은 Pull-up 저항의 전압을 MCU VDD와 다르게 설정할 수도 있어서, 3.3V MCU와 5V 버스를 연결할 때도 별도 level shift 없이 쓸 수 있다.\n입력 모드: Pull-up / Pull-down / Floating 버튼을 GPIO 입력으로 읽는다고 해보자. 버튼이 눌리지 않은 상태에서 핀이 아무 데도 연결되지 않으면 Floating 상태가 된다.\n이 상태에서는 공중에 떠 있는 핀이 주변 noise를 그대로 받아들여서 IDR을 읽으면 0이 될지 1이 될지 예측할 수 없다.\n그래서 평상시에 핀을 확실한 레벨로 고정해두는 것이 Pull-up / Pull-down이다.\n설정 평상시 버튼 누를 때 Pull-up HIGH LOW Pull-down LOW HIGH STM32는 외부 저항 없이 내부 Pull-up / Pull-down을 PUPDR 레지스터로 설정할 수 있다. 이전 글에서 PC13 버튼을 읽을 때 Pull-up을 설정했던 것이 바로 이 이유다.\nSTM32 GPIO 내부 블록 다이어그램 STM32 레퍼런스 매뉴얼에는 GPIO 핀 하나의 구조를 보여주는 블록 다이어그램이 있다.\nGPIO를 이해할 때 가장 중요한 그림 중 하나라서, 한 번 제대로 읽어두면 이후에 훨씬 덜 헷갈린다.\n크게 세 부분으로 나눠서 볼 수 있다.\n1) 실제 핀 (I/O Pin) 핀 양쪽에는 Protection Diode가 붙어 있다.\n핀에 VDD보다 높거나 VSS보다 낮은 전압이 들어왔을 때 내부 회로를 보호하는 역할을 한다.\n또한 Pull-up / Pull-down 저항이 스위치 형태로 표현되어 있는데, 이 스위치를 소프트웨어로 켜고 끄는 것이 PUPDR 레지스터다.\n2) 입력 경로 (Input Driver) 핀 신호는 TTL Schmitt Trigger를 거쳐 Input Data Register(IDR) 로 들어간다.\nSchmitt Trigger가 있는 이유는 noise 때문이다.\n신호가 천천히 변하거나 noise가 섞여 있어도, hysteresis 특성을 통해 보다 명확하게 0과 1로 해석할 수 있다.\nAnalog 모드에서는 이 디지털 입력 경로 자체를 끄기도 한다.\n즉, 펌웨어에서 입력을 읽는다는 것은 결국 IDR 값을 읽는 것이다.\n3) 출력 경로 (Output Driver) 출력은 ODR(Output Data Register)에 값을 쓰거나, BSRR(Bit Set/Reset Register)를 통해 제어된다.\n이 값이 Output Control을 거쳐 P-MOS / N-MOS 조합으로 전달된다.\nPush-Pull 모드: P-MOS와 N-MOS가 번갈아 동작하며 High / Low를 직접 drive Open-Drain 모드: N-MOS만 동작하고 P-MOS는 꺼짐 핵심은 MUX다.\nMODER 레지스터를 통해 이 핀이 GPIO로 동작할지, UART / SPI 같은 Alternate Function으로 동작할지 선택한다.\nAF(Alternate Function) 모드로 설정하면 MCU 내부 peripheral(USART, SPI, TIM 등)이 해당 핀을 직접 제어한다.\n실습: User Button으로 LED 제어 (STM32F411 Nucleo) 보드 기본 핀 정보 코드를 작성하기 전에 보드 회로도에서 먼저 확인해야 할 정보는 다음과 같다.\n기능 핀 특이사항 User LED (LD2) PA5 Active High User Button (B1) PC13 Active Low, 보드 내부 Pull-up 연결 여기서 중요한 점은 버튼이 Active Low라는 것이다.\n즉, 버튼을 누르지 않았을 때는 PC13 = High, 버튼을 눌렀을 때는 PC13 = Low가 된다.\n따라서 코드에서 GPIO_PIN_RESET은 버튼이 눌린 상태를 의미한다.\n예시: STM32F411 Nucleo 보드에서 LD2와 B1의 위치를 표시한 사진\nCubeMX 핀 설정 PA5 → GPIO_Output PC13 → GPIO_Input PC13의 Pull-up은 보드 하드웨어에 이미 연결되어 있으므로, CubeMX에서는 No pull로 두어도 된다.\nPA5를 출력, PC13을 입력으로 설정한 CubeMX 화면\nHAL 코드 1 2 3 4 5 6 7 8 9 10 11 12 while (1) { if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET) { // 버튼 눌림 (Active Low) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET); } else { HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET); } } 동작은 단순하다.\n버튼 상태를 읽고 눌려 있으면 LED를 켜고 아니면 LED를 끈다 버튼을 누르면 LED가 켜지는 실행 결과\n실행 결과 버튼을 누르고 있는 동안 LD2(초록 LED)가 켜지고, 버튼에서 손을 떼면 꺼진다.\n이 정도의 간단한 실습에서는 debouncing을 따로 넣지 않았다.\n버튼을 누르고 있는 동안 계속 켜는 구조라서 chattering이 큰 문제가 되지 않는다.\n다만 버튼을 한 번 눌렀다 뗐을 때 상태가 토글되는 구조로 바꾸면 debouncing이 필요해진다.\n추가 학습: OSPEEDR를 왜 설정할까? 출력 속도 설정은 slew rate(신호가 바뀌는 속도) 와 관련이 있다.\n속도가 빠를수록 엣지가 가팔라지고, 그만큼 EMI 도 커질 수 있다.\n그래서 고속 SPI 클럭처럼 빠른 신호가 필요한 경우에는 High Speed가 필요할 수 있지만,\n단순한 LED 제어 같은 저속 신호에 Very High Speed를 쓰면 불필요한 noise만 증가시킬 수 있다.\n핵심 키워드 Floating Pull-up Pull-down Push-Pull Open-Drain Active Low Schmitt Trigger Slew Rate Debouncing 마무리 이번 글에서는 GPIO의 기본 개념과 입력/출력 구조, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 제어하는 간단한 실습까지 정리했다.\n다음 글에서는 HAL_GPIO_ReadPin() 과 HAL_GPIO_WritePin() 이 실제로 내부에서 어떻게 동작하는지, 그리고 왜 ODR 대신 BSRR를 사용하는지까지 이어서 정리할 예정이다.\n",
-  "wordCount" : "806",
+  "articleBody": "GPIO(General Purpose Input/Output)는 MCU가 외부 세계와 신호를 주고받는 가장 기본적인 수단이다.\n이름 그대로 특정 기능에 고정되지 않고, 소프트웨어 설정에 따라 입력 또는 출력으로 사용할 수 있다.\nInput: 외부 신호(버튼, 센서 등)를 MCU가 읽어들임 Output: MCU가 외부 장치(LED, 모터 드라이버 등)에 신호를 출력함 출력 모드: Push-Pull vs Open-Drain Push-Pull MCU가 핀을 High와 Low 모두 직접 drive하는 방식이다. 내부에 PMOS와 NMOS 트랜지스터가 한 쌍으로 연결되어 있어서, High로 설정하면 PMOS가 켜져 핀을 VDD에 연결하고, Low 명령이 오면 NMOS가 켜져 핀을 GND에 연결한다.\n외부 저항 없이도 원하는 레벨을 정확하게 출력할 수 있어서, 일반적인 LED 제어나 디지털 출력에 기본으로 사용한다.\nOpen-Drain NMOS 하나만 사용하는 방식이다. Low는 직접 drive할 수 있지만, High는 스스로 만들지 못한다. 대신 핀을 그냥 놔버리는데(Hi-Z), 이때 외부에 연결된 Pull-up 저항이 핀을 High로 끌어올린다.\n왜 Open-Drain을 사용할까? 대표적인 예가 I2C다. 여러 장치가 같은 버스 선 하나를 공유할 때, 누군가 Low를 당기면 버스 전체가 Low가 된다.\n만약 Push-Pull이었다면 문제가 생긴다. 장치 A가 High를 output하는 동시에 장치 B가 Low를 output하면, VDD와 GND가 직접 연결되는 short가 발생하기 때문이다.\nOpen-Drain은 Pull-up 저항의 전압을 MCU VDD와 다르게 설정할 수도 있어서, 3.3V MCU와 5V 버스를 연결할 때도 별도 level shift 없이 쓸 수 있다.\n입력 모드: Pull-up / Pull-down / Floating 버튼을 GPIO 입력으로 읽는다고 해보자. 버튼이 눌리지 않은 상태에서 핀이 아무 데도 연결되지 않으면 Floating 상태가 된다.\n이 상태에서는 Floating 상태의 핀이 주변 noise를 그대로 받아들여서 IDR을 읽으면 0이 될지 1이 될지 예측할 수 없다.\n그래서 평상시에 핀을 확실한 레벨로 고정해두는 것이 Pull-up / Pull-down이다.\n설정 평상시 버튼 누를 때 Pull-up HIGH LOW Pull-down LOW HIGH STM32는 외부 저항 없이 내부 Pull-up / Pull-down을 PUPDR 레지스터로 설정할 수 있다. 이전 글에서 PC13 버튼을 읽을 때 Pull-up을 설정했던 것이 바로 이 이유다.\nSTM32 GPIO 내부 블록 다이어그램 STM32 레퍼런스 매뉴얼에는 GPIO 핀 하나의 구조를 보여주는 블록 다이어그램이 있다.\nGPIO를 이해할 때 가장 중요한 그림 중 하나라서, 한 번 제대로 읽어두면 이후에 훨씬 덜 헷갈린다.\n1) 실제 핀 (I/O Pin) 핀 양쪽에는 Protection Diode가 붙어 있다.\n핀에 VDD보다 높거나 VSS보다 낮은 전압이 들어왔을 때 내부 회로를 보호하는 역할을 한다.\n또한 Pull-up / Pull-down 저항이 스위치 형태로 표현되어 있는데, 이 스위치를 소프트웨어로 켜고 끄는 것이 PUPDR 레지스터다.\n2) 입력 경로 (Input Driver) 핀 신호는 TTL Schmitt Trigger를 거쳐 Input Data Register(IDR) 로 들어간다.\nSchmitt Trigger가 있는 이유는 noise 때문이다.\n신호가 천천히 변하거나 noise가 섞여 있어도, hysteresis 특성을 통해 더 명확하게 0과 1로 해석할 수 있다.\nAnalog 모드에서는 이 디지털 입력 경로 자체를 끄기도 한다.\n즉, 펌웨어에서 입력을 읽는다는 것은 결국 IDR 값을 읽는 것이다.\n3) 출력 경로 (Output Driver) 출력은 ODR(Output Data Register)에 값을 쓰거나, BSRR(Bit Set/Reset Register)를 통해 제어된다.\n이 값이 Output Control을 거쳐 P-MOS / N-MOS 조합으로 전달된다.\nPush-Pull 모드: P-MOS와 N-MOS가 번갈아 동작하며 High / Low를 직접 drive Open-Drain 모드: N-MOS만 동작하고 P-MOS는 꺼짐 핵심은 MUX다.\nMODER 레지스터를 통해 이 핀이 GPIO로 동작할지, UART / SPI 같은 Alternate Function으로 동작할지 선택한다.\nAF(Alternate Function) 모드로 설정하면 MCU 내부 peripheral(USART, SPI, TIM 등)이 해당 핀을 직접 제어한다.\n실습: User Button으로 LED 제어 (STM32F411 Nucleo) 보드 기본 핀 정보 코드를 작성하기 전에 보드 회로도에서 먼저 확인해야 할 정보는 다음과 같다.\n기능 핀 특이사항 User LED (LD2) PA5 Active High User Button (B1) PC13 Active Low, 보드 내부 Pull-up 연결 여기서 중요한 점은 버튼이 Active Low라는 것이다.\n즉, 버튼을 누르지 않았을 때는 PC13 = High, 버튼을 눌렀을 때는 PC13 = Low가 된다.\n따라서 코드에서 GPIO_PIN_RESET은 버튼이 눌린 상태를 의미한다.\n예시: STM32F411 Nucleo 보드에서 LD2와 B1의 위치를 표시한 사진\nCubeMX 핀 설정 PA5 → GPIO_Output PC13 → GPIO_Input PC13의 Pull-up은 보드 하드웨어에 이미 연결되어 있으므로, CubeMX에서는 No pull로 두어도 된다.\nPA5를 출력, PC13을 입력으로 설정한 CubeMX 화면\nHAL 코드 1 2 3 4 5 6 7 8 9 10 11 12 while (1) { if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET) { // 버튼 눌림 (Active Low) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET); } else { HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET); } } 버튼 상태를 읽어 눌려 있으면 LED를 켜고, 아니면 끈다.\n버튼을 누르면 LED가 켜지는 실행 결과\n실행 결과 버튼을 누르고 있는 동안 LD2(초록 LED)가 켜지고, 버튼에서 손을 떼면 꺼진다.\n이 정도의 간단한 실습에서는 debouncing을 따로 넣지 않았다.\n버튼을 누르고 있는 동안 계속 켜는 구조라서 chattering이 큰 문제가 되지 않는다.\n다만 버튼을 한 번 눌렀다 뗐을 때 상태가 토글되는 구조로 바꾸면 debouncing이 필요해진다.\n추가 학습: OSPEEDR를 왜 설정할까? 출력 속도 설정은 slew rate(신호가 바뀌는 속도) 와 관련이 있다.\n속도가 빠를수록 엣지가 가팔라지고, 그만큼 EMI 도 커질 수 있다.\n그래서 고속 SPI 클럭처럼 빠른 신호가 필요한 경우에는 High Speed가 필요할 수 있지만,\n단순한 LED 제어 같은 저속 신호에 Very High Speed를 쓰면 불필요한 noise만 증가시킬 수 있다.\n",
+  "wordCount" : "737",
   "inLanguage": "en",
-  "datePublished": "2026-03-16T22:56:00+09:00",
-  "dateModified": "2026-03-16T22:56:00+09:00",
+  "datePublished": "2026-04-18T20:42:00+09:00",
+  "dateModified": "2026-04-18T20:42:00+09:00",
   "author":{
     "@type": "Person",
     "name": "서보민"
@@ -174,10 +183,38 @@
             </div>
         </div>
         <ul id="menu">
-            <li>
+            <li class="has-dropdown">
                 <a href="http://localhost:1313/categories/embedded/" title="Embedded">
-                    <span>Embedded</span>
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
                 </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
@@ -187,11 +224,6 @@
             <li>
                 <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
                     <span>Paper Review</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/notes/" title="Notes">
-                    <span>Notes</span>
                 </a>
             </li>
             <li>
@@ -209,13 +241,251 @@
 </header>
 <main class="main">
 
+<div id="reading-progress-bar"></div>
+
+<div class="post-with-sidebar"><aside class="sidebar">
+
+  
+  <section class="sidebar-section sidebar-profile">
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
+    <div class="sidebar-profile-name">서보민</div>
+    <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
+    <div class="sidebar-profile-links">
+      <a href="https://github.com/bromine1997" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Algorithm</span>
+        <span class="sidebar-count">1</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+            <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ATmega</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+            <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+            <span class="sidebar-item-title">시작하며</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">ESP32</span>
+        <span class="sidebar-count">8</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+            <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+            <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+            <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+            <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+            <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+            <span class="sidebar-item-title">ESP32가 뭐길래?</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Paper Review</span>
+        <span class="sidebar-count">5</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+            <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+            <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+            <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+            <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">STM32</span>
+        <span class="sidebar-count">2</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+            <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link active">
+            <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">Troubleshooting</span>
+        <span class="sidebar-count">4</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+            <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+            <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+            <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+            <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+  <section class="sidebar-section">
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">임베디드 기초</span>
+        <span class="sidebar-count">7</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link">
+            <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </section>
+
+</aside>
+
+
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/stm32/">STM32</a></div>
     <h1 class="post-title entry-hint-parent">
-      [STM32] GPIO 기본개념 및 입출력 실습
+      GPIO 기본개념 및 입출력 실습
     </h1>
-    <div class="post-meta"><span title='2026-03-16 22:56:00 +0900 KST'>March 16, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
+    <div class="post-meta"><span title='2026-04-18 20:42:00 +0900 KST'>April 18, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>서보민</span>&nbsp;|&nbsp;<span>
     <a href="https://github.com/bromine1997/bromine1997.github.io/tree/main/content/posts/stm32/stm32-gpio-basic-with-image-placeholders.md" rel="noopener noreferrer edit" target="_blank">Edit</a>
 </span>
 
@@ -252,8 +522,6 @@
       </ul>
     </li>
     <li><a href="#추가-학습-ospeedr를-왜-설정할까">추가 학습: OSPEEDR를 왜 설정할까?</a></li>
-    <li><a href="#핵심-키워드">핵심 키워드</a></li>
-    <li><a href="#마무리">마무리</a></li>
   </ul>
 </nav>
         </div>
@@ -262,16 +530,15 @@
 
   <div class="post-content"><p>GPIO(General Purpose Input/Output)는 MCU가 외부 세계와 신호를 주고받는 가장 기본적인 수단이다.<br>
 이름 그대로 특정 기능에 고정되지 않고, 소프트웨어 설정에 따라 입력 또는 출력으로 사용할 수 있다.</p>
-<p>크게 두 가지 역할이 있다.</p>
 <ul>
 <li><strong>Input</strong>: 외부 신호(버튼, 센서 등)를 MCU가 읽어들임</li>
-<li><strong>Output</strong>: MCU가 외부 장치(LED, 모터 드라이버 등)에 신호를 인가함</li>
+<li><strong>Output</strong>: MCU가 외부 장치(LED, 모터 드라이버 등)에 신호를 출력함</li>
 </ul>
 <h2 id="출력-모드-push-pull-vs-open-drain">출력 모드: Push-Pull vs Open-Drain<a hidden class="anchor" aria-hidden="true" href="#출력-모드-push-pull-vs-open-drain">#</a></h2>
 <h3 id="push-pull">Push-Pull<a hidden class="anchor" aria-hidden="true" href="#push-pull">#</a></h3>
 <p>MCU가 핀을 <strong>High와 Low 모두 직접 drive</strong>하는 방식이다.
 내부에 PMOS와 NMOS 트랜지스터가 한 쌍으로 연결되어 있어서,
-High 명령이 오면 PMOS가 켜져 핀을 VDD에 연결하고,
+High로 설정하면 PMOS가 켜져 핀을 VDD에 연결하고,
 Low 명령이 오면 NMOS가 켜져 핀을 GND에 연결한다.</p>
 <p>외부 저항 없이도 원하는 레벨을 정확하게 출력할 수 있어서,
 일반적인 LED 제어나 디지털 출력에 기본으로 사용한다.</p>
@@ -294,7 +561,7 @@ VDD와 GND가 직접 연결되는 short가 발생하기 때문이다.</p>
 <h2 id="입력-모드-pull-up--pull-down--floating">입력 모드: Pull-up / Pull-down / Floating<a hidden class="anchor" aria-hidden="true" href="#입력-모드-pull-up--pull-down--floating">#</a></h2>
 <p>버튼을 GPIO 입력으로 읽는다고 해보자.
 버튼이 눌리지 않은 상태에서 핀이 아무 데도 연결되지 않으면 <strong>Floating 상태</strong>가 된다.</p>
-<p>이 상태에서는 공중에 떠 있는 핀이 주변 noise를 그대로 받아들여서
+<p>이 상태에서는 Floating 상태의 핀이 주변 noise를 그대로 받아들여서
 IDR을 읽으면 0이 될지 1이 될지 예측할 수 없다.</p>
 <p>그래서 평상시에 핀을 <strong>확실한 레벨로 고정</strong>해두는 것이 Pull-up / Pull-down이다.</p>
 <!-- 이미지 삽입 위치: Floating / Pull-up / Pull-down 회로 비교 그림 -->
@@ -325,7 +592,6 @@ IDR을 읽으면 0이 될지 1이 될지 예측할 수 없다.</p>
 <h2 id="stm32-gpio-내부-블록-다이어그램">STM32 GPIO 내부 블록 다이어그램<a hidden class="anchor" aria-hidden="true" href="#stm32-gpio-내부-블록-다이어그램">#</a></h2>
 <p>STM32 레퍼런스 매뉴얼에는 GPIO 핀 하나의 구조를 보여주는 블록 다이어그램이 있다.<br>
 GPIO를 이해할 때 가장 중요한 그림 중 하나라서, 한 번 제대로 읽어두면 이후에 훨씬 덜 헷갈린다.</p>
-<p>크게 세 부분으로 나눠서 볼 수 있다.</p>
 <!-- 이미지 삽입 위치: STM32 GPIO 블록 다이어그램 -->
 <p><img alt="STM32 GPIO 내부 블록 다이어그램" loading="lazy" src="/images/stm32/stm32-gpio-block-diagram.png"></p>
 <h3 id="1-실제-핀-io-pin">1) 실제 핀 (I/O Pin)<a hidden class="anchor" aria-hidden="true" href="#1-실제-핀-io-pin">#</a></h3>
@@ -335,7 +601,7 @@ GPIO를 이해할 때 가장 중요한 그림 중 하나라서, 한 번 제대�
 <h3 id="2-입력-경로-input-driver">2) 입력 경로 (Input Driver)<a hidden class="anchor" aria-hidden="true" href="#2-입력-경로-input-driver">#</a></h3>
 <p>핀 신호는 <strong>TTL Schmitt Trigger</strong>를 거쳐 <strong>Input Data Register(IDR)</strong> 로 들어간다.</p>
 <p>Schmitt Trigger가 있는 이유는 noise 때문이다.<br>
-신호가 천천히 변하거나 noise가 섞여 있어도, hysteresis 특성을 통해 보다 명확하게 0과 1로 해석할 수 있다.</p>
+신호가 천천히 변하거나 noise가 섞여 있어도, hysteresis 특성을 통해 더 명확하게 0과 1로 해석할 수 있다.</p>
 <p>Analog 모드에서는 이 디지털 입력 경로 자체를 끄기도 한다.</p>
 <p>즉, 펌웨어에서 입력을 읽는다는 것은 결국 <strong>IDR 값을 읽는 것</strong>이다.</p>
 <h3 id="3-출력-경로-output-driver">3) 출력 경로 (Output Driver)<a hidden class="anchor" aria-hidden="true" href="#3-출력-경로-output-driver">#</a></h3>
@@ -376,7 +642,7 @@ AF(Alternate Function) 모드로 설정하면 MCU 내부 peripheral(USART, SPI, 
 즉, 버튼을 누르지 않았을 때는 <code>PC13 = High</code>, 버튼을 눌렀을 때는 <code>PC13 = Low</code>가 된다.</p>
 <p>따라서 코드에서 <code>GPIO_PIN_RESET</code>은 버튼이 눌린 상태를 의미한다.</p>
 <!-- 이미지 삽입 위치: Nucleo 보드 LED / Button 위치 사진 -->
-<p><img alt="STM32F411 Nucleo 보드의 LED와 버튼 위치" loading="lazy" src="/images/stm32/stm32f411-nucleo-led-button.jpg">
+<p><img alt="STM32F411 Nucleo 보드의 LED와 버튼 위치" loading="lazy" src="/images/stm32/stm32f411-nucleo-led-button.png">
 <em>예시: STM32F411 Nucleo 보드에서 LD2와 B1의 위치를 표시한 사진</em></p>
 <h3 id="cubemx-핀-설정">CubeMX 핀 설정<a hidden class="anchor" aria-hidden="true" href="#cubemx-핀-설정">#</a></h3>
 <ul>
@@ -418,12 +684,7 @@ AF(Alternate Function) 모드로 설정하면 MCU 내부 peripheral(USART, SPI, 
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>동작은 단순하다.</p>
-<ul>
-<li>버튼 상태를 읽고</li>
-<li>눌려 있으면 LED를 켜고</li>
-<li>아니면 LED를 끈다</li>
-</ul>
+</div><p>버튼 상태를 읽어 눌려 있으면 LED를 켜고, 아니면 끈다.</p>
 <!-- 이미지 삽입 위치: 실행 결과 사진 또는 GIF -->
 <p><img alt="버튼 입력에 따라 LED가 켜지는 실행 결과" loading="lazy" src="/images/stm32/stm32-gpio-button-led-result.jpg">
 <em>버튼을 누르면 LED가 켜지는 실행 결과</em></p>
@@ -441,21 +702,6 @@ AF(Alternate Function) 모드로 설정하면 MCU 내부 peripheral(USART, SPI, 
 단순한 LED 제어 같은 저속 신호에 Very High Speed를 쓰면 불필요한 noise만 증가시킬 수 있다.</p>
 <!--  OSPEEDR 그림 -->
 <p><img alt="OSPEEDR 레지스터" loading="lazy" src="/images/stm32/stm32-gpio-ospeedr-slew-rate.png"></p>
-<h2 id="핵심-키워드">핵심 키워드<a hidden class="anchor" aria-hidden="true" href="#핵심-키워드">#</a></h2>
-<ul>
-<li>Floating</li>
-<li>Pull-up</li>
-<li>Pull-down</li>
-<li>Push-Pull</li>
-<li>Open-Drain</li>
-<li>Active Low</li>
-<li>Schmitt Trigger</li>
-<li>Slew Rate</li>
-<li>Debouncing</li>
-</ul>
-<h2 id="마무리">마무리<a hidden class="anchor" aria-hidden="true" href="#마무리">#</a></h2>
-<p>이번 글에서는 GPIO의 기본 개념과 입력/출력 구조, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 제어하는 간단한 실습까지 정리했다.</p>
-<p>다음 글에서는 <code>HAL_GPIO_ReadPin()</code> 과 <code>HAL_GPIO_WritePin()</code> 이 실제로 내부에서 어떻게 동작하는지, 그리고 왜 <code>ODR</code> 대신 <code>BSRR</code>를 사용하는지까지 이어서 정리할 예정이다.</p>
 
 
   </div>
@@ -469,15 +715,15 @@ AF(Alternate Function) 모드로 설정하면 MCU 내부 peripheral(USART, SPI, 
       <li><a href="http://localhost:1313/tags/stm32f4/">STM32F4</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/">
+  <a class="prev" href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/">
     <span class="title">« Prev</span>
     <br>
-    <span>[Paper Review] Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
+    <span>HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
   </a>
-  <a class="next" href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/">
+  <a class="next" href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/">
     <span class="title">Next »</span>
     <br>
-    <span>[ESP32] ESP32가 뭐길래?</span>
+    <span>로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
   </a>
 </nav>
 
@@ -501,6 +747,26 @@ AF(Alternate Function) 모드로 설정하면 MCU 내부 peripheral(USART, SPI, 
 </div>
 
 </article>
+
+
+</div>
+
+<script>
+(function () {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  function update() {
+    var content = document.querySelector('.post-content');
+    if (!content) return;
+    var top = content.getBoundingClientRect().top + window.scrollY;
+    var end = top + content.offsetHeight - window.innerHeight;
+    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
     </main>
     
 <footer class="footer">

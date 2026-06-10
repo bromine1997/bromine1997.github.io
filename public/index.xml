@@ -6,140 +6,210 @@
     <description>Recent content on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 08 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jun 2026 23:00:00 +0900</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[임베디드 기초] 2편 - 메모리 구조와 변수 저장 원리</title>
-      <link>http://localhost:1313/posts/basics/embedded-02-memory-structure/</link>
-      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/basics/embedded-02-memory-structure/</guid>
-      <description>STM32의 메모리 구조를 Flash, RAM, 섹션(.text/.data/.bss) 개념부터 링커 스크립트, Memory Map까지 정리한다.</description>
+      <title>AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</title>
+      <link>http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/</link>
+      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/</guid>
+      <description>AD5420 두 개를 Daisy Chain으로 연결했는데 출력이 아예 안 나왔다. 오실로스코프로 MISO를 확인했더니 쓰레기값이 보였다. 데이터시트에는 이미 UNDEFINED라고 적혀 있었다.</description>
     </item>
     <item>
-      <title>[자료구조] 1편 - 배열과 동적 배열: 메모리를 직접 다루다</title>
-      <link>http://localhost:1313/posts/algorithm/algorithm-01-array/</link>
-      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/algorithm/algorithm-01-array/</guid>
-      <description>int arr[10]부터 malloc()을 이용한 동적 배열까지. C언어에서 데이터를 저장하는 가장 기본적인 방법과 메모리 구조를 정리한다.</description>
+      <title>만능기판 테스트 중 계속 발열이 생긴 이유</title>
+      <link>http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/</link>
+      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/</guid>
+      <description>AD5420을 TSSOP 변환기판으로 만능기판에서 테스트하려다 전원 넣으면 발열이 심하게 생겼다. 원인은 배선이 아니라 칩 바닥 exposed pad였다.</description>
     </item>
     <item>
-      <title>[임베디드 기초] 1편 - 임베디드 시스템과 펌웨어란 무엇인가</title>
-      <link>http://localhost:1313/posts/basics/embedded-01-what-is-embedded/</link>
-      <pubDate>Tue, 07 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/basics/embedded-01-what-is-embedded/</guid>
-      <description>임베디드 시스템과 펌웨어의 정의, 일반 소프트웨어와의 차이, 그리고 MCU/DSP/FPGA 비교까지 기초 개념을 정리한다.</description>
+      <title>임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</title>
+      <link>http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/</link>
+      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/</guid>
+      <description>APB 클럭에서 UART 보드레이트와 SPI 속도가 계산되는 원리, 오차 계산, 실무에서 만나는 클럭 관련 문제들을 정리한다.</description>
     </item>
     <item>
-      <title>[ESP32] 4개의 로드셀을 동시에 측정하기 - 소프트웨어</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/</link>
-      <pubDate>Fri, 03 Apr 2026 02:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/</guid>
-      <description>ADS1232 4채널을 왜 Hardware SPI 대신 GPIO 인터럽트로 읽었는가. IRAM_ATTR가 필요한 이유, 4채널 동시 비트 수집 구조, 24비트 2의 보수 부호 처리까지 정리했다.</description>
+      <title>상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</title>
+      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/</link>
+      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/</guid>
+      <description>전자공학회 구두 발표까지 이어진 상하지 재활 자전거 모니터링 시스템 개발 과정을 연구 배경부터 시스템 설계, 기술적 선택, 한계까지 정리했다.</description>
     </item>
     <item>
-      <title>[ESP32] PSRAM 버퍼링과 센서 데이터 저장 구조</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</link>
-      <pubDate>Fri, 03 Apr 2026 01:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</guid>
-      <description>40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.</description>
+      <title>Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</title>
+      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/</link>
+      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/</guid>
+      <description>ESPAsyncWebServer로 웹 서버를 올리고, WebSocket으로 센서 데이터를 실시간 전송하고, 측정이 끝나면 수백 KB의 바이너리 데이터를 브라우저로 내려받는 과정을 정리했다.</description>
     </item>
     <item>
-      <title>[ESP32] 4개의 로드셀을 동시에 측정하기 - 하드웨어</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/</link>
-      <pubDate>Fri, 03 Apr 2026 00:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/</guid>
-      <description>ESP32 내장 ADC 대신 ADS1232를 4개 사용해 로드셀 4채널을 동시에 측정한 이유, 그리고 크랭크 각도를 측정하는 AS5600까지. 하드웨어 설계 과정을 정리했다.</description>
+      <title>GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</title>
+      <link>http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/</link>
+      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/</guid>
+      <description>ESP32 Feather V2에서 GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다. 원인은 코드나 회로 문제가 아니라 스트래핑 핀이었다.</description>
     </item>
     <item>
-      <title>[ESP32] setup()과 loop()는 어떻게 실행되는가</title>
-      <link>http://localhost:1313/posts/esp32/esp32-setup-loop-internals/</link>
-      <pubDate>Fri, 03 Apr 2026 00:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-setup-loop-internals/</guid>
-      <description>ESP32를 Arduino IDE로 개발하면 setup()과 loop()만 보인다. 그런데 실제로 전원이 켜진 순간부터 loop()가 돌기까지, 내부에서는 어떤 일이 일어날까.</description>
+      <title>임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</title>
+      <link>http://localhost:1313/posts/basics/embedded-06-clock-rcc/</link>
+      <pubDate>Wed, 03 Jun 2026 20:22:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/basics/embedded-06-clock-rcc/</guid>
+      <description>크리스탈에서 100MHz까지 — STM32F411의 클럭 소스, PLL 동작 원리, AHB/APB 분주 구조를 정리한다.</description>
     </item>
     <item>
-      <title>[Tinker Board 2S] SPI 파형 왜곡 문제와 Digital Isolator 주파수 제한</title>
+      <title>SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</title>
       <link>http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/</link>
-      <pubDate>Fri, 03 Apr 2026 00:00:00 +0900</pubDate>
+      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/</guid>
       <description>ASUS Tinker Board 2S에서 SPI 통신 파형이 왜곡되는 문제를 겪었다. 원인은 하드웨어가 아닌 Digital Isolator의 주파수 제한이었다.</description>
     </item>
     <item>
-      <title>[ATMEGA4809] MCU 소개 및 개발환경 설정</title>
-      <link>http://localhost:1313/posts/atmega/atmega-code-review-01-environment/</link>
-      <pubDate>Thu, 02 Apr 2026 01:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/atmega/atmega-code-review-01-environment/</guid>
-      <description>본격적인 코드리뷰에 앞서 제가 사용한 ATmega4809 MCU와 Microchip Studio 개발환경을 간단하게 소개합니다.</description>
+      <title>임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</title>
+      <link>http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/</link>
+      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/</guid>
+      <description>폴링과 인터럽트의 차이, Cortex-M NVIC 구조와 우선순위 시스템, volatile 키워드의 필요성까지 인터럽트의 핵심 개념을 정리한다.</description>
     </item>
     <item>
-      <title>[ATMEGA4809] 시작하며</title>
-      <link>http://localhost:1313/posts/atmega/atmega-code-review-intro/</link>
-      <pubDate>Thu, 02 Apr 2026 00:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/atmega/atmega-code-review-intro/</guid>
-      <description>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작합니다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정입니다.</description>
+      <title>4개의 로드셀을 동시에 측정하기 - 소프트웨어</title>
+      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/</link>
+      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/</guid>
+      <description>ADS1232 4채널을 왜 Hardware SPI 대신 GPIO 인터럽트로 읽었는가. IRAM_ATTR가 필요한 이유, 4채널 동시 비트 수집 구조, 24비트 2의 보수 부호 처리까지 정리했다.</description>
     </item>
     <item>
-      <title>[STM32] HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</title>
-      <link>http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/</link>
-      <pubDate>Tue, 31 Mar 2026 12:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/</guid>
-      <description>HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글</description>
+      <title>PSRAM 버퍼링과 센서 데이터 저장 구조</title>
+      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</link>
+      <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</guid>
+      <description>40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.</description>
     </item>
     <item>
-      <title>첫 번째 Notes 글</title>
-      <link>http://localhost:1313/posts/notes/first-note/</link>
-      <pubDate>Tue, 31 Mar 2026 12:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/notes/first-note/</guid>
-      <description>블로그에 Notes 카테고리를 만들기 위한 첫 글</description>
+      <title>임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</title>
+      <link>http://localhost:1313/posts/basics/embedded-04-boot-process/</link>
+      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/basics/embedded-04-boot-process/</guid>
+      <description>ARM Cortex-M MCU에 전원이 들어오는 순간부터 main()이 실행되기까지, 벡터 테이블과 Reset_Handler, startup code의 동작을 정리한다.</description>
     </item>
     <item>
-      <title>첫 번째 Notes 글</title>
-      <link>http://localhost:1313/posts/notes/first/</link>
-      <pubDate>Tue, 31 Mar 2026 12:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/notes/first/</guid>
-      <description>블로그에 Notes 카테고리를 만들기 위한 첫 글</description>
+      <title>4개의 로드셀을 동시에 측정하기 - 하드웨어</title>
+      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/</link>
+      <pubDate>Wed, 20 May 2026 20:16:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/</guid>
+      <description>ESP32 내장 ADC 대신 ADS1232를 4개 사용해 로드셀 4채널을 동시에 측정한 이유, 그리고 크랭크 각도를 측정하는 AS5600까지. 하드웨어 설계 과정을 정리했다.</description>
     </item>
     <item>
-      <title>[Paper Review] Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</title>
+      <title>Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</title>
       <link>http://localhost:1313/posts/paper-review/review-naaji2026-hbot/</link>
-      <pubDate>Tue, 31 Mar 2026 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 16 May 2026 20:31:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/paper-review/review-naaji2026-hbot/</guid>
       <description>HBOT 챔버 내 유체 거동을 수학적으로 모델링하고, 축소 실험 챔버 &#43; MCU 기반 압력 제어 시스템으로 검증한 연구</description>
     </item>
     <item>
-      <title>[STM32] GPIO 기본개념 및 입출력 실습</title>
-      <link>http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/</link>
-      <pubDate>Mon, 16 Mar 2026 22:56:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/</guid>
-      <description>GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 실습한 글</description>
+      <title>임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</title>
+      <link>http://localhost:1313/posts/basics/embedded-03-build-process/</link>
+      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/basics/embedded-03-build-process/</guid>
+      <description>C 소스 파일이 MCU 플래시에 올라가기까지 전처리→컴파일→어셈블→링크 과정과 ARM Cortex-M 툴체인, ELF 포맷을 정리한다.</description>
     </item>
     <item>
-      <title>[ESP32] ESP32가 뭐길래?</title>
-      <link>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</link>
-      <pubDate>Mon, 23 Feb 2026 02:06:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</guid>
-      <description>코끼리 재활자전거 IoT 프로젝트의 핵심이었던 ESP32, 그 중에서도 ESP32 Feather V2를 선택한 이유와 실제로 써보면서 느낀 장단점을 정리했다.</description>
+      <title>Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</title>
+      <link>http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/</link>
+      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/</guid>
+      <description>1인용 HBOT(monoplace chamber)을 받은 296명 환자를 대상으로 MEB의 독립적 위험 인자를 multivariable logistic regression으로 분석한 연구</description>
     </item>
     <item>
-      <title>[Paper Review] Optimum Settings for Automatic Controllers</title>
+      <title>임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</title>
+      <link>http://localhost:1313/posts/basics/embedded-02-memory-structure/</link>
+      <pubDate>Sun, 10 May 2026 20:43:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/basics/embedded-02-memory-structure/</guid>
+      <description>STM32의 메모리 구조를 Flash, RAM, 섹션(.text/.data/.bss) 개념부터 링커 스크립트, Memory Map까지 정리한다.</description>
+    </item>
+    <item>
+      <title>Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</title>
+      <link>http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/</link>
+      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/</guid>
+      <description>가우시안 곱셈 성질만으로 칼만 필터 측정 업데이트 방정식을 유도하는 직관적 접근법 — 펌웨어 구현 관점에서 분석</description>
+    </item>
+    <item>
+      <title>임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</title>
+      <link>http://localhost:1313/posts/basics/embedded-01-what-is-embedded/</link>
+      <pubDate>Thu, 07 May 2026 20:17:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/basics/embedded-01-what-is-embedded/</guid>
+      <description>임베디드 시스템과 펌웨어의 정의, 일반 소프트웨어와의 차이, 그리고 MCU/DSP/FPGA 비교까지 기초 개념을 정리한다.</description>
+    </item>
+    <item>
+      <title>Optimum Settings for Automatic Controllers</title>
       <link>http://localhost:1313/posts/paper-review/zn-paper-review/</link>
-      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 06 May 2026 20:49:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/paper-review/zn-paper-review/</guid>
       <description>PID 제어기의 최적 파라미터를 실험적으로 결정하는 Z-N 튜닝 방법을 제안한 1942년 고전 논문. Ultimate sensitivity와 process reaction curve 두 가지 방법을 통해 현장에서 빠르게 최적 설정을 도출하는 절차를 제시한다.</description>
     </item>
     <item>
-      <title>[Paper Review] PID Control System Analysis, Design, and Technology</title>
+      <title>PID Control System Analysis, Design, and Technology</title>
       <link>http://localhost:1313/posts/paper-review/pid-paper-review/</link>
-      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 02 May 2026 20:22:00 +0900</pubDate>
       <guid>http://localhost:1313/posts/paper-review/pid-paper-review/</guid>
       <description>PID 제어기의 구조, 튜닝 방법론, 특허 및 상용 소프트웨어/하드웨어 모듈을 망라한 현대적 개요. derivative 항의 안정성 역설과 anti-windup 구현 전략을 중심으로 정리.</description>
     </item>
     <item>
-      <title>[Paper Review] Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</title>
-      <link>http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/</link>
-      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/</guid>
-      <description>1인용 HBOT(monoplace chamber)을 받은 296명 환자를 대상으로 MEB의 독립적 위험 인자를 multivariable logistic regression으로 분석한 연구</description>
+      <title>MCU 소개 및 개발환경 설정</title>
+      <link>http://localhost:1313/posts/atmega/atmega-code-review-01-environment/</link>
+      <pubDate>Wed, 29 Apr 2026 20:35:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/atmega/atmega-code-review-01-environment/</guid>
+      <description>본격적인 코드리뷰에 앞서 제가 사용한 ATmega4809 MCU와 Microchip Studio 개발환경을 간단하게 소개합니다.</description>
+    </item>
+    <item>
+      <title>시작하며</title>
+      <link>http://localhost:1313/posts/atmega/atmega-code-review-intro/</link>
+      <pubDate>Sat, 25 Apr 2026 20:58:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/atmega/atmega-code-review-intro/</guid>
+      <description>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작합니다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정입니다.</description>
+    </item>
+    <item>
+      <title>HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</title>
+      <link>http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/</link>
+      <pubDate>Wed, 22 Apr 2026 20:19:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/</guid>
+      <description>HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글</description>
+    </item>
+    <item>
+      <title>GPIO 기본개념 및 입출력 실습</title>
+      <link>http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/</link>
+      <pubDate>Sat, 18 Apr 2026 20:42:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/</guid>
+      <description>GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 실습한 글</description>
+    </item>
+    <item>
+      <title>로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</title>
+      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/</link>
+      <pubDate>Fri, 17 Apr 2026 02:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/</guid>
+      <description>ADS1232 4채널 로드셀과 AS5600 각도 센서의 영점을 버튼 하나로 잡고, 분동으로 게인을 맞추고, EEPROM에 저장해 전원을 꺼도 유지되게 한 과정을 정리했다.</description>
+    </item>
+    <item>
+      <title>자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</title>
+      <link>http://localhost:1313/posts/algorithm/algorithm-01-array/</link>
+      <pubDate>Wed, 15 Apr 2026 20:08:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/algorithm/algorithm-01-array/</guid>
+      <description>int arr[10]부터 malloc()을 이용한 동적 배열까지. C언어에서 데이터를 저장하는 가장 기본적인 방법과 메모리 구조를 정리한다.</description>
+    </item>
+    <item>
+      <title>setup()과 loop()는 어떻게 실행되는가</title>
+      <link>http://localhost:1313/posts/esp32/esp32-setup-loop-internals/</link>
+      <pubDate>Sat, 11 Apr 2026 20:55:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-setup-loop-internals/</guid>
+      <description>ESP32를 Arduino IDE로 개발하면 setup()과 loop()만 보인다. 그런데 실제로 전원이 켜진 순간부터 loop()가 돌기까지, 내부에서는 어떤 일이 일어날까.</description>
+    </item>
+    <item>
+      <title>ESP32가 뭐길래?</title>
+      <link>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</link>
+      <pubDate>Wed, 08 Apr 2026 20:31:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</guid>
+      <description>코끼리 재활자전거 IoT 프로젝트의 핵심이었던 ESP32, 그 중에서도 ESP32 Feather V2를 선택한 이유와 실제로 써보면서 느낀 장단점을 정리했다.</description>
     </item>
     <item>
       <title>상하지 재활 자전거 모니터링 시스템</title>

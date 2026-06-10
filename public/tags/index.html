@@ -10,7 +10,7 @@
 <meta name="description" content="임베디드 / 펌웨어 개발자 서보민의 기술 블로그">
 <meta name="author" content="서보민">
 <link rel="canonical" href="http://localhost:1313/tags/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -71,7 +71,10 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
+</script><link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+
+
 <meta property="og:url" content="http://localhost:1313/tags/">
   <meta property="og:site_name" content="bromine1997">
   <meta property="og:title" content="Tags">
@@ -113,10 +116,38 @@
             </div>
         </div>
         <ul id="menu">
-            <li>
+            <li class="has-dropdown">
                 <a href="http://localhost:1313/categories/embedded/" title="Embedded">
-                    <span>Embedded</span>
+                    <span>Embedded<span class="dropdown-caret">▾</span>
+                    </span>
                 </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                            <span>Basics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                            <span>ESP32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                            <span>STM32</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                            <span>ATmega</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                            <span>Troubleshooting</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
@@ -126,11 +157,6 @@
             <li>
                 <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
                     <span>Paper Review</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/notes/" title="Notes">
-                    <span>Notes</span>
                 </a>
             </li>
             <li>
@@ -153,13 +179,16 @@
 
 <ul class="terms-tags">
     <li>
+        <a href="http://localhost:1313/tags/ad5420/">AD5420 <sup><strong><sup>2</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/adafruit/">Adafruit <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/adc/">ADC <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/ads1232/">ADS1232 <sup><strong><sup>2</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/ads1232/">ADS1232 <sup><strong><sup>3</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/adum1400/">ADUM1400 <sup><strong><sup>1</sup></strong></sup> </a>
@@ -171,13 +200,19 @@
         <a href="http://localhost:1313/tags/android/">Android <sup><strong><sup>2</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/apb/">APB <sup><strong><sup>2</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/arduino/">Arduino <sup><strong><sup>2</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/arm/">ARM <sup><strong><sup>3</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/array/">array <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/as5600/">AS5600 <sup><strong><sup>1</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/as5600/">AS5600 <sup><strong><sup>2</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/atmega/">ATmega <sup><strong><sup>2</sup></strong></sup> </a>
@@ -192,10 +227,19 @@
         <a href="http://localhost:1313/tags/barotrauma/">barotrauma <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/baud-rate/">baud rate <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/biomedical/">Biomedical <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/boot/">boot <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/bsrr/">BSRR <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/build/">build <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/c/">C <sup><strong><sup>2</sup></strong></sup> </a>
@@ -204,10 +248,22 @@
         <a href="http://localhost:1313/tags/c&#43;&#43;/">C&#43;&#43; <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/clock/">clock <sup><strong><sup>2</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/control/">control <sup><strong><sup>2</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/cortex-m/">Cortex-M <sup><strong><sup>3</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/c%EC%96%B8%EC%96%B4/">C언어 <sup><strong><sup>2</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/dac/">DAC <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/daisychain/">DaisyChain <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/data-structure/">data-structure <sup><strong><sup>1</sup></strong></sup> </a>
@@ -219,13 +275,28 @@
         <a href="http://localhost:1313/tags/dsp/">DSP <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/embedded/">embedded <sup><strong><sup>4</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/eeprom/">EEPROM <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/esp32/">ESP32 <sup><strong><sup>6</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/elf/">ELF <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/embedded/">Embedded <sup><strong><sup>9</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/embedded-systems/">Embedded Systems <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/esp32/">ESP32 <sup><strong><sup>10</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/esp32featherv2/">ESP32FeatherV2 <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/espasyncwebserver/">ESPAsyncWebServer <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/feather-v2/">Feather V2 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/firmware/">firmware <sup><strong><sup>2</sup></strong></sup> </a>
@@ -237,7 +308,7 @@
         <a href="http://localhost:1313/tags/fpga/">FPGA <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/gpio/">GPIO <sup><strong><sup>2</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/gpio/">GPIO <sup><strong><sup>3</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/hal/">HAL <sup><strong><sup>2</sup></strong></sup> </a>
@@ -246,19 +317,31 @@
         <a href="http://localhost:1313/tags/hbot/">HBOT <sup><strong><sup>2</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/hse/">HSE <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/hsi/">HSI <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/i2c/">I2C <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/idr/">IDR <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/iot/">IoT <sup><strong><sup>2</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/interrupt/">interrupt <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/isr/">ISR <sup><strong><sup>1</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/iot/">IoT <sup><strong><sup>3</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/linker/">linker <sup><strong><sup>1</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/isr/">ISR <sup><strong><sup>2</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/kalman-filter/">Kalman Filter <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/linker/">linker <sup><strong><sup>2</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/logistic-regression/">logistic regression <sup><strong><sup>1</sup></strong></sup> </a>
@@ -291,10 +374,13 @@
         <a href="http://localhost:1313/tags/nestjs/">NestJS <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/notes/">Notes <sup><strong><sup>2</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/nvic/">NVIC <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/pid/">PID <sup><strong><sup>3</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/pll/">PLL <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/pressure-control/">Pressure Control <sup><strong><sup>1</sup></strong></sup> </a>
@@ -306,16 +392,34 @@
         <a href="http://localhost:1313/tags/ram/">RAM <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/rcc/">RCC <sup><strong><sup>2</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/register/">Register <sup><strong><sup>2</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/spi/">SPI <sup><strong><sup>1</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/reset-handler/">reset handler <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/spiffs/">SPIFFS <sup><strong><sup>1</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/sensor-fusion/">Sensor Fusion <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/stm32/">STM32 <sup><strong><sup>3</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/signal-processing/">Signal Processing <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/spi/">SPI <sup><strong><sup>3</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/spiffs/">SPIFFS <sup><strong><sup>2</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/startup/">startup <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/state-estimation/">State Estimation <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/stm32/">STM32 <sup><strong><sup>6</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/stm32f4/">STM32F4 <sup><strong><sup>2</sup></strong></sup> </a>
@@ -324,10 +428,31 @@
         <a href="http://localhost:1313/tags/tinkerboard/">TinkerBoard <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/toolchain/">toolchain <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/tssop/">TSSOP <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/tuning/">tuning <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/uart/">UART <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/vector-table/">vector table <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/volatile/">volatile <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/websocket/">WebSocket <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/wi-fi/">Wi-Fi <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/wifi/">WiFi <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/ziegler-nichols/">Ziegler-Nichols <sup><strong><sup>1</sup></strong></sup> </a>
@@ -336,16 +461,28 @@
         <a href="http://localhost:1313/tags/%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD/">개발환경 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/%EB%82%A9%EB%95%9C/">납땜 <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/%EB%85%B8%EC%B6%9C%ED%8C%A8%EB%93%9C/">노출패드 <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%88%98%EC%A7%91/">데이터수집 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/%EB%A1%9C%EB%93%9C%EC%85%80/">로드셀 <sup><strong><sup>3</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/%EB%A1%9C%EB%93%9C%EC%85%80/">로드셀 <sup><strong><sup>4</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/">리팩토링 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/%EB%A7%8C%EB%8A%A5%EA%B8%B0%ED%8C%90/">만능기판 <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/%EB%B6%80%ED%8A%B8%EB%A1%9C%EB%8D%94/">부트로더 <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/%EB%B6%80%ED%8C%85/">부팅 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/%EB%B9%84%ED%8A%B8%EB%B1%85%EC%9E%89/">비트뱅잉 <sup><strong><sup>1</sup></strong></sup> </a>
@@ -354,19 +491,34 @@
         <a href="http://localhost:1313/tags/%EC%84%9D%EC%82%AC%EB%85%BC%EB%AC%B8/">석사논문 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
+        <a href="http://localhost:1313/tags/%EC%8A%A4%ED%8A%B8%EB%9E%98%ED%95%91%ED%95%80/">스트래핑핀 <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/%EC%98%A4%EC%8B%A4%EB%A1%9C%EC%8A%A4%EC%BD%94%ED%94%84/">오실로스코프 <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/tags/%EC%9D%B8%ED%84%B0%EB%9F%BD%ED%8A%B8/">인터럽트 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/">임베디드 <sup><strong><sup>5</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/">재활자전거 <sup><strong><sup>3</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/">재활자전거 <sup><strong><sup>6</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/%EC%BA%98%EB%A6%AC%EB%B8%8C%EB%A0%88%EC%9D%B4%EC%85%98/">캘리브레이션 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
         <a href="http://localhost:1313/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/">코드리뷰 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/tags/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/">트러블슈팅 <sup><strong><sup>1</sup></strong></sup> </a>
+        <a href="http://localhost:1313/tags/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/">트러블슈팅 <sup><strong><sup>4</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/%ED%97%AC%EC%8A%A4%EC%BC%80%EC%96%B4/">헬스케어 <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
+        <a href="http://localhost:1313/tags/%ED%9A%8C%EA%B3%A0/">회고 <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
 </ul>
     </main>

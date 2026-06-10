@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>부팅 on bromine1997</title>
+    <link>http://localhost:1313/tags/%EB%B6%80%ED%8C%85/</link>
+    <description>Recent content in 부팅 on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Thu, 04 Jun 2026 20:52:00 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%EB%B6%80%ED%8C%85/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</title>
+      <link>http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/</link>
+      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/</guid>
+      <description>ESP32 Feather V2에서 GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다. 원인은 코드나 회로 문제가 아니라 스트래핑 핀이었다.</description>
+    </item>
+  </channel>
+</rss>
