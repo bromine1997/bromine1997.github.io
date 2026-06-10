@@ -58,27 +58,34 @@ button {
                'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
 }
 
-/* 코드는 JetBrains Mono 유지 */
-code, pre, kbd, samp,
-.highlight,
-.chroma {
+code, pre, kbd, samp, .highlight, .chroma {
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
 }
 
 /* ── 배경 ─────────────────────────────────────────────── */
 body { background: var(--theme); }
-.list { background: var(--theme) !important; }
+html body.list { background: var(--theme) !important; }
+:root[data-theme="dark"] body.list { background: var(--theme) !important; }
+
+/* ── main 너비 오버라이드 ──────────────────────────────── */
+html body:not(.list) main.main {
+  max-width: 1160px !important;
+  padding: 0 1.5rem !important;
+}
 
 /* ── 헤더 ─────────────────────────────────────────────── */
 .header {
-  background: rgba(255,255,255,0.88) !important;
+  background: rgba(255,255,255,0.9) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border) !important;
   box-shadow: 0 1px 0 var(--border), var(--card-shadow) !important;
+  position: sticky;
+  top: 0;
+  z-index: 200;
 }
 :root[data-theme="dark"] .header {
-  background: rgba(15,17,23,0.88) !important;
+  background: rgba(15,17,23,0.9) !important;
 }
 
 /* 로고 그라디언트 */
@@ -95,16 +102,82 @@ body { background: var(--theme); }
   background-clip: text;
 }
 
-/* 메뉴 링크 */
-#menu a {
+/* ── 메뉴 링크 ─────────────────────────────────────────── */
+#menu > li > a {
   font-size: 0.88rem;
   font-weight: 500;
   padding: 0.4rem 0.7rem;
   border-radius: 8px;
   transition: background 0.15s, color 0.15s;
 }
-#menu a:hover { background: var(--accent-subtle); color: var(--accent); }
+#menu > li > a:hover { background: var(--accent-subtle); color: var(--accent); }
 #menu a span.active { color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--accent); }
+
+/* ── 드롭다운 메뉴 ─────────────────────────────────────── */
+#menu li.has-dropdown {
+  position: relative;
+}
+
+/* 드롭다운 패널 */
+#menu li.has-dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06);
+  padding: 0.4rem 0;
+  min-width: 160px;
+  z-index: 500;
+  white-space: nowrap;
+  list-style: none;
+  margin: 0;
+}
+
+/* 마우스가 헤더와 드롭다운 사이 갭을 지날 때 닫히지 않도록 투명 브리지 */
+#menu li.has-dropdown::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -10px;
+  right: -10px;
+  height: 12px;
+}
+
+#menu li.has-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+#menu li.has-dropdown .dropdown-menu li {
+  margin: 0;
+}
+#menu li.has-dropdown .dropdown-menu li a {
+  display: block;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+  border-radius: 0;
+  line-height: 1.5;
+  transition: background 0.12s, color 0.12s;
+}
+#menu li.has-dropdown .dropdown-menu li a:hover {
+  background: var(--accent-subtle);
+  color: var(--accent);
+}
+#menu li.has-dropdown .dropdown-menu li + li {
+  margin: 0;
+}
+
+.dropdown-caret {
+  font-size: 0.65em;
+  margin-left: 3px;
+  opacity: 0.7;
+}
 
 /* ── 홈 포스트 목록 카드 ───────────────────────────────── */
 .post-entry {
@@ -121,7 +194,7 @@ body { background: var(--theme); }
   border-color: var(--accent-border);
 }
 
-/* first-entry (홈 첫 카드) */
+/* first-entry (홈 첫 카드 / home-info) */
 .first-entry {
   background: var(--entry);
   border: 1px solid var(--border);
@@ -129,11 +202,23 @@ body { background: var(--theme); }
   box-shadow: var(--card-shadow);
 }
 
-/* 포스트 목록 제목 */
-.entry-header h2 {
-  font-size: 1.05rem;
-  font-weight: 700;
+/* 홈 인사 카드 높이 보정 — PaperMod 기본 min-height:320px 축소 */
+.first-entry.home-info {
+  min-height: auto !important;
+  padding: 2rem 2.5rem !important;
 }
+.first-entry.home-info .entry-header h1 {
+  font-size: 1.6rem !important;
+}
+.first-entry.home-info .entry-content {
+  -webkit-line-clamp: unset;
+  font-size: 0.95rem;
+  color: var(--secondary);
+  margin: 0.6rem 0 1rem !important;
+}
+
+/* 포스트 목록 제목 */
+.entry-header h2 { font-size: 1.05rem; font-weight: 700; }
 
 /* ── 싱글 포스트 ───────────────────────────────────────── */
 .post-single {
@@ -171,7 +256,6 @@ body { background: var(--theme); }
   margin-bottom: 0.85rem;
   color: var(--primary);
 }
-
 .post-content h3 {
   font-size: 1rem;
   font-weight: 700;
@@ -180,9 +264,7 @@ body { background: var(--theme); }
 }
 
 /* ── 코드 블록 ─────────────────────────────────────────── */
-.post-content pre,
-.highlight > pre,
-.chroma {
+.post-content pre, .highlight > pre, .chroma {
   border-radius: 10px !important;
   border: 1px solid var(--accent-border) !important;
 }
@@ -207,9 +289,8 @@ body { background: var(--theme); }
   border-color: var(--accent-border) !important;
 }
 
-/* ── 태그 ──────────────────────────────────────────────── */
-.post-tags a,
-.tag-entry a {
+/* ── 태그 — .tag-entry a 제거 (entry-link 오버레이 버그 방지) */
+.post-tags a {
   background: var(--accent-subtle) !important;
   color: var(--accent) !important;
   border: 1px solid var(--accent-border) !important;
@@ -219,8 +300,7 @@ body { background: var(--theme); }
   padding: 0.25rem 0.8rem !important;
   transition: background 0.15s, color 0.15s;
 }
-.post-tags a:hover,
-.tag-entry a:hover {
+.post-tags a:hover {
   background: var(--accent) !important;
   color: #fff !important;
   border-color: var(--accent) !important;
@@ -232,32 +312,25 @@ body { background: var(--theme); }
   border: 1px solid var(--accent-border) !important;
   border-radius: 10px !important;
 }
-.toc details summary {
-  color: var(--accent);
-  font-weight: 700;
-}
+.toc details summary { color: var(--accent); font-weight: 700; }
 
 /* ── 브레드크럼 ────────────────────────────────────────── */
 .breadcrumbs a { color: var(--accent); }
 
-/* ── 포스트 메타 배지 ─────────────────────────────────── */
-.post-meta a {
-  color: var(--secondary);
-  text-decoration: none;
-}
+/* ── 포스트 메타 ───────────────────────────────────────── */
+.post-meta a { color: var(--secondary); text-decoration: none; }
 .post-meta a:hover { color: var(--accent); }
 
 /* ── 페이지네이션 ──────────────────────────────────────── */
 .pagination a {
   border: 1px solid var(--accent-border);
   border-radius: 8px;
-  color: var(--accent);
+  color: var(--accent) !important;
+  background: var(--entry) !important;
   padding: 0.4rem 0.9rem;
   transition: background 0.15s;
 }
-.pagination a:hover {
-  background: var(--accent-subtle);
-}
+.pagination a:hover { background: var(--accent-subtle) !important; }
 
 /* ── 링크 ──────────────────────────────────────────────── */
 .post-content a {
@@ -286,24 +359,21 @@ body { background: var(--theme); }
 ::-webkit-scrollbar-thumb { background: var(--accent-border); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* ── 하이라이트 코드 블록 상단 여백 보정 ──────────────── */
+/* ── 코드 블록 ─────────────────────────────────────────── */
 .highlight { border-radius: 10px; overflow: hidden; }
 
-/* ── 홈 인사 카드 높이 보정 ────────────────────────────── */
-/* PaperMod 기본값 min-height:320px 가 너무 큼 */
-.first-entry.home-info {
-  min-height: auto !important;
-  padding: 1.5rem 2rem 1.5rem;
+/* ── Projects 페이지 — 사이드바 없이 전체 폭 ────────────── */
+.post-with-sidebar.no-sidebar {
+  grid-template-columns: 1fr !important;
+  max-width: 1060px !important;
+  margin: 0 auto;
+}
+.post-with-sidebar.no-sidebar .post-single {
+  width: 100%;
+  max-width: none;
 }
 
-/* ── list 페이지 배경색 강제 ───────────────────────────── */
-/* PaperMod가 --code-bg 를 .list 배경으로 사용하는 것 방지 */
-html body.list { background: var(--theme) !important; }
-:root[data-theme="dark"] body.list { background: var(--theme) !important; }
-
-/* ── Projects 싱글 페이지: 사이드바 없이 전체 폭 사용 ──── */
-.post-with-sidebar:has(> .post-single:only-child),
-.post-with-sidebar.no-sidebar {
-  grid-template-columns: 1fr;
-  max-width: 860px;
+/* Projects 카드 그리드 */
+.post-single .project-grid {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
 }
