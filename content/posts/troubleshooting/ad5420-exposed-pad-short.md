@@ -52,7 +52,7 @@ TSSOP 변환기판을 쓰면 24개 다리는 pad에 딱 맞게 올라가는데, 
 
 ![실제 PCB — U9, U14 (AD5420) 의 exposed pad](/images/troubleshooting/ad5420-pcb-exposed-pad.jpg)
 
-PCB 제작 후 리플로우나 수납땜 시 이 pad에 충분히 열을 가해 GND에 확실히 붙여야 한다. 외관상 칩 다리 납땜이 다 됐어도 바닥 pad가 붕 떠 있으면 똑같이 발열 문제가 재현된다.
+납땜 순서도 중요하다. 칩 다리부터 납땜하면 나중에 바닥 exposed pad에 열을 가하기가 어려워진다. 열풍기로 먼저 납을 녹여 exposed pad를 GND에 붙인 다음, 칩이 자리를 잡으면 나머지 다리를 납땜하는 순서로 작업했다.
 
 ## 정리
 
