@@ -2,6 +2,10 @@
 
 <div class="post-with-sidebar{{ if eq .Section "projects" }} no-sidebar{{ end }}">
 
+{{- if ne .Section "projects" }}
+{{- partial "sidebar.html" . }}
+{{- end }}
+
 <article class="post-single">
   <header class="post-header">
     {{ partial "breadcrumbs.html" . }}
@@ -64,9 +68,6 @@
   {{- end }}
 </article>
 
-{{- if ne .Section "projects" }}
-{{- partial "sidebar.html" . }}
-{{- end }}
 
 </div>
 

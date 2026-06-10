@@ -377,3 +377,7 @@ html body:not(.list) main.main {
 .post-single .project-grid {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
 }
+
+/* ── 사이드바 너비 축소 보정 ───────────────────────────── */
+/* sidebar.css에서 260px 1fr 로 사이드바 좌측 배치 */
+

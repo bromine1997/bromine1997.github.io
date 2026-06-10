@@ -6,6 +6,9 @@
 
 <div class="list-with-sidebar">
 
+  {{/* 사이드바 — 왼쪽 */}}
+  {{- partial "sidebar.html" . }}
+
   {{/* 메인 콘텐츠 영역 */}}
   <div class="list-content">
 
@@ -120,9 +123,6 @@
     {{- end }}
 
   </div>{{/* end .list-content */}}
-
-  {{/* 사이드바 */}}
-  {{- partial "sidebar.html" . }}
 
 </div>{{/* end .list-with-sidebar */}}
 

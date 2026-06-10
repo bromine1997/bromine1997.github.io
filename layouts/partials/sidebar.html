@@ -2,11 +2,7 @@
 
   {{/* 프로필 카드 */}}
   <section class="sidebar-section sidebar-profile">
-    <img
-      src="https://github.com/bromine1997.png"
-      alt="bromine1997"
-      class="sidebar-avatar"
-    >
+    <img src="https://github.com/bromine1997.png" alt="bromine1997" class="sidebar-avatar">
     <div class="sidebar-profile-name">서보민</div>
     <div class="sidebar-profile-bio">임베디드 / 펌웨어 개발자<br>STM32 · ESP32 · AVR</div>
     <div class="sidebar-profile-links">
@@ -18,56 +14,31 @@
     </div>
   </section>
 
-  {{/* 최근 포스트 */}}
+  {{/* 카테고리별 포스트 목록 */}}
   {{- $currentPage := . }}
-  <section class="sidebar-section">
-    <h3 class="sidebar-title">최근 포스트</h3>
-    <ul class="sidebar-list">
-      {{- range site.RegularPages.ByDate.Reverse | first 7 }}
-      <li class="sidebar-item">
-        <a href="{{ .Permalink }}" class="sidebar-link{{ if eq . $currentPage }} active{{ end }}">
-          <span class="sidebar-item-title">{{ .Title }}</span>
-        </a>
-      </li>
-      {{- end }}
-    </ul>
-  </section>
-
-  {{/* 카테고리 */}}
   {{- $postsSection := site.GetPage "/posts" }}
   {{- if and $postsSection $postsSection.Sections }}
+  {{- range $postsSection.Sections.ByTitle }}
+  {{- if gt (len .RegularPages) 0 }}
   <section class="sidebar-section">
-    <h3 class="sidebar-title">카테고리</h3>
-    <ul class="sidebar-list">
-      {{- range $postsSection.Sections.ByTitle }}
-      {{- if gt (len .RegularPages) 0 }}
-      <li class="sidebar-item">
-        <a href="{{ .Permalink }}" class="sidebar-link">
-          <span class="sidebar-item-title">{{ .Title }}</span>
-          <span class="sidebar-count">{{ len .RegularPages }}</span>
-        </a>
-      </li>
-      {{- end }}
-      {{- end }}
-    </ul>
+    <details class="sidebar-category">
+      <summary class="sidebar-cat-header">
+        <span class="sidebar-cat-name">{{ .Title }}</span>
+        <span class="sidebar-count">{{ len .RegularPages }}</span>
+      </summary>
+      <ul class="sidebar-list sidebar-cat-list">
+        {{- range .RegularPages.ByDate.Reverse }}
+        <li class="sidebar-item">
+          <a href="{{ .Permalink }}" class="sidebar-link{{ if eq . $currentPage }} active{{ end }}">
+            <span class="sidebar-item-title">{{ .Title }}</span>
+          </a>
+        </li>
+        {{- end }}
+      </ul>
+    </details>
   </section>
   {{- end }}
-
-  {{/* 태그 */}}
-  {{- $tags := site.Taxonomies.tags }}
-  {{- if $tags }}
-  <section class="sidebar-section">
-    <h3 class="sidebar-title">태그</h3>
-    <div class="sidebar-tags">
-      {{- range $name, $pages := $tags }}
-      {{- with site.GetPage (printf "/tags/%s" $name) }}
-      <a href="{{ .Permalink }}" class="sidebar-tag">
-        {{ $name }}<span class="sidebar-tag-count">{{ len $pages }}</span>
-      </a>
-      {{- end }}
-      {{- end }}
-    </div>
-  </section>
+  {{- end }}
   {{- end }}
 
 </aside>

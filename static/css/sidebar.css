@@ -3,7 +3,7 @@
 /* 싱글 포스트 (post-with-sidebar) */
 .post-with-sidebar {
   display: grid;
-  grid-template-columns: 1fr 260px;
+  grid-template-columns: 260px 1fr;
   gap: 2rem;
   align-items: start;
   max-width: 1100px;
@@ -14,7 +14,7 @@
 /* 홈/리스트 (list-with-sidebar) */
 .list-with-sidebar {
   display: grid;
-  grid-template-columns: 1fr 260px;
+  grid-template-columns: 260px 1fr;
   gap: 2rem;
   align-items: start;
   max-width: 1160px;
@@ -194,6 +194,57 @@ html body.list main.main {
 .sidebar-tag-count {
   font-size: 0.68rem;
   color: var(--secondary);
+}
+
+/* ── 카테고리별 포스트 (details/summary) ────────────────── */
+.sidebar-category {
+  margin: 0;
+}
+
+.sidebar-category summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+.sidebar-category summary::-webkit-details-marker { display: none; }
+
+.sidebar-cat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 0.1rem;
+  border-radius: 5px;
+  transition: color 0.12s;
+  margin-bottom: 0.3rem;
+}
+.sidebar-cat-header:hover { color: var(--accent); }
+
+.sidebar-cat-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+.sidebar-category[open] .sidebar-cat-name { color: var(--accent); }
+
+/* 펼침 화살표 */
+.sidebar-cat-header::before {
+  content: '▶';
+  font-size: 0.55rem;
+  color: var(--secondary);
+  margin-right: 0.4rem;
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+.sidebar-category[open] .sidebar-cat-header::before {
+  transform: rotate(90deg);
+  color: var(--accent);
+}
+
+.sidebar-cat-list {
+  padding-left: 0.5rem;
+  margin-top: 0.1rem;
 }
 
 /* ── 모바일 ─────────────────────────────────────────────── */
