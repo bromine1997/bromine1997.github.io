@@ -31,9 +31,9 @@ Daisy Chain은 여러 SPI 소자를 하나의 SPI 버스에 직렬로 연결하�
 
 ![AD5420 Daisy Chain 회로도](/images/troubleshooting/ad5420-daisy-chain/ad5420-circuit.png)
 
-데이터시트 Figure 35는 이 연결 방식을 추상적으로 나타낸 것이다.
+데이터시트 Figure 35는 이 연결 방식을 추상적으로 나타낸 것이다. Table 8에는 레지스터 주소별 동작도 정리되어 있다.
 
-![Figure 35. Daisy Chaining the AD5420](/images/troubleshooting/ad5420-daisy-chain/figure35-daisy-chain-wiring.png)
+![Figure 35. Daisy Chaining the AD5420 / Table 8. Control Word Functions](/images/troubleshooting/ad5420-daisy-chain/shift-register-format.png)
 
 48비트(6바이트)를 한 번에 전송하면 shift register 방식으로 데이터가 밀려 들어간다. LATCH가 내려올 때:
 
@@ -89,11 +89,7 @@ private void clearSpiBuffer() {
 }
 ```
 
-0x00을 NOP으로 쓸 수 있는 근거는 데이터시트 Table 8에 명시돼 있다.
-
-![Table 8. Control Word Functions](/images/troubleshooting/ad5420-daisy-chain/table7-shift-register-format.png)
-
-Address Word `00000000`이 No Operation (NOP)이다. 즉, 0x00을 6바이트 보내면 두 칩의 shift register가 0으로 채워지면서도 실제 레지스터에는 아무 영향을 주지 않는다.
+0x00을 NOP으로 쓸 수 있는 근거는 위 데이터시트 Table 8에 명시돼 있다. Address Word `00000000`이 No Operation (NOP)이다. 즉, 0x00을 6바이트 보내면 두 칩의 shift register가 0으로 채워지면서도 실제 레지스터에는 아무 영향을 주지 않는다.
 
 flush 이후 초기화 순서:
 
