@@ -37,6 +37,10 @@ function alignHomeLayout() {
 document.addEventListener('DOMContentLoaded', alignHomeLayout);
 window.addEventListener('load', alignHomeLayout);
 window.addEventListener('resize', alignHomeLayout);
+// Pretendard 등 외부 폰트 로드 완료 후 재측정 (폰트 변환으로 레이아웃 달라질 수 있음)
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(alignHomeLayout);
+}
 </script>
 
 {{ if .Params.math }}
