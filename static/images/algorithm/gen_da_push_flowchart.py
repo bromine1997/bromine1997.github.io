@@ -80,8 +80,7 @@ b_start = make_oval(MX, Y_START, w=3.0, h=0.65)
 txt(MX, Y_START, 'da_push() 시작', fs=10.5)
 
 d1 = make_diam(MX, Y_COND1, w=2.6, h=0.94)
-txt(MX, Y_COND1+0.15, 'size ==')
-txt(MX, Y_COND1-0.23, 'capacity?')
+txt(MX, Y_COND1, 'size == capacity?')
 
 b_cap2 = make_rect(RX, Y_CAP2, w=3.0, h=0.62)
 txt(RX, Y_CAP2, 'capacity × 2')
@@ -90,8 +89,7 @@ b_rall = make_rect(RX, Y_RALL, w=3.6, h=0.62)
 txt(RX, Y_RALL, 'temp = realloc(data, capacity)', fs=9.0)
 
 d2 = make_diam(RX, Y_COND2, w=2.4, h=0.90)
-txt(RX, Y_COND2+0.14, 'temp ==')
-txt(RX, Y_COND2-0.23, 'NULL?')
+txt(RX, Y_COND2, 'temp == NULL?')
 
 b_err = make_rect(ERX, Y_ERR, w=2.0, h=0.70)
 txt(ERX, Y_ERR+0.13, '에러 반환', fs=9.2)
