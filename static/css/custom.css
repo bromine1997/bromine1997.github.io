@@ -24,6 +24,8 @@
 
   --card-shadow:     0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
   --card-shadow-md:  0 4px 12px rgba(99,102,241,0.08), 0 2px 4px rgba(0,0,0,0.04);
+
+  --card-gap:        1.2rem;   /* 사이드바 gap = 카드 margin-bottom — 세 곳에서 공유 */
 }
 
 /* ── CSS 변수 오버라이드 (다크) ─────────────────────── */
@@ -68,8 +70,6 @@ body {
   word-break: keep-all;
   overflow-wrap: break-word;
 }
-html body.list { background: var(--theme) !important; }
-:root[data-theme="dark"] body.list { background: var(--theme) !important; }
 
 /* ── main 너비 오버라이드 ──────────────────────────────── */
 html body:not(.list) main.main {
@@ -183,9 +183,11 @@ html body:not(.list) main.main {
   line-height: 1.5;
   transition: background 0.12s, color 0.12s;
 }
-#menu li.has-dropdown .dropdown-menu li a:hover {
+#menu li.has-dropdown .dropdown-menu li a:hover,
+#menu li.has-dropdown .dropdown-menu li a:focus-visible {
   background: var(--accent-subtle);
   color: var(--accent);
+  outline: none;
 }
 #menu li.has-dropdown .dropdown-menu li + li {
   margin: 0;
@@ -225,7 +227,7 @@ html body:not(.list) main.main {
   min-height: auto;   /* !important 제거 — JS inline style이 이길 수 있도록 */
   padding: 2rem 2.5rem !important;
   margin-top: 0 !important;       /* PaperMod 기본 --gap 상단 마진 제거 */
-  margin-bottom: 1.2rem !important; /* 사이드바 gap과 일치 */
+  margin-bottom: var(--card-gap) !important; /* 사이드바 gap과 일치 */
 }
 .first-entry.home-info .entry-header h1 {
   font-size: 1.6rem !important;
@@ -310,7 +312,7 @@ html body:not(.list) main.main {
 :root[data-theme="dark"] .post-content pre,
 :root[data-theme="dark"] .highlight > pre,
 :root[data-theme="dark"] .chroma {
-  border-color: #2e3155 !important;
+  border-color: var(--accent-border) !important;
 }
 
 /* 인라인 코드 */
@@ -371,17 +373,20 @@ html body:not(.list) main.main {
   transition: background 0.15s;
 }
 .pagination a:hover { background: var(--accent-subtle) !important; }
+:root[data-theme="dark"] .pagination a:hover {
+  background: var(--tertiary) !important;
+  color: var(--accent-hover) !important;
+}
 
 /* ── 링크 ──────────────────────────────────────────────── */
 .post-content a {
   color: var(--accent);
-  text-decoration: underline;
-  text-decoration-color: var(--accent-border);
-  text-underline-offset: 3px;
+  text-decoration: none;
+  box-shadow: 0 1px 0 var(--accent-border);
 }
 .post-content a:hover {
   color: var(--accent-hover);
-  text-decoration-color: var(--accent);
+  box-shadow: 0 1px 0 var(--accent);
 }
 
 /* ── 검색 ──────────────────────────────────────────────── */
@@ -389,6 +394,8 @@ html body:not(.list) main.main {
   border: 1px solid var(--accent-border) !important;
   border-radius: 8px !important;
   background: var(--entry) !important;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
 }
 #searchbox input:focus {
   outline: 2px solid var(--accent) !important;
@@ -404,7 +411,7 @@ html body:not(.list) main.main {
 
 /* 포스트 카드 margin을 사이드바 gap과 통일 → 연속 grid 정렬 유지 */
 .list-content .post-entry {
-  margin-bottom: 1.2rem !important;
+  margin-bottom: var(--card-gap) !important;
 }
 
 /* ── Projects 페이지 — 사이드바 없이 전체 폭 ────────────── */

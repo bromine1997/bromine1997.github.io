@@ -35,7 +35,7 @@ article.post-single {
   top: calc(var(--header-height, 60px) + 1rem);
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: var(--card-gap, 1.2rem);
 }
 
 /* ── 프로필 카드 ────────────────────────────────────────── */
@@ -44,7 +44,7 @@ article.post-single {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 1.4rem 1rem !important;
+  padding: 1.4rem 1rem;
   gap: 0;
 }
 
@@ -255,6 +255,14 @@ article.post-single {
 .sidebar-cat-list {
   padding-left: 0.5rem;
   margin-top: 0.1rem;
+}
+
+/* ── 다크모드 보정 ──────────────────────────────────────── */
+:root[data-theme="dark"] .sidebar-count {
+  background: var(--tertiary);   /* 어두운 배경에서 뱃지 가시성 확보 */
+}
+:root[data-theme="dark"] .sidebar-cat-header::before {
+  color: var(--primary);         /* 화살표 대비 향상 */
 }
 
 /* ── 모바일 ─────────────────────────────────────────────── */

@@ -3,13 +3,21 @@
 
 <script>
 function alignHomeLayout() {
-  var sidebar  = document.querySelector('.sidebar');
   var homeInfo = document.querySelector('.first-entry.home-info');
+  var posts    = Array.from(document.querySelectorAll('.post-entry'));
+
+  // 모바일(1열): min-height 해제 후 종료
+  if (window.innerWidth <= 900) {
+    if (homeInfo) homeInfo.style.minHeight = '';
+    posts.forEach(function(p) { p.style.minHeight = ''; });
+    return;
+  }
+
+  var sidebar = document.querySelector('.sidebar');
   if (!sidebar) return;
 
   var profile     = sidebar.querySelector('.sidebar-profile');
   var catSections = Array.from(sidebar.querySelectorAll('.sidebar-section:not(.sidebar-profile)'));
-  var posts       = Array.from(document.querySelectorAll('.post-entry'));
 
   // 모두 초기화
   if (homeInfo) homeInfo.style.minHeight = '';
@@ -21,15 +29,13 @@ function alignHomeLayout() {
   }
 
   // 초록 박스: post[i] → sections[i*2 ~ i*2+1]
-  // 사이드바 섹션 위치는 별도 컬럼이므로 포스트 높이 변경에 영향 없음
+  // offsetHeight 기반으로 측정 → 스크롤 위치에 무관하게 정확한 높이 계산
+  var sidebarGap = parseFloat(getComputedStyle(sidebar).gap) || 19.2;
   posts.forEach(function(post, i) {
     var sec1 = catSections[i * 2];
     var sec2 = catSections[i * 2 + 1];
     if (!sec1) return;
-    var top    = sec1.getBoundingClientRect().top;
-    var bottom = sec2 ? sec2.getBoundingClientRect().bottom
-                      : sec1.getBoundingClientRect().bottom;
-    var h = bottom - top;
+    var h = sec1.offsetHeight + (sec2 ? sidebarGap + sec2.offsetHeight : 0);
     if (h > 0) post.style.minHeight = h + 'px';
   });
 }
@@ -37,7 +43,7 @@ function alignHomeLayout() {
 document.addEventListener('DOMContentLoaded', alignHomeLayout);
 window.addEventListener('load', alignHomeLayout);
 window.addEventListener('resize', alignHomeLayout);
-// Pretendard 등 외부 폰트 로드 완료 후 재측정 (폰트 변환으로 레이아웃 달라질 수 있음)
+// Pretendard 등 외부 폰트 로드 완료 후 재측정
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(alignHomeLayout);
 }
