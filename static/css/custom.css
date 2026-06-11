@@ -220,10 +220,12 @@ html body:not(.list) main.main {
   box-shadow: var(--card-shadow);
 }
 
-/* 홈 인사 카드 높이 보정 — PaperMod 기본 min-height:320px 축소 */
+/* 홈 인사 카드 — 프로필 카드 높이 맞춤 (JS로 min-height 동적 설정) */
 .first-entry.home-info {
   min-height: auto !important;
   padding: 2rem 2.5rem !important;
+  margin-top: 0 !important;       /* PaperMod 기본 --gap 상단 마진 제거 */
+  margin-bottom: 1.2rem !important; /* 사이드바 gap과 일치 */
 }
 .first-entry.home-info .entry-header h1 {
   font-size: 1.6rem !important;

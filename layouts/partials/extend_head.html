@@ -1,6 +1,20 @@
 <link rel="stylesheet" href="/css/custom.css">
 <link rel="stylesheet" href="/css/sidebar.css">
 
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  function matchHomeInfoHeight() {
+    var profile = document.querySelector('.sidebar-profile');
+    var homeInfo = document.querySelector('.first-entry.home-info');
+    if (!profile || !homeInfo) return;
+    homeInfo.style.minHeight = '';
+    homeInfo.style.minHeight = profile.offsetHeight + 'px';
+  }
+  matchHomeInfoHeight();
+  window.addEventListener('resize', matchHomeInfoHeight);
+});
+</script>
+
 {{ if .Params.math }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
