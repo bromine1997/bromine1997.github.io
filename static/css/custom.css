@@ -222,7 +222,7 @@ html body:not(.list) main.main {
 
 /* 홈 인사 카드 — 프로필 카드 높이 맞춤 (JS로 min-height 동적 설정) */
 .first-entry.home-info {
-  min-height: auto !important;
+  min-height: auto;   /* !important 제거 — JS inline style이 이길 수 있도록 */
   padding: 2rem 2.5rem !important;
   margin-top: 0 !important;       /* PaperMod 기본 --gap 상단 마진 제거 */
   margin-bottom: 1.2rem !important; /* 사이드바 gap과 일치 */
