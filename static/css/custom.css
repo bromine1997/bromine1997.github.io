@@ -402,6 +402,11 @@ html body:not(.list) main.main {
 /* ── 코드 블록 ─────────────────────────────────────────── */
 .highlight { border-radius: 10px; overflow: hidden; }
 
+/* 포스트 카드 margin을 사이드바 gap과 통일 → 연속 grid 정렬 유지 */
+.list-content .post-entry {
+  margin-bottom: 1.2rem !important;
+}
+
 /* ── Projects 페이지 — 사이드바 없이 전체 폭 ────────────── */
 .post-with-sidebar.no-sidebar {
   grid-template-columns: 1fr !important;

@@ -5,41 +5,37 @@
 function alignHomeLayout() {
   var sidebar  = document.querySelector('.sidebar');
   var homeInfo = document.querySelector('.first-entry.home-info');
-  if (!sidebar || !homeInfo) return;
+  if (!sidebar) return;
 
-  var profile = sidebar.querySelector('.sidebar-profile');
-  if (!profile) return;
-
-  // 초기화
-  homeInfo.style.minHeight = '';
-  var firstPost = document.querySelector('.post-entry');
-  if (firstPost) firstPost.style.minHeight = '';
-
-  // 사이드바 카테고리 섹션 탐색
+  var profile     = sidebar.querySelector('.sidebar-profile');
   var catSections = Array.from(sidebar.querySelectorAll('.sidebar-section:not(.sidebar-profile)'));
-  var algoSection = null, atmegaSection = null;
-  catSections.forEach(function(s) {
-    var name = s.querySelector('.sidebar-cat-name');
-    if (!name) return;
-    var t = name.textContent.trim().toLowerCase();
-    if (t === 'algorithm')  algoSection  = s;
-    if (t === 'atmega')     atmegaSection = s;
-  });
+  var posts       = Array.from(document.querySelectorAll('.post-entry'));
+
+  // 모두 초기화
+  if (homeInfo) homeInfo.style.minHeight = '';
+  posts.forEach(function(p) { p.style.minHeight = ''; });
 
   // 빨간 박스: home-info 높이 = 프로필 카드 높이
-  homeInfo.style.minHeight = profile.offsetHeight + 'px';
-
-  // 초록 박스: 첫 포스트 카드 높이 = Algorithm 상단 ~ ATmega 하단
-  if (algoSection && atmegaSection && firstPost) {
-    var algoTop    = algoSection.getBoundingClientRect().top;
-    var atmegaBot  = atmegaSection.getBoundingClientRect().bottom;
-    var postHeight = atmegaBot - algoTop;
-    if (postHeight > 0) firstPost.style.minHeight = postHeight + 'px';
+  if (profile && homeInfo) {
+    homeInfo.style.minHeight = profile.offsetHeight + 'px';
   }
+
+  // 초록 박스: post[i] → sections[i*2 ~ i*2+1]
+  // 사이드바 섹션 위치는 별도 컬럼이므로 포스트 높이 변경에 영향 없음
+  posts.forEach(function(post, i) {
+    var sec1 = catSections[i * 2];
+    var sec2 = catSections[i * 2 + 1];
+    if (!sec1) return;
+    var top    = sec1.getBoundingClientRect().top;
+    var bottom = sec2 ? sec2.getBoundingClientRect().bottom
+                      : sec1.getBoundingClientRect().bottom;
+    var h = bottom - top;
+    if (h > 0) post.style.minHeight = h + 'px';
+  });
 }
 
 document.addEventListener('DOMContentLoaded', alignHomeLayout);
-window.addEventListener('load', alignHomeLayout);   // 이미지 로드 후 재계산
+window.addEventListener('load', alignHomeLayout);
 window.addEventListener('resize', alignHomeLayout);
 </script>
 
