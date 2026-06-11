@@ -53,9 +53,7 @@ params:
       하드웨어와 소프트웨어를 함께 다루는 임베디드 / 펌웨어 개발자입니다.
       STM32, ESP32 기반 시스템 개발, 논문 리뷰, 알고리즘 공부를 기록합니다.
 
-  socialIcons:
-    - name: github
-      url: "https://github.com/bromine1997"
+  socialIcons: []
 
   cover:
     hidden: false
