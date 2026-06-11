@@ -16,7 +16,7 @@ series: ["HBOT Troubleshooting"]
 summary: "ASUS Tinker Board 2S에서 SPI 통신 파형이 왜곡되는 문제를 겪었다. 원인은 하드웨어가 아닌 Digital Isolator의 주파수 제한이었다."
 ---
 
-최근 ASUS Tinker Board 2S를 이용해서 개발을 진행하고 있다. 그 과정에서 SPI 통신 파형이 이상하게 나오는 문제가 발생해서 이를 정리해두려 한다.
+ASUS Tinker Board 2S로 개발하다가 SPI 통신 파형이 이상하게 나오는 문제를 겪었다. 원인과 해결 과정을 정리해둔다.
 
 ## 개발 환경
 
@@ -26,7 +26,7 @@ Tinker Board 2S에서는 SPI1과 SPI5, 두 개의 SPI 버스를 사용할 수 �
 ![Tinker Board 2S GPIO Pin Map](/images/tinkerboard/tinkerboard2s-gpio-pinmap.png)
 *Tinker Board 2S GPIO Pin Map*
 
-개발 언어는 Android Studio에서 Java를 사용하고 있으며, GPIO 제어는 **MRAA 라이브러리**를 사용했다.
+개발 언어는 Java, GPIO 제어는 **MRAA 라이브러리**를 사용했다.
 
 <!-- 이미지: MRAA Library SPI Index 설정 -->
 ![MRAA Library SPI Index](/images/tinkerboard/mraa-spi-index.png)
@@ -85,7 +85,7 @@ SPI를 초기화한 뒤, 파형 확인을 위해 `SPI.write()`를 호출하고 �
 
 정상 사각파가 나왔다.
 
-다만 **SPI5(MAX1032)** 쪽은 1MHz로는 부족했고, **50kHz**까지 낮춰야 정상 파형이 나왔다. 같은 보드에서 두 SPI 라인이 이렇게 큰 차이를 보이는 이유는 아직 명확하지 않다. 추후에 더 공부해보려고 한다.
+다만 **SPI5(MAX1032)** 쪽은 1MHz로는 부족했고, **50kHz**까지 낮춰야 정상 파형이 나왔다. 같은 보드에서 두 SPI 라인이 이렇게 큰 차이를 보이는 이유는 아직 잘 모르겠다. 나중에 기회가 되면 더 파봐야겠다.
 
 | 항목 | 기존 | 수정 후 |
 |---|---|---|
