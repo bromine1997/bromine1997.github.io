@@ -49,6 +49,17 @@ if (document.fonts && document.fonts.ready) {
 }
 </script>
 
+<script>
+// 현재 포스트가 속한 사이드바 카테고리 자동 열기
+document.addEventListener('DOMContentLoaded', function () {
+  var active = document.querySelector('.sidebar-link.active');
+  if (active) {
+    var details = active.closest('details.sidebar-category');
+    if (details) details.open = true;
+  }
+});
+</script>
+
 {{ if .Params.math }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>

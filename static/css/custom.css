@@ -626,3 +626,62 @@ html body:not(.list) main.main {
   border-left-color: var(--accent);
 }
 
+/* ── 테이블 ─────────────────────────────────────────────── */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  display: block;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.post-content table thead tr {
+  background: var(--accent-subtle);
+  border-bottom: 2px solid var(--accent-border);
+}
+.post-content table th {
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+.post-content table td {
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--content);
+}
+.post-content table tbody tr:last-child td {
+  border-bottom: none;
+}
+.post-content table tbody tr:hover {
+  background: var(--accent-subtle);
+}
+
+/* ── 이미지 ─────────────────────────────────────────────── */
+.post-content img {
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* figure + figcaption ({{< figure >}} shortcode) */
+.post-content figure {
+  text-align: center;
+  margin: 2rem 0;
+}
+.post-content figure img {
+  box-shadow: var(--card-shadow-md);
+}
+.post-content figcaption {
+  margin-top: 0.55rem;
+  font-size: 0.82rem;
+  color: var(--secondary);
+  font-style: italic;
+  line-height: 1.5;
+}
+
