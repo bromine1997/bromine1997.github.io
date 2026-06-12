@@ -73,6 +73,13 @@
     <article class="{{ $class }}">
       {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
       {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+      {{- with .Params.categories }}
+      <div class="entry-categories">
+        {{- range first 1 . }}
+        <span class="entry-category">{{ . }}</span>
+        {{- end }}
+      </div>
+      {{- end }}
       <header class="entry-header">
         <h2 class="entry-hint-parent">
           {{- .Title }}

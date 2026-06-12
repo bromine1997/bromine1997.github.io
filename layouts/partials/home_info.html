@@ -1,0 +1,20 @@
+{{- with site.Params.homeInfoParams }}
+<article class="first-entry home-info">
+    <header class="entry-header">
+        <h1>{{ .Title | markdownify }}</h1>
+    </header>
+    <div class="entry-content">
+        {{ .Content | markdownify }}
+    </div>
+    <div class="tech-stack">
+        <span class="tech-badge">STM32</span>
+        <span class="tech-badge">ESP32</span>
+        <span class="tech-badge">AVR</span>
+        <span class="tech-badge">Android</span>
+        <span class="tech-badge">C / Java</span>
+    </div>
+    <footer class="entry-footer">
+        {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+    </footer>
+</article>
+{{- end -}}

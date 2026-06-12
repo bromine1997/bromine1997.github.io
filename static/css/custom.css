@@ -433,3 +433,97 @@ html body:not(.list) main.main {
 /* ── 사이드바 너비 축소 보정 ───────────────────────────── */
 /* sidebar.css에서 260px 1fr 로 사이드바 좌측 배치 */
 
+/* ── hr 구분선 ─────────────────────────────────────────── */
+.post-content hr {
+  border: none;
+  border-top: 2px solid var(--accent-border);
+  margin: 2.5rem 0;
+  opacity: 1;
+}
+
+/* ── blockquote ────────────────────────────────────────── */
+.post-content blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-subtle);
+  padding: 0.8rem 1.2rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+  font-style: normal;
+}
+.post-content blockquote p {
+  margin: 0;
+  color: var(--content);
+}
+:root[data-theme="dark"] .post-content blockquote {
+  background: var(--accent-subtle);
+}
+
+/* ── 카드 카테고리 뱃지 ────────────────────────────────── */
+.entry-categories {
+  margin-bottom: 0.5rem;
+}
+.entry-category {
+  display: inline-block;
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  border-radius: 4px;
+  padding: 0.15rem 0.55rem;
+}
+
+/* ── 홈 기술스택 뱃지 ──────────────────────────────────── */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.9rem 0 0.25rem;
+}
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.28rem 0.7rem;
+  border-radius: 6px;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  transition: background 0.15s, color 0.15s;
+}
+.tech-badge:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ── 코드 블록 파일명 (codeblock shortcode) ────────────── */
+.codeblock-wrapper {
+  margin: 1.25rem 0;
+}
+.codeblock-wrapper > .highlight,
+.codeblock-wrapper > pre {
+  margin: 0 !important;
+  border-radius: 0 0 10px 10px !important;
+}
+.codeblock-filename {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #2d2d3a;
+  color: #9ca3af;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.78rem;
+  padding: 0.45rem 1rem;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid var(--accent-border);
+  border-bottom: none;
+}
+.codeblock-filename svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
