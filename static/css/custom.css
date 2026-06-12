@@ -628,15 +628,18 @@ html body:not(.list) main.main {
 
 /* ── 테이블 ─────────────────────────────────────────────── */
 .post-content .table-scroll-wrap {
+  overflow: hidden;
   overflow-x: auto;
   margin: 1.5rem 0;
   border-radius: 8px;
   border: 1px solid #d1d5db;
+  line-height: 0;
 }
 .post-content table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
+  line-height: 1.5;
   display: table;
 }
 .post-content table thead tr {
@@ -644,20 +647,15 @@ html body:not(.list) main.main {
 }
 .post-content table th {
   padding: 0.48rem 0.875rem;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
-}
-.post-content table th:not(:first-child) {
-  text-align: center;
 }
 .post-content table td {
   padding: 0.38rem 0.875rem;
   border-bottom: 1px solid #e2e8f0;
   color: var(--content);
-}
-.post-content table td:not(:first-child) {
   text-align: center;
 }
 .post-content table tbody tr:nth-child(even) {
