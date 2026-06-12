@@ -39,7 +39,9 @@
   {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
   {{- if (.Param "ShowToc") }}
-  {{- partial "toc.html" . }}
+  <div class="toc-inline">
+    {{- partial "toc.html" . }}
+  </div>
   {{- end }}
 
   {{- if .Content }}
@@ -70,23 +72,70 @@
   {{- end }}
 </article>
 
+{{- if and (ne .Section "projects") (.Param "ShowToc") .TableOfContents }}
+<aside class="toc-sidebar">
+  <div class="toc-sidebar-inner">
+    <div class="toc-sidebar-title">목차</div>
+    {{ .TableOfContents }}
+  </div>
+</aside>
+{{- end }}
 
 </div>
 
 <script>
 (function () {
+  // 읽기 진행률 바
   var bar = document.getElementById('reading-progress-bar');
-  if (!bar) return;
-  function update() {
-    var content = document.querySelector('.post-content');
-    if (!content) return;
-    var top = content.getBoundingClientRect().top + window.scrollY;
-    var end = top + content.offsetHeight - window.innerHeight;
-    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
-    bar.style.width = pct + '%';
+  if (bar) {
+    function updateBar() {
+      var content = document.querySelector('.post-content');
+      if (!content) return;
+      var top = content.getBoundingClientRect().top + window.scrollY;
+      var end = top + content.offsetHeight - window.innerHeight;
+      var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateBar, { passive: true });
+    updateBar();
   }
-  window.addEventListener('scroll', update, { passive: true });
-  update();
+
+  // 우측 sticky TOC — 활성 헤딩 하이라이트
+  var tocLinks = Array.from(document.querySelectorAll('.toc-sidebar #TableOfContents a'));
+  if (!tocLinks.length) return;
+
+  var headings = Array.from(document.querySelectorAll('.post-content h2, .post-content h3'))
+    .filter(function (h) { return h.id; });
+
+  function setActive(id) {
+    tocLinks.forEach(function (l) { l.classList.remove('toc-active'); });
+    var a = document.querySelector('.toc-sidebar a[href="#' + id + '"]');
+    if (a) {
+      a.classList.add('toc-active');
+      // 스크롤 뷰 안으로
+      var sidebar = document.querySelector('.toc-sidebar');
+      if (sidebar) {
+        var aTop = a.offsetTop;
+        var sTop = sidebar.scrollTop;
+        var sH   = sidebar.offsetHeight;
+        if (aTop < sTop + 40)          sidebar.scrollTop = aTop - 40;
+        else if (aTop > sTop + sH - 60) sidebar.scrollTop = aTop - sH + 60;
+      }
+    }
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    // 화면 상단에 가장 가까운 교차 헤딩을 찾는다
+    var visible = entries.filter(function (e) { return e.isIntersecting; });
+    if (visible.length) {
+      visible.sort(function (a, b) {
+        return a.boundingClientRect.top - b.boundingClientRect.top;
+      });
+      setActive(visible[0].target.id);
+    }
+  }, { rootMargin: '-56px 0px -60% 0px', threshold: 0 });
+
+  headings.forEach(function (h) { observer.observe(h); });
 })();
 </script>
 

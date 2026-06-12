@@ -527,3 +527,102 @@ html body:not(.list) main.main {
   opacity: 0.7;
 }
 
+/* ── 우측 Sticky TOC ───────────────────────────────────── */
+
+/* 기본(좁은 화면): 우측 TOC 숨김, 인라인 TOC 표시 */
+.toc-sidebar { display: none; }
+
+/* 넓은 화면(≥1300px): 3열 레이아웃 + 우측 TOC 표시 */
+@media (min-width: 1300px) {
+  html body:not(.list) main.main {
+    max-width: 1380px !important;
+  }
+  .post-with-sidebar:not(.no-sidebar) {
+    grid-template-columns: 260px minmax(0, 1fr) 220px;
+    max-width: 1360px;
+  }
+  /* 우측 TOC가 있으면 인라인 TOC 숨김 */
+  .toc-inline { display: none; }
+
+  .toc-sidebar {
+    display: block;
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    position: sticky;
+    top: calc(var(--header-height, 60px) + 1rem);
+    max-height: calc(100vh - var(--header-height, 60px) - 2rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-border) transparent;
+  }
+  .toc-sidebar::-webkit-scrollbar { width: 3px; }
+  .toc-sidebar::-webkit-scrollbar-thumb { background: var(--accent-border); border-radius: 2px; }
+}
+
+.toc-sidebar-inner {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+}
+
+.toc-sidebar-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* TOC 목록 리셋 */
+.toc-sidebar #TableOfContents ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.toc-sidebar #TableOfContents li {
+  margin: 0;
+}
+
+/* h2 링크 */
+.toc-sidebar #TableOfContents > ul > li > a {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 0.22rem 0.5rem;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  line-height: 1.45;
+  transition: color 0.12s, background 0.12s, border-color 0.12s;
+}
+
+/* h3 링크 — 들여쓰기 */
+.toc-sidebar #TableOfContents > ul > li > ul {
+  padding-left: 0.75rem;
+}
+.toc-sidebar #TableOfContents > ul > li > ul > li > a {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 0.18rem 0.5rem;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  line-height: 1.45;
+  transition: color 0.12s, background 0.12s, border-color 0.12s;
+}
+
+/* hover & active */
+.toc-sidebar #TableOfContents a:hover,
+.toc-sidebar #TableOfContents a.toc-active {
+  color: var(--accent);
+  background: var(--accent-subtle);
+  border-left-color: var(--accent);
+}
+
