@@ -79,7 +79,7 @@ menu:
   main:
     - identifier: nav-embedded
       name: Embedded
-      url: /categories/embedded/
+      url: "#"
       weight: 10
     - identifier: nav-basics
       name: Basics
