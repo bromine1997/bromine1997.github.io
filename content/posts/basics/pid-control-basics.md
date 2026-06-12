@@ -1,6 +1,6 @@
 ---
 title: "PID 제어 이론 기초: 고압산소챔버 압력 제어로 이해하기"
-date: 2026-06-12T20:00:00+09:00
+date: 2026-06-12T16:00:00+09:00
 tags: ["PID", "control-theory", "embedded", "firmware", "HBOT"]
 categories: ["Embedded Basic"]
 description: "비례·적분·미분 세 항의 역할을 고압산소챔버(HBOT) 압력 제어 예시로 풀어본다. 적분 와인드업, 미분 노이즈, setpoint ramping 등 실전 구현 이슈까지 다룬다."
