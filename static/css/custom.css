@@ -627,37 +627,62 @@ html body:not(.list) main.main {
 }
 
 /* ── 테이블 ─────────────────────────────────────────────── */
+.post-content .table-scroll-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
 .post-content table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
-  font-size: 0.9rem;
-  display: block;
-  overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  font-size: 0.875rem;
+  display: table;
 }
 .post-content table thead tr {
-  background: var(--accent-subtle);
-  border-bottom: 2px solid var(--accent-border);
+  background: #1a2035;
 }
 .post-content table th {
-  padding: 0.65rem 1rem;
+  padding: 0.48rem 0.875rem;
   text-align: left;
-  font-weight: 700;
-  color: var(--primary);
+  font-weight: 600;
+  color: #fff;
   white-space: nowrap;
 }
+.post-content table th:not(:first-child) {
+  text-align: center;
+}
 .post-content table td {
-  padding: 0.55rem 1rem;
-  border-bottom: 1px solid var(--border);
+  padding: 0.38rem 0.875rem;
+  border-bottom: 1px solid #e2e8f0;
   color: var(--content);
+}
+.post-content table td:not(:first-child) {
+  text-align: center;
+}
+.post-content table tbody tr:nth-child(even) {
+  background: #f8fafc;
 }
 .post-content table tbody tr:last-child td {
   border-bottom: none;
 }
 .post-content table tbody tr:hover {
-  background: var(--accent-subtle);
+  background: #eef2f7;
+}
+.dark .post-content .table-scroll-wrap {
+  border-color: #374151;
+}
+.dark .post-content table thead tr {
+  background: #2d3748;
+}
+.dark .post-content table td {
+  border-bottom-color: #374151;
+}
+.dark .post-content table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.04);
+}
+.dark .post-content table tbody tr:hover {
+  background: rgba(255,255,255,0.08);
 }
 
 /* ── 이미지 ─────────────────────────────────────────────── */
