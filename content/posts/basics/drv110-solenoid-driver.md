@@ -1,6 +1,6 @@
 ---
 title: "DRV110으로 솔레노이드 밸브 전력 낭비 줄이기"
-date: 2026-06-12T22:00:00+09:00
+date: 2026-06-12T21:00:00+09:00
 tags: ["DRV110", "solenoid", "hardware", "circuit", "HBOT", "peak-and-hold"]
 categories: ["Embedded Basic"]
 description: "솔레노이드 밸브의 동작 원리를 이해하고, 피크-앤-홀드 구동 방식으로 소비전력을 66% 줄인 과정을 정리했다. HBOT 챔버 밸브 제어에 DRV110을 적용한 실제 사례."
