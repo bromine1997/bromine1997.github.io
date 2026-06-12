@@ -640,7 +640,8 @@ html body:not(.list) main.main {
   border-collapse: collapse;
   font-size: 0.875rem;
   line-height: 1.5;
-  display: table;
+  display: table !important;
+  margin-bottom: 0 !important;
 }
 .post-content table thead tr {
   background: #1a2035;
