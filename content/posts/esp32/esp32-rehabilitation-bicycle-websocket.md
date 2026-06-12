@@ -1,8 +1,8 @@
----
+﻿---
 title: "Wi-Fi, WebSocket, 실시간 UI와 데이터 저장"
 date: 2026-06-05T20:36:00+09:00
 draft: false
-categories:
+categories: ["ESP32"]
   - Embedded
 tags:
   - ESP32

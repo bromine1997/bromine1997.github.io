@@ -1,8 +1,8 @@
----
+﻿---
 title: "AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지"
 date: 2026-06-10T23:00:00+09:00
 draft: false
-categories:
+categories: ["Troubleshooting"]
   - Embedded
 tags:
   - AD5420

@@ -1,8 +1,8 @@
----
+﻿---
 title: "SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한"
 date: 2026-05-30T20:41:00+09:00
 draft: false
-categories:
+categories: ["Troubleshooting"]
   - Embedded
 tags:
   - TinkerBoard
