@@ -90,13 +90,13 @@ $$E = 14\text{W} \times \frac{70}{60}\text{h} \approx 16.3\text{Wh (세션당)}$
 
 Texas Instruments의 DRV110은 피크-앤-홀드 동작을 IC 하나로 처리한다. EN 핀에 HIGH 신호를 주면 피크 전류로 구동을 시작하고, $t_{KEEP}$ 시간이 지나면 자동으로 홀드 전류로 전환한다.
 
-![DRV110 피크-앤-홀드 솔레노이드 전류 파형](/images/hardware/drv110-waveform.png)
+![Figure 3. Typical Current Waveform Through the Solenoid](/images/hardware/drv110-ds-waveform-crop.png)
 
 ### 회로 구성
 
 외부 MOSFET을 통해 솔레노이드를 구동한다. 설정에 필요한 부품은 저항 3개(RPEAK, RHOLD, RSENSE)와 커패시터 1개(CKEEP)가 전부다.
 
-![DRV110 솔레노이드 드라이버 응용 회로](/images/hardware/drv110-circuit.png)
+![Figure 2. External Parameter Setting for 14-Pin TSSOP Option](/images/hardware/drv110-ds-application-crop.png)
 
 | 부품 | 역할 |
 |------|------|
@@ -114,7 +114,7 @@ $$I_{PEAK} = \frac{V_{PEAK}}{R_{SENSE}}, \quad I_{HOLD} = \frac{V_{HOLD}}{R_{SEN
 
 $V_{PEAK}$는 RPEAK 값에 따라 300mV~900mV 범위에서 설정된다.
 
-![RPEAK 저항값에 따른 피크 전류 설정 (RSENSE = 1Ω)](/images/hardware/drv110-rpeak-curve.png)
+![Figure 4. PEAK and HOLD Mode VREF Settings](/images/hardware/drv110-ds-rpeak-curve-crop.png)
 
 피크 유지 시간은 CKEEP으로 설정한다.
 
@@ -173,3 +173,7 @@ $$P_{hold} = I_{hold} \times V = 0.100 \times 24 = 2.4\ \text{W (1개)}$$
 솔레노이드 밸브는 당기는 힘과 붙어 있는 힘의 요구량이 다르다. 직결 구동은 이 차이를 무시하고 항상 최대 전류를 공급한다. DRV110은 이 차이를 이용해 피크 구간에만 충분한 전류를 쓰고, 이후에는 낮은 전류로 유지한다.
 
 밸브가 많고 장시간 통전되는 시스템일수록 효과가 크다. HBOT처럼 한 세션이 80분이고 복수의 솔밸브가 내내 켜져 있는 구조라면, 저항 두 개로 66% 전력 절감은 꽤 실용적인 선택이다.
+
+---
+
+*회로도 및 그래프 출처: Texas Instruments, [DRV110 데이터시트 (SLVSBA8)](https://www.ti.com/product/DRV110)*
