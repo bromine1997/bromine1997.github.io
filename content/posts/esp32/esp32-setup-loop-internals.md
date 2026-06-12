@@ -3,7 +3,6 @@ title: "setup()과 loop()는 어떻게 실행되는가"
 date: 2026-04-11T20:55:00+09:00
 draft: false
 categories: ["ESP32"]
-  - Embedded
 tags:
   - ESP32
   - Arduino

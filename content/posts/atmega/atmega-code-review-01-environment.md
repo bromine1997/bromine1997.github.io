@@ -3,7 +3,6 @@ title: "MCU 소개 및 개발환경 설정"
 date: 2026-04-29T20:35:00+09:00
 draft: false
 categories: ["ATmega"]
-  - Embedded
 tags:
   - ATmega
   - ATmega4809

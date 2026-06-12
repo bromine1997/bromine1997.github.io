@@ -3,7 +3,6 @@ title: "만능기판 테스트 중 계속 발열이 생긴 이유"
 date: 2026-06-10T12:30:00+09:00
 draft: false
 categories: ["Troubleshooting"]
-  - Embedded
 tags:
   - AD5420
   - TSSOP

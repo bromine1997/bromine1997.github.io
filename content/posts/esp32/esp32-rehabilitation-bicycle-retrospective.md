@@ -3,7 +3,6 @@ title: "상하지 재활 자전거 모니터링 시스템 — 프로젝트를 �
 date: 2026-06-05T21:22:00+09:00
 draft: false
 categories: ["ESP32"]
-  - Embedded
 tags:
   - ESP32
   - 재활자전거
