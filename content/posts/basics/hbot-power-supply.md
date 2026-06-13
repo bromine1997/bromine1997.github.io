@@ -1,6 +1,6 @@
 ---
 title: "HBOT 챔버 PCB 전원부 설계: 24V→5V→3.3V와 절연"
-date: 2026-06-13T21:00:00+09:00
+date: 2026-06-13T12:00:00+09:00
 tags: ["power supply", "VR10S05", "MIC5233", "ADUM1400", "ISO7421", "isolation", "hardware", "HBOT"]
 categories: ["Embedded Basic"]
 description: "HBOT 챔버 제어 PCB에서 24V→5V(스위칭)→3.3V(LDO) 전원 설계와 ADUM1400/1200, ISO7421, VO1400AEFTR를 이용한 절연 설계를 정리했다."
