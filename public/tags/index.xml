@@ -2,808 +2,885 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on bromine1997</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://bromine1997.github.io/tags/</link>
     <description>Recent content in Tags on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 10 Jun 2026 23:00:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>AD5420</title>
-      <link>http://localhost:1313/tags/ad5420/</link>
-      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/ad5420/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>DAC</title>
-      <link>http://localhost:1313/tags/dac/</link>
-      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/dac/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>DaisyChain</title>
-      <link>http://localhost:1313/tags/daisychain/</link>
-      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/daisychain/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>SPI</title>
-      <link>http://localhost:1313/tags/spi/</link>
-      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/spi/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>오실로스코프</title>
-      <link>http://localhost:1313/tags/%EC%98%A4%EC%8B%A4%EB%A1%9C%EC%8A%A4%EC%BD%94%ED%94%84/</link>
-      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EC%98%A4%EC%8B%A4%EB%A1%9C%EC%8A%A4%EC%BD%94%ED%94%84/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>트러블슈팅</title>
-      <link>http://localhost:1313/tags/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/</link>
-      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>TSSOP</title>
-      <link>http://localhost:1313/tags/tssop/</link>
-      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/tssop/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>납땜</title>
-      <link>http://localhost:1313/tags/%EB%82%A9%EB%95%9C/</link>
-      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%82%A9%EB%95%9C/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>노출패드</title>
-      <link>http://localhost:1313/tags/%EB%85%B8%EC%B6%9C%ED%8C%A8%EB%93%9C/</link>
-      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%85%B8%EC%B6%9C%ED%8C%A8%EB%93%9C/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>만능기판</title>
-      <link>http://localhost:1313/tags/%EB%A7%8C%EB%8A%A5%EA%B8%B0%ED%8C%90/</link>
-      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%A7%8C%EB%8A%A5%EA%B8%B0%ED%8C%90/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>APB</title>
-      <link>http://localhost:1313/tags/apb/</link>
-      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/apb/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Baud Rate</title>
-      <link>http://localhost:1313/tags/baud-rate/</link>
-      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/baud-rate/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Clock</title>
-      <link>http://localhost:1313/tags/clock/</link>
-      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/clock/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Embedded</title>
-      <link>http://localhost:1313/tags/embedded/</link>
-      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/embedded/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>RCC</title>
-      <link>http://localhost:1313/tags/rcc/</link>
-      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/rcc/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>STM32</title>
-      <link>http://localhost:1313/tags/stm32/</link>
-      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/stm32/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>UART</title>
-      <link>http://localhost:1313/tags/uart/</link>
-      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/uart/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>ESP32</title>
-      <link>http://localhost:1313/tags/esp32/</link>
-      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/esp32/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>IoT</title>
-      <link>http://localhost:1313/tags/iot/</link>
-      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/iot/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>재활자전거</title>
-      <link>http://localhost:1313/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/</link>
-      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>헬스케어</title>
-      <link>http://localhost:1313/tags/%ED%97%AC%EC%8A%A4%EC%BC%80%EC%96%B4/</link>
-      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%ED%97%AC%EC%8A%A4%EC%BC%80%EC%96%B4/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>회고</title>
-      <link>http://localhost:1313/tags/%ED%9A%8C%EA%B3%A0/</link>
-      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%ED%9A%8C%EA%B3%A0/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>ESPAsyncWebServer</title>
-      <link>http://localhost:1313/tags/espasyncwebserver/</link>
-      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/espasyncwebserver/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>SPIFFS</title>
-      <link>http://localhost:1313/tags/spiffs/</link>
-      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/spiffs/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>WebSocket</title>
-      <link>http://localhost:1313/tags/websocket/</link>
-      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/websocket/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>WiFi</title>
-      <link>http://localhost:1313/tags/wifi/</link>
-      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/wifi/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Feather V2</title>
-      <link>http://localhost:1313/tags/feather-v2/</link>
-      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/feather-v2/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>GPIO</title>
-      <link>http://localhost:1313/tags/gpio/</link>
-      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/gpio/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>부팅</title>
-      <link>http://localhost:1313/tags/%EB%B6%80%ED%8C%85/</link>
-      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%B6%80%ED%8C%85/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>스트래핑핀</title>
-      <link>http://localhost:1313/tags/%EC%8A%A4%ED%8A%B8%EB%9E%98%ED%95%91%ED%95%80/</link>
-      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EC%8A%A4%ED%8A%B8%EB%9E%98%ED%95%91%ED%95%80/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>HSE</title>
-      <link>http://localhost:1313/tags/hse/</link>
-      <pubDate>Wed, 03 Jun 2026 20:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/hse/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>HSI</title>
-      <link>http://localhost:1313/tags/hsi/</link>
-      <pubDate>Wed, 03 Jun 2026 20:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/hsi/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>PLL</title>
-      <link>http://localhost:1313/tags/pll/</link>
-      <pubDate>Wed, 03 Jun 2026 20:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/pll/</guid>
-      <description></description>
-    </item>
+    <lastBuildDate>Sat, 13 Jun 2026 12:00:00 +0900</lastBuildDate>
+    <atom:link href="https://bromine1997.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ADUM1400</title>
-      <link>http://localhost:1313/tags/adum1400/</link>
-      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/adum1400/</guid>
+      <link>https://bromine1997.github.io/tags/adum1400/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/adum1400/</guid>
       <description></description>
     </item>
     <item>
-      <title>Android</title>
-      <link>http://localhost:1313/tags/android/</link>
-      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/android/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Digital Isolator</title>
-      <link>http://localhost:1313/tags/digital-isolator/</link>
-      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/digital-isolator/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>MRAA</title>
-      <link>http://localhost:1313/tags/mraa/</link>
-      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/mraa/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>TinkerBoard</title>
-      <link>http://localhost:1313/tags/tinkerboard/</link>
-      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/tinkerboard/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>ARM</title>
-      <link>http://localhost:1313/tags/arm/</link>
-      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/arm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Cortex-M</title>
-      <link>http://localhost:1313/tags/cortex-m/</link>
-      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/cortex-m/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Interrupt</title>
-      <link>http://localhost:1313/tags/interrupt/</link>
-      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/interrupt/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>ISR</title>
-      <link>http://localhost:1313/tags/isr/</link>
-      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/isr/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>NVIC</title>
-      <link>http://localhost:1313/tags/nvic/</link>
-      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/nvic/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Volatile</title>
-      <link>http://localhost:1313/tags/volatile/</link>
-      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/volatile/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>ADS1232</title>
-      <link>http://localhost:1313/tags/ads1232/</link>
-      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/ads1232/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>로드셀</title>
-      <link>http://localhost:1313/tags/%EB%A1%9C%EB%93%9C%EC%85%80/</link>
-      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%A1%9C%EB%93%9C%EC%85%80/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>비트뱅잉</title>
-      <link>http://localhost:1313/tags/%EB%B9%84%ED%8A%B8%EB%B1%85%EC%9E%89/</link>
-      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%B9%84%ED%8A%B8%EB%B1%85%EC%9E%89/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>인터럽트</title>
-      <link>http://localhost:1313/tags/%EC%9D%B8%ED%84%B0%EB%9F%BD%ED%8A%B8/</link>
-      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EC%9D%B8%ED%84%B0%EB%9F%BD%ED%8A%B8/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>PSRAM</title>
-      <link>http://localhost:1313/tags/psram/</link>
-      <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/psram/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>데이터수집</title>
-      <link>http://localhost:1313/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%88%98%EC%A7%91/</link>
-      <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%88%98%EC%A7%91/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>임베디드</title>
-      <link>http://localhost:1313/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/</link>
-      <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Boot</title>
-      <link>http://localhost:1313/tags/boot/</link>
-      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/boot/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Reset Handler</title>
-      <link>http://localhost:1313/tags/reset-handler/</link>
-      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/reset-handler/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Startup</title>
-      <link>http://localhost:1313/tags/startup/</link>
-      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/startup/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Vector Table</title>
-      <link>http://localhost:1313/tags/vector-table/</link>
-      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/vector-table/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>ADC</title>
-      <link>http://localhost:1313/tags/adc/</link>
-      <pubDate>Wed, 20 May 2026 20:16:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/adc/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>AS5600</title>
-      <link>http://localhost:1313/tags/as5600/</link>
-      <pubDate>Wed, 20 May 2026 20:16:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/as5600/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>I2C</title>
-      <link>http://localhost:1313/tags/i2c/</link>
-      <pubDate>Wed, 20 May 2026 20:16:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/i2c/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Biomedical</title>
-      <link>http://localhost:1313/tags/biomedical/</link>
-      <pubDate>Sat, 16 May 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/biomedical/</guid>
+      <title>Hardware</title>
+      <link>https://bromine1997.github.io/tags/hardware/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/hardware/</guid>
       <description></description>
     </item>
     <item>
       <title>HBOT</title>
-      <link>http://localhost:1313/tags/hbot/</link>
-      <pubDate>Sat, 16 May 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/hbot/</guid>
+      <link>https://bromine1997.github.io/tags/hbot/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/hbot/</guid>
       <description></description>
     </item>
     <item>
-      <title>PID</title>
-      <link>http://localhost:1313/tags/pid/</link>
-      <pubDate>Sat, 16 May 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/pid/</guid>
+      <title>ISO7421</title>
+      <link>https://bromine1997.github.io/tags/iso7421/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/iso7421/</guid>
       <description></description>
     </item>
     <item>
-      <title>Pressure Control</title>
-      <link>http://localhost:1313/tags/pressure-control/</link>
-      <pubDate>Sat, 16 May 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/pressure-control/</guid>
+      <title>Isolation</title>
+      <link>https://bromine1997.github.io/tags/isolation/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/isolation/</guid>
       <description></description>
     </item>
     <item>
-      <title>Build</title>
-      <link>http://localhost:1313/tags/build/</link>
-      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/build/</guid>
+      <title>MIC5233</title>
+      <link>https://bromine1997.github.io/tags/mic5233/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/mic5233/</guid>
       <description></description>
     </item>
     <item>
-      <title>ELF</title>
-      <link>http://localhost:1313/tags/elf/</link>
-      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/elf/</guid>
+      <title>Power Supply</title>
+      <link>https://bromine1997.github.io/tags/power-supply/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/power-supply/</guid>
       <description></description>
     </item>
     <item>
-      <title>Linker</title>
-      <link>http://localhost:1313/tags/linker/</link>
-      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/linker/</guid>
+      <title>VR10S05</title>
+      <link>https://bromine1997.github.io/tags/vr10s05/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/vr10s05/</guid>
       <description></description>
     </item>
     <item>
-      <title>Toolchain</title>
-      <link>http://localhost:1313/tags/toolchain/</link>
-      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/toolchain/</guid>
+      <title>Circuit</title>
+      <link>https://bromine1997.github.io/tags/circuit/</link>
+      <pubDate>Fri, 12 Jun 2026 21:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/circuit/</guid>
       <description></description>
     </item>
     <item>
-      <title>Barotrauma</title>
-      <link>http://localhost:1313/tags/barotrauma/</link>
-      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/barotrauma/</guid>
+      <title>DRV110</title>
+      <link>https://bromine1997.github.io/tags/drv110/</link>
+      <pubDate>Fri, 12 Jun 2026 21:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/drv110/</guid>
       <description></description>
     </item>
     <item>
-      <title>Logistic Regression</title>
-      <link>http://localhost:1313/tags/logistic-regression/</link>
-      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/logistic-regression/</guid>
+      <title>Peak-and-Hold</title>
+      <link>https://bromine1997.github.io/tags/peak-and-hold/</link>
+      <pubDate>Fri, 12 Jun 2026 21:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/peak-and-hold/</guid>
       <description></description>
     </item>
     <item>
-      <title>MEB</title>
-      <link>http://localhost:1313/tags/meb/</link>
-      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/meb/</guid>
+      <title>Solenoid</title>
+      <link>https://bromine1997.github.io/tags/solenoid/</link>
+      <pubDate>Fri, 12 Jun 2026 21:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/solenoid/</guid>
       <description></description>
     </item>
     <item>
-      <title>Monoplace Chamber</title>
-      <link>http://localhost:1313/tags/monoplace-chamber/</link>
-      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/monoplace-chamber/</guid>
+      <title>Control-Theory</title>
+      <link>https://bromine1997.github.io/tags/control-theory/</link>
+      <pubDate>Fri, 12 Jun 2026 20:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/control-theory/</guid>
       <description></description>
     </item>
     <item>
-      <title>Flash</title>
-      <link>http://localhost:1313/tags/flash/</link>
-      <pubDate>Sun, 10 May 2026 20:43:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/flash/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Memory</title>
-      <link>http://localhost:1313/tags/memory/</link>
-      <pubDate>Sun, 10 May 2026 20:43:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/memory/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>RAM</title>
-      <link>http://localhost:1313/tags/ram/</link>
-      <pubDate>Sun, 10 May 2026 20:43:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/ram/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Embedded Systems</title>
-      <link>http://localhost:1313/tags/embedded-systems/</link>
-      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/embedded-systems/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Kalman Filter</title>
-      <link>http://localhost:1313/tags/kalman-filter/</link>
-      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/kalman-filter/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Sensor Fusion</title>
-      <link>http://localhost:1313/tags/sensor-fusion/</link>
-      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/sensor-fusion/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Signal Processing</title>
-      <link>http://localhost:1313/tags/signal-processing/</link>
-      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/signal-processing/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>State Estimation</title>
-      <link>http://localhost:1313/tags/state-estimation/</link>
-      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/state-estimation/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>DSP</title>
-      <link>http://localhost:1313/tags/dsp/</link>
-      <pubDate>Thu, 07 May 2026 20:17:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/dsp/</guid>
+      <title>Embedded</title>
+      <link>https://bromine1997.github.io/tags/embedded/</link>
+      <pubDate>Fri, 12 Jun 2026 20:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/embedded/</guid>
       <description></description>
     </item>
     <item>
       <title>Firmware</title>
-      <link>http://localhost:1313/tags/firmware/</link>
+      <link>https://bromine1997.github.io/tags/firmware/</link>
+      <pubDate>Fri, 12 Jun 2026 20:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/firmware/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PID</title>
+      <link>https://bromine1997.github.io/tags/pid/</link>
+      <pubDate>Fri, 12 Jun 2026 20:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/pid/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>AD5420</title>
+      <link>https://bromine1997.github.io/tags/ad5420/</link>
+      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/ad5420/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DAC</title>
+      <link>https://bromine1997.github.io/tags/dac/</link>
+      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/dac/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DaisyChain</title>
+      <link>https://bromine1997.github.io/tags/daisychain/</link>
+      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/daisychain/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SPI</title>
+      <link>https://bromine1997.github.io/tags/spi/</link>
+      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/spi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>오실로스코프</title>
+      <link>https://bromine1997.github.io/tags/%EC%98%A4%EC%8B%A4%EB%A1%9C%EC%8A%A4%EC%BD%94%ED%94%84/</link>
+      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EC%98%A4%EC%8B%A4%EB%A1%9C%EC%8A%A4%EC%BD%94%ED%94%84/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>트러블슈팅</title>
+      <link>https://bromine1997.github.io/tags/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/</link>
+      <pubDate>Wed, 10 Jun 2026 23:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TSSOP</title>
+      <link>https://bromine1997.github.io/tags/tssop/</link>
+      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/tssop/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>납땜</title>
+      <link>https://bromine1997.github.io/tags/%EB%82%A9%EB%95%9C/</link>
+      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EB%82%A9%EB%95%9C/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>노출패드</title>
+      <link>https://bromine1997.github.io/tags/%EB%85%B8%EC%B6%9C%ED%8C%A8%EB%93%9C/</link>
+      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EB%85%B8%EC%B6%9C%ED%8C%A8%EB%93%9C/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>만능기판</title>
+      <link>https://bromine1997.github.io/tags/%EB%A7%8C%EB%8A%A5%EA%B8%B0%ED%8C%90/</link>
+      <pubDate>Wed, 10 Jun 2026 12:30:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EB%A7%8C%EB%8A%A5%EA%B8%B0%ED%8C%90/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>APB</title>
+      <link>https://bromine1997.github.io/tags/apb/</link>
+      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/apb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Baud Rate</title>
+      <link>https://bromine1997.github.io/tags/baud-rate/</link>
+      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/baud-rate/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Clock</title>
+      <link>https://bromine1997.github.io/tags/clock/</link>
+      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/clock/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>RCC</title>
+      <link>https://bromine1997.github.io/tags/rcc/</link>
+      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/rcc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>STM32</title>
+      <link>https://bromine1997.github.io/tags/stm32/</link>
+      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/stm32/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>UART</title>
+      <link>https://bromine1997.github.io/tags/uart/</link>
+      <pubDate>Tue, 09 Jun 2026 13:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/uart/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ESP32</title>
+      <link>https://bromine1997.github.io/tags/esp32/</link>
+      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/esp32/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>IoT</title>
+      <link>https://bromine1997.github.io/tags/iot/</link>
+      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/iot/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>재활자전거</title>
+      <link>https://bromine1997.github.io/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/</link>
+      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EC%9E%AC%ED%99%9C%EC%9E%90%EC%A0%84%EA%B1%B0/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>헬스케어</title>
+      <link>https://bromine1997.github.io/tags/%ED%97%AC%EC%8A%A4%EC%BC%80%EC%96%B4/</link>
+      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%ED%97%AC%EC%8A%A4%EC%BC%80%EC%96%B4/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>회고</title>
+      <link>https://bromine1997.github.io/tags/%ED%9A%8C%EA%B3%A0/</link>
+      <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%ED%9A%8C%EA%B3%A0/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ESPAsyncWebServer</title>
+      <link>https://bromine1997.github.io/tags/espasyncwebserver/</link>
+      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/espasyncwebserver/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SPIFFS</title>
+      <link>https://bromine1997.github.io/tags/spiffs/</link>
+      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/spiffs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>WebSocket</title>
+      <link>https://bromine1997.github.io/tags/websocket/</link>
+      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/websocket/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>WiFi</title>
+      <link>https://bromine1997.github.io/tags/wifi/</link>
+      <pubDate>Fri, 05 Jun 2026 20:36:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/wifi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Feather V2</title>
+      <link>https://bromine1997.github.io/tags/feather-v2/</link>
+      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/feather-v2/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>GPIO</title>
+      <link>https://bromine1997.github.io/tags/gpio/</link>
+      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/gpio/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>부팅</title>
+      <link>https://bromine1997.github.io/tags/%EB%B6%80%ED%8C%85/</link>
+      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EB%B6%80%ED%8C%85/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>스트래핑핀</title>
+      <link>https://bromine1997.github.io/tags/%EC%8A%A4%ED%8A%B8%EB%9E%98%ED%95%91%ED%95%80/</link>
+      <pubDate>Thu, 04 Jun 2026 20:52:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EC%8A%A4%ED%8A%B8%EB%9E%98%ED%95%91%ED%95%80/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>HSE</title>
+      <link>https://bromine1997.github.io/tags/hse/</link>
+      <pubDate>Wed, 03 Jun 2026 20:22:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/hse/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>HSI</title>
+      <link>https://bromine1997.github.io/tags/hsi/</link>
+      <pubDate>Wed, 03 Jun 2026 20:22:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/hsi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PLL</title>
+      <link>https://bromine1997.github.io/tags/pll/</link>
+      <pubDate>Wed, 03 Jun 2026 20:22:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/pll/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Android</title>
+      <link>https://bromine1997.github.io/tags/android/</link>
+      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Digital Isolator</title>
+      <link>https://bromine1997.github.io/tags/digital-isolator/</link>
+      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/digital-isolator/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>MRAA</title>
+      <link>https://bromine1997.github.io/tags/mraa/</link>
+      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/mraa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TinkerBoard</title>
+      <link>https://bromine1997.github.io/tags/tinkerboard/</link>
+      <pubDate>Sat, 30 May 2026 20:41:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/tinkerboard/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ARM</title>
+      <link>https://bromine1997.github.io/tags/arm/</link>
+      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/arm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cortex-M</title>
+      <link>https://bromine1997.github.io/tags/cortex-m/</link>
+      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/cortex-m/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Interrupt</title>
+      <link>https://bromine1997.github.io/tags/interrupt/</link>
+      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/interrupt/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ISR</title>
+      <link>https://bromine1997.github.io/tags/isr/</link>
+      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/isr/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>NVIC</title>
+      <link>https://bromine1997.github.io/tags/nvic/</link>
+      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/nvic/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Volatile</title>
+      <link>https://bromine1997.github.io/tags/volatile/</link>
+      <pubDate>Thu, 28 May 2026 20:38:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/volatile/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ADS1232</title>
+      <link>https://bromine1997.github.io/tags/ads1232/</link>
+      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/ads1232/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>로드셀</title>
+      <link>https://bromine1997.github.io/tags/%EB%A1%9C%EB%93%9C%EC%85%80/</link>
+      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EB%A1%9C%EB%93%9C%EC%85%80/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>비트뱅잉</title>
+      <link>https://bromine1997.github.io/tags/%EB%B9%84%ED%8A%B8%EB%B1%85%EC%9E%89/</link>
+      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EB%B9%84%ED%8A%B8%EB%B1%85%EC%9E%89/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>인터럽트</title>
+      <link>https://bromine1997.github.io/tags/%EC%9D%B8%ED%84%B0%EB%9F%BD%ED%8A%B8/</link>
+      <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EC%9D%B8%ED%84%B0%EB%9F%BD%ED%8A%B8/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PSRAM</title>
+      <link>https://bromine1997.github.io/tags/psram/</link>
+      <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/psram/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>데이터수집</title>
+      <link>https://bromine1997.github.io/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%88%98%EC%A7%91/</link>
+      <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%88%98%EC%A7%91/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>임베디드</title>
+      <link>https://bromine1997.github.io/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/</link>
+      <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Boot</title>
+      <link>https://bromine1997.github.io/tags/boot/</link>
+      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/boot/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Reset Handler</title>
+      <link>https://bromine1997.github.io/tags/reset-handler/</link>
+      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/reset-handler/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Startup</title>
+      <link>https://bromine1997.github.io/tags/startup/</link>
+      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/startup/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vector Table</title>
+      <link>https://bromine1997.github.io/tags/vector-table/</link>
+      <pubDate>Thu, 21 May 2026 20:51:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/vector-table/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ADC</title>
+      <link>https://bromine1997.github.io/tags/adc/</link>
+      <pubDate>Wed, 20 May 2026 20:16:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/adc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>AS5600</title>
+      <link>https://bromine1997.github.io/tags/as5600/</link>
+      <pubDate>Wed, 20 May 2026 20:16:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/as5600/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>I2C</title>
+      <link>https://bromine1997.github.io/tags/i2c/</link>
+      <pubDate>Wed, 20 May 2026 20:16:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/i2c/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Biomedical</title>
+      <link>https://bromine1997.github.io/tags/biomedical/</link>
+      <pubDate>Sat, 16 May 2026 20:31:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/biomedical/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pressure Control</title>
+      <link>https://bromine1997.github.io/tags/pressure-control/</link>
+      <pubDate>Sat, 16 May 2026 20:31:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/pressure-control/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Build</title>
+      <link>https://bromine1997.github.io/tags/build/</link>
+      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/build/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ELF</title>
+      <link>https://bromine1997.github.io/tags/elf/</link>
+      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/elf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Linker</title>
+      <link>https://bromine1997.github.io/tags/linker/</link>
+      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/linker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Toolchain</title>
+      <link>https://bromine1997.github.io/tags/toolchain/</link>
+      <pubDate>Thu, 14 May 2026 20:29:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/toolchain/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Barotrauma</title>
+      <link>https://bromine1997.github.io/tags/barotrauma/</link>
+      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/barotrauma/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Logistic Regression</title>
+      <link>https://bromine1997.github.io/tags/logistic-regression/</link>
+      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/logistic-regression/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>MEB</title>
+      <link>https://bromine1997.github.io/tags/meb/</link>
+      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/meb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Monoplace Chamber</title>
+      <link>https://bromine1997.github.io/tags/monoplace-chamber/</link>
+      <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/monoplace-chamber/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Flash</title>
+      <link>https://bromine1997.github.io/tags/flash/</link>
+      <pubDate>Sun, 10 May 2026 20:43:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/flash/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Memory</title>
+      <link>https://bromine1997.github.io/tags/memory/</link>
+      <pubDate>Sun, 10 May 2026 20:43:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/memory/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>RAM</title>
+      <link>https://bromine1997.github.io/tags/ram/</link>
+      <pubDate>Sun, 10 May 2026 20:43:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/ram/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Embedded Systems</title>
+      <link>https://bromine1997.github.io/tags/embedded-systems/</link>
+      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/embedded-systems/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kalman Filter</title>
+      <link>https://bromine1997.github.io/tags/kalman-filter/</link>
+      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/kalman-filter/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sensor Fusion</title>
+      <link>https://bromine1997.github.io/tags/sensor-fusion/</link>
+      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/sensor-fusion/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Signal Processing</title>
+      <link>https://bromine1997.github.io/tags/signal-processing/</link>
+      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/signal-processing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>State Estimation</title>
+      <link>https://bromine1997.github.io/tags/state-estimation/</link>
+      <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/tags/state-estimation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DSP</title>
+      <link>https://bromine1997.github.io/tags/dsp/</link>
       <pubDate>Thu, 07 May 2026 20:17:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/firmware/</guid>
+      <guid>https://bromine1997.github.io/tags/dsp/</guid>
       <description></description>
     </item>
     <item>
       <title>FPGA</title>
-      <link>http://localhost:1313/tags/fpga/</link>
+      <link>https://bromine1997.github.io/tags/fpga/</link>
       <pubDate>Thu, 07 May 2026 20:17:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/fpga/</guid>
+      <guid>https://bromine1997.github.io/tags/fpga/</guid>
       <description></description>
     </item>
     <item>
       <title>MCU</title>
-      <link>http://localhost:1313/tags/mcu/</link>
+      <link>https://bromine1997.github.io/tags/mcu/</link>
       <pubDate>Thu, 07 May 2026 20:17:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/mcu/</guid>
+      <guid>https://bromine1997.github.io/tags/mcu/</guid>
       <description></description>
     </item>
     <item>
       <title>Control</title>
-      <link>http://localhost:1313/tags/control/</link>
+      <link>https://bromine1997.github.io/tags/control/</link>
       <pubDate>Wed, 06 May 2026 20:49:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/control/</guid>
+      <guid>https://bromine1997.github.io/tags/control/</guid>
       <description></description>
     </item>
     <item>
       <title>Tuning</title>
-      <link>http://localhost:1313/tags/tuning/</link>
+      <link>https://bromine1997.github.io/tags/tuning/</link>
       <pubDate>Wed, 06 May 2026 20:49:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/tuning/</guid>
+      <guid>https://bromine1997.github.io/tags/tuning/</guid>
       <description></description>
     </item>
     <item>
       <title>Ziegler-Nichols</title>
-      <link>http://localhost:1313/tags/ziegler-nichols/</link>
+      <link>https://bromine1997.github.io/tags/ziegler-nichols/</link>
       <pubDate>Wed, 06 May 2026 20:49:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/ziegler-nichols/</guid>
+      <guid>https://bromine1997.github.io/tags/ziegler-nichols/</guid>
       <description></description>
     </item>
     <item>
       <title>ATmega</title>
-      <link>http://localhost:1313/tags/atmega/</link>
+      <link>https://bromine1997.github.io/tags/atmega/</link>
       <pubDate>Wed, 29 Apr 2026 20:35:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/atmega/</guid>
+      <guid>https://bromine1997.github.io/tags/atmega/</guid>
       <description></description>
     </item>
     <item>
       <title>ATmega4809</title>
-      <link>http://localhost:1313/tags/atmega4809/</link>
+      <link>https://bromine1997.github.io/tags/atmega4809/</link>
       <pubDate>Wed, 29 Apr 2026 20:35:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/atmega4809/</guid>
+      <guid>https://bromine1997.github.io/tags/atmega4809/</guid>
       <description></description>
     </item>
     <item>
       <title>AVR</title>
-      <link>http://localhost:1313/tags/avr/</link>
+      <link>https://bromine1997.github.io/tags/avr/</link>
       <pubDate>Wed, 29 Apr 2026 20:35:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/avr/</guid>
+      <guid>https://bromine1997.github.io/tags/avr/</guid>
       <description></description>
     </item>
     <item>
       <title>C언어</title>
-      <link>http://localhost:1313/tags/c%EC%96%B8%EC%96%B4/</link>
+      <link>https://bromine1997.github.io/tags/c%EC%96%B8%EC%96%B4/</link>
       <pubDate>Wed, 29 Apr 2026 20:35:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/c%EC%96%B8%EC%96%B4/</guid>
+      <guid>https://bromine1997.github.io/tags/c%EC%96%B8%EC%96%B4/</guid>
       <description></description>
     </item>
     <item>
       <title>Microchip Studio</title>
-      <link>http://localhost:1313/tags/microchip-studio/</link>
+      <link>https://bromine1997.github.io/tags/microchip-studio/</link>
       <pubDate>Wed, 29 Apr 2026 20:35:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/microchip-studio/</guid>
+      <guid>https://bromine1997.github.io/tags/microchip-studio/</guid>
       <description></description>
     </item>
     <item>
       <title>개발환경</title>
-      <link>http://localhost:1313/tags/%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD/</link>
+      <link>https://bromine1997.github.io/tags/%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD/</link>
       <pubDate>Wed, 29 Apr 2026 20:35:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD/</guid>
+      <guid>https://bromine1997.github.io/tags/%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD/</guid>
       <description></description>
     </item>
     <item>
       <title>리팩토링</title>
-      <link>http://localhost:1313/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/</link>
+      <link>https://bromine1997.github.io/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/</link>
       <pubDate>Sat, 25 Apr 2026 20:58:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/</guid>
+      <guid>https://bromine1997.github.io/tags/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81/</guid>
       <description></description>
     </item>
     <item>
       <title>코드리뷰</title>
-      <link>http://localhost:1313/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/</link>
+      <link>https://bromine1997.github.io/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/</link>
       <pubDate>Sat, 25 Apr 2026 20:58:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/</guid>
+      <guid>https://bromine1997.github.io/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/</guid>
       <description></description>
     </item>
     <item>
       <title>BSRR</title>
-      <link>http://localhost:1313/tags/bsrr/</link>
+      <link>https://bromine1997.github.io/tags/bsrr/</link>
       <pubDate>Wed, 22 Apr 2026 20:19:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/bsrr/</guid>
+      <guid>https://bromine1997.github.io/tags/bsrr/</guid>
       <description></description>
     </item>
     <item>
       <title>HAL</title>
-      <link>http://localhost:1313/tags/hal/</link>
+      <link>https://bromine1997.github.io/tags/hal/</link>
       <pubDate>Wed, 22 Apr 2026 20:19:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/hal/</guid>
+      <guid>https://bromine1997.github.io/tags/hal/</guid>
       <description></description>
     </item>
     <item>
       <title>IDR</title>
-      <link>http://localhost:1313/tags/idr/</link>
+      <link>https://bromine1997.github.io/tags/idr/</link>
       <pubDate>Wed, 22 Apr 2026 20:19:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/idr/</guid>
+      <guid>https://bromine1997.github.io/tags/idr/</guid>
       <description></description>
     </item>
     <item>
       <title>Register</title>
-      <link>http://localhost:1313/tags/register/</link>
+      <link>https://bromine1997.github.io/tags/register/</link>
       <pubDate>Wed, 22 Apr 2026 20:19:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/register/</guid>
+      <guid>https://bromine1997.github.io/tags/register/</guid>
       <description></description>
     </item>
     <item>
       <title>STM32F4</title>
-      <link>http://localhost:1313/tags/stm32f4/</link>
+      <link>https://bromine1997.github.io/tags/stm32f4/</link>
       <pubDate>Wed, 22 Apr 2026 20:19:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/stm32f4/</guid>
+      <guid>https://bromine1997.github.io/tags/stm32f4/</guid>
       <description></description>
     </item>
     <item>
       <title>EEPROM</title>
-      <link>http://localhost:1313/tags/eeprom/</link>
+      <link>https://bromine1997.github.io/tags/eeprom/</link>
       <pubDate>Fri, 17 Apr 2026 02:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/eeprom/</guid>
+      <guid>https://bromine1997.github.io/tags/eeprom/</guid>
       <description></description>
     </item>
     <item>
       <title>캘리브레이션</title>
-      <link>http://localhost:1313/tags/%EC%BA%98%EB%A6%AC%EB%B8%8C%EB%A0%88%EC%9D%B4%EC%85%98/</link>
+      <link>https://bromine1997.github.io/tags/%EC%BA%98%EB%A6%AC%EB%B8%8C%EB%A0%88%EC%9D%B4%EC%85%98/</link>
       <pubDate>Fri, 17 Apr 2026 02:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EC%BA%98%EB%A6%AC%EB%B8%8C%EB%A0%88%EC%9D%B4%EC%85%98/</guid>
+      <guid>https://bromine1997.github.io/tags/%EC%BA%98%EB%A6%AC%EB%B8%8C%EB%A0%88%EC%9D%B4%EC%85%98/</guid>
       <description></description>
     </item>
     <item>
       <title>Algorithm</title>
-      <link>http://localhost:1313/tags/algorithm/</link>
+      <link>https://bromine1997.github.io/tags/algorithm/</link>
       <pubDate>Wed, 15 Apr 2026 20:08:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/algorithm/</guid>
+      <guid>https://bromine1997.github.io/tags/algorithm/</guid>
       <description></description>
     </item>
     <item>
       <title>Array</title>
-      <link>http://localhost:1313/tags/array/</link>
+      <link>https://bromine1997.github.io/tags/array/</link>
       <pubDate>Wed, 15 Apr 2026 20:08:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/array/</guid>
+      <guid>https://bromine1997.github.io/tags/array/</guid>
       <description></description>
     </item>
     <item>
       <title>C</title>
-      <link>http://localhost:1313/tags/c/</link>
+      <link>https://bromine1997.github.io/tags/c/</link>
       <pubDate>Wed, 15 Apr 2026 20:08:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/c/</guid>
+      <guid>https://bromine1997.github.io/tags/c/</guid>
       <description></description>
     </item>
     <item>
       <title>Data-Structure</title>
-      <link>http://localhost:1313/tags/data-structure/</link>
+      <link>https://bromine1997.github.io/tags/data-structure/</link>
       <pubDate>Wed, 15 Apr 2026 20:08:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/data-structure/</guid>
+      <guid>https://bromine1997.github.io/tags/data-structure/</guid>
       <description></description>
     </item>
     <item>
       <title>Malloc</title>
-      <link>http://localhost:1313/tags/malloc/</link>
+      <link>https://bromine1997.github.io/tags/malloc/</link>
       <pubDate>Wed, 15 Apr 2026 20:08:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/malloc/</guid>
+      <guid>https://bromine1997.github.io/tags/malloc/</guid>
       <description></description>
     </item>
     <item>
       <title>Arduino</title>
-      <link>http://localhost:1313/tags/arduino/</link>
+      <link>https://bromine1997.github.io/tags/arduino/</link>
       <pubDate>Sat, 11 Apr 2026 20:55:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/arduino/</guid>
+      <guid>https://bromine1997.github.io/tags/arduino/</guid>
       <description></description>
     </item>
     <item>
       <title>C&#43;&#43;</title>
-      <link>http://localhost:1313/tags/c&#43;&#43;/</link>
+      <link>https://bromine1997.github.io/tags/c&#43;&#43;/</link>
       <pubDate>Sat, 11 Apr 2026 20:55:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/c&#43;&#43;/</guid>
+      <guid>https://bromine1997.github.io/tags/c&#43;&#43;/</guid>
       <description></description>
     </item>
     <item>
       <title>Main</title>
-      <link>http://localhost:1313/tags/main/</link>
+      <link>https://bromine1997.github.io/tags/main/</link>
       <pubDate>Sat, 11 Apr 2026 20:55:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/main/</guid>
+      <guid>https://bromine1997.github.io/tags/main/</guid>
       <description></description>
     </item>
     <item>
       <title>부트로더</title>
-      <link>http://localhost:1313/tags/%EB%B6%80%ED%8A%B8%EB%A1%9C%EB%8D%94/</link>
+      <link>https://bromine1997.github.io/tags/%EB%B6%80%ED%8A%B8%EB%A1%9C%EB%8D%94/</link>
       <pubDate>Sat, 11 Apr 2026 20:55:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/%EB%B6%80%ED%8A%B8%EB%A1%9C%EB%8D%94/</guid>
+      <guid>https://bromine1997.github.io/tags/%EB%B6%80%ED%8A%B8%EB%A1%9C%EB%8D%94/</guid>
       <description></description>
     </item>
     <item>
       <title>Adafruit</title>
-      <link>http://localhost:1313/tags/adafruit/</link>
+      <link>https://bromine1997.github.io/tags/adafruit/</link>
       <pubDate>Wed, 08 Apr 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/adafruit/</guid>
+      <guid>https://bromine1997.github.io/tags/adafruit/</guid>
       <description></description>
     </item>
     <item>
       <title>ESP32FeatherV2</title>
-      <link>http://localhost:1313/tags/esp32featherv2/</link>
+      <link>https://bromine1997.github.io/tags/esp32featherv2/</link>
       <pubDate>Wed, 08 Apr 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/esp32featherv2/</guid>
+      <guid>https://bromine1997.github.io/tags/esp32featherv2/</guid>
       <description></description>
     </item>
     <item>
       <title>Wi-Fi</title>
-      <link>http://localhost:1313/tags/wi-fi/</link>
+      <link>https://bromine1997.github.io/tags/wi-fi/</link>
       <pubDate>Wed, 08 Apr 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/tags/wi-fi/</guid>
+      <guid>https://bromine1997.github.io/tags/wi-fi/</guid>
       <description></description>
     </item>
     <item>
       <title>NestJS</title>
-      <link>http://localhost:1313/tags/nestjs/</link>
+      <link>https://bromine1997.github.io/tags/nestjs/</link>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/nestjs/</guid>
+      <guid>https://bromine1997.github.io/tags/nestjs/</guid>
       <description></description>
     </item>
     <item>
       <title>석사논문</title>
-      <link>http://localhost:1313/tags/%EC%84%9D%EC%82%AC%EB%85%BC%EB%AC%B8/</link>
+      <link>https://bromine1997.github.io/tags/%EC%84%9D%EC%82%AC%EB%85%BC%EB%AC%B8/</link>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/%EC%84%9D%EC%82%AC%EB%85%BC%EB%AC%B8/</guid>
+      <guid>https://bromine1997.github.io/tags/%EC%84%9D%EC%82%AC%EB%85%BC%EB%AC%B8/</guid>
       <description></description>
     </item>
   </channel>

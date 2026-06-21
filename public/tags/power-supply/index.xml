@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Power Supply on bromine1997</title>
+    <link>https://bromine1997.github.io/tags/power-supply/</link>
+    <description>Recent content in Power Supply on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Sat, 13 Jun 2026 12:00:00 +0900</lastBuildDate>
+    <atom:link href="https://bromine1997.github.io/tags/power-supply/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HBOT 챔버 PCB 전원부 설계: 24V→5V→3.3V와 절연</title>
+      <link>https://bromine1997.github.io/posts/basics/hbot-power-supply/</link>
+      <pubDate>Sat, 13 Jun 2026 12:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/posts/basics/hbot-power-supply/</guid>
+      <description>HBOT 챔버 제어 PCB에서 24V→5V(스위칭)→3.3V(LDO) 전원 설계와 ADUM1400/1200, ISO7421, VO1400AEFTR를 이용한 절연 설계를 정리했다.</description>
+    </item>
+  </channel>
+</rss>

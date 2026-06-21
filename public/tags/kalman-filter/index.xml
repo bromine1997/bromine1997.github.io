@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Kalman Filter on bromine1997</title>
-    <link>http://localhost:1313/tags/kalman-filter/</link>
+    <link>https://bromine1997.github.io/tags/kalman-filter/</link>
     <description>Recent content in Kalman Filter on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Sat, 09 May 2026 20:07:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/kalman-filter/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/kalman-filter/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</title>
-      <link>http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/</link>
+      <link>https://bromine1997.github.io/posts/paper-review/kalman-filter-intuitive-derivation/</link>
       <pubDate>Sat, 09 May 2026 20:07:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/</guid>
+      <guid>https://bromine1997.github.io/posts/paper-review/kalman-filter-intuitive-derivation/</guid>
       <description>가우시안 곱셈 성질만으로 칼만 필터 측정 업데이트 방정식을 유도하는 직관적 접근법 — 펌웨어 구현 관점에서 분석</description>
     </item>
   </channel>

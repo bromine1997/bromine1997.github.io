@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>FPGA on bromine1997</title>
-    <link>http://localhost:1313/tags/fpga/</link>
+    <link>https://bromine1997.github.io/tags/fpga/</link>
     <description>Recent content in FPGA on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Thu, 07 May 2026 20:17:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/fpga/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/fpga/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</title>
-      <link>http://localhost:1313/posts/basics/embedded-01-what-is-embedded/</link>
+      <link>https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/</link>
       <pubDate>Thu, 07 May 2026 20:17:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/basics/embedded-01-what-is-embedded/</guid>
+      <guid>https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/</guid>
       <description>임베디드 시스템과 펌웨어의 정의, 일반 소프트웨어와의 차이, 그리고 MCU/DSP/FPGA 비교까지 기초 개념을 정리한다.</description>
     </item>
   </channel>

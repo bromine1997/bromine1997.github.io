@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>MEB on bromine1997</title>
-    <link>http://localhost:1313/tags/meb/</link>
+    <link>https://bromine1997.github.io/tags/meb/</link>
     <description>Recent content in MEB on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Wed, 13 May 2026 20:44:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/meb/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/meb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</title>
-      <link>http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/</link>
+      <link>https://bromine1997.github.io/posts/paper-review/review-lee2025-hbot-meb/</link>
       <pubDate>Wed, 13 May 2026 20:44:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/</guid>
+      <guid>https://bromine1997.github.io/posts/paper-review/review-lee2025-hbot-meb/</guid>
       <description>1인용 HBOT(monoplace chamber)을 받은 296명 환자를 대상으로 MEB의 독립적 위험 인자를 multivariable logistic regression으로 분석한 연구</description>
     </item>
   </channel>

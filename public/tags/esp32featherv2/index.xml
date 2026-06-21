@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>ESP32FeatherV2 on bromine1997</title>
-    <link>http://localhost:1313/tags/esp32featherv2/</link>
+    <link>https://bromine1997.github.io/tags/esp32featherv2/</link>
     <description>Recent content in ESP32FeatherV2 on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Wed, 08 Apr 2026 20:31:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/esp32featherv2/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/esp32featherv2/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ESP32가 뭐길래?</title>
-      <link>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-intro-feather-v2/</link>
       <pubDate>Wed, 08 Apr 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-intro-feather-v2/</guid>
       <description>코끼리 재활자전거 IoT 프로젝트의 핵심이었던 ESP32, 그 중에서도 ESP32 Feather V2를 선택한 이유와 실제로 써보면서 느낀 장단점을 정리했다.</description>
     </item>
   </channel>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>NestJS on bromine1997</title>
-    <link>http://localhost:1313/tags/nestjs/</link>
+    <link>https://bromine1997.github.io/tags/nestjs/</link>
     <description>Recent content in NestJS on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Mon, 01 Jan 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/nestjs/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/nestjs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>IoT 고압산소챔버 시스템</title>
-      <link>http://localhost:1313/projects/hbot-chamber/</link>
+      <link>https://bromine1997.github.io/projects/hbot-chamber/</link>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/hbot-chamber/</guid>
+      <guid>https://bromine1997.github.io/projects/hbot-chamber/</guid>
       <description>Tinker Board 2S 기반 고압산소챔버 원격 제어 및 모니터링 시스템. Android 앱 + NestJS 서버 + Vue3 대시보드로 구성된 풀스택 IoT 플랫폼. 석사 학위논문 프로젝트.</description>
     </item>
   </channel>

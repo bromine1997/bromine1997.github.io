@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>임베디드 on bromine1997</title>
-    <link>http://localhost:1313/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/</link>
+    <link>https://bromine1997.github.io/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/</link>
     <description>Recent content in 임베디드 on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Sat, 23 May 2026 20:53:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PSRAM 버퍼링과 센서 데이터 저장 구조</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/</link>
       <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/</guid>
       <description>40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.</description>
     </item>
     <item>
       <title>시작하며</title>
-      <link>http://localhost:1313/posts/atmega/atmega-code-review-intro/</link>
+      <link>https://bromine1997.github.io/posts/atmega/atmega-code-review-intro/</link>
       <pubDate>Sat, 25 Apr 2026 20:58:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/atmega/atmega-code-review-intro/</guid>
-      <description>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작합니다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정입니다.</description>
+      <guid>https://bromine1997.github.io/posts/atmega/atmega-code-review-intro/</guid>
+      <description>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작한다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정이다.</description>
     </item>
     <item>
       <title>setup()과 loop()는 어떻게 실행되는가</title>
-      <link>http://localhost:1313/posts/esp32/esp32-setup-loop-internals/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-setup-loop-internals/</link>
       <pubDate>Sat, 11 Apr 2026 20:55:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-setup-loop-internals/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-setup-loop-internals/</guid>
       <description>ESP32를 Arduino IDE로 개발하면 setup()과 loop()만 보인다. 그런데 실제로 전원이 켜진 순간부터 loop()가 돌기까지, 내부에서는 어떤 일이 일어날까.</description>
     </item>
     <item>
       <title>상하지 재활 자전거 모니터링 시스템</title>
-      <link>http://localhost:1313/projects/rehab-bicycle/</link>
+      <link>https://bromine1997.github.io/projects/rehab-bicycle/</link>
       <pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/rehab-bicycle/</guid>
+      <guid>https://bromine1997.github.io/projects/rehab-bicycle/</guid>
       <description>ESP32 Feather V2 기반 4채널 로드셀 동기화 수집 시스템. ADS1232 × 4로 팔·다리 페달 힘을 동시 측정하고 WebSocket 기반 브라우저 실시간 모니터링을 제공한다.</description>
     </item>
     <item>
       <title>ATmega4809 Peripheral Driver</title>
-      <link>http://localhost:1313/projects/atmega4809/</link>
+      <link>https://bromine1997.github.io/projects/atmega4809/</link>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/atmega4809/</guid>
+      <guid>https://bromine1997.github.io/projects/atmega4809/</guid>
       <description>연세대학교 마이크로컴퓨터시스템 수업 실습 프로젝트. 커스텀 PCB 직접 납땜 후 ATmega4809 주변장치 드라이버를 외부 라이브러리 없이 레지스터 수준에서 구현.</description>
     </item>
   </channel>

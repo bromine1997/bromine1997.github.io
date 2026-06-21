@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>IoT on bromine1997</title>
-    <link>http://localhost:1313/tags/iot/</link>
+    <link>https://bromine1997.github.io/tags/iot/</link>
     <description>Recent content in IoT on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Fri, 05 Jun 2026 21:22:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/iot/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/iot/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-retrospective/</link>
       <pubDate>Fri, 05 Jun 2026 21:22:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-retrospective/</guid>
       <description>전자공학회 구두 발표까지 이어진 상하지 재활 자전거 모니터링 시스템 개발 과정을 연구 배경부터 시스템 설계, 기술적 선택, 한계까지 정리했다.</description>
     </item>
     <item>
       <title>ESP32가 뭐길래?</title>
-      <link>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-intro-feather-v2/</link>
       <pubDate>Wed, 08 Apr 2026 20:31:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-intro-feather-v2/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-intro-feather-v2/</guid>
       <description>코끼리 재활자전거 IoT 프로젝트의 핵심이었던 ESP32, 그 중에서도 ESP32 Feather V2를 선택한 이유와 실제로 써보면서 느낀 장단점을 정리했다.</description>
     </item>
     <item>
       <title>IoT 고압산소챔버 시스템</title>
-      <link>http://localhost:1313/projects/hbot-chamber/</link>
+      <link>https://bromine1997.github.io/projects/hbot-chamber/</link>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/hbot-chamber/</guid>
+      <guid>https://bromine1997.github.io/projects/hbot-chamber/</guid>
       <description>Tinker Board 2S 기반 고압산소챔버 원격 제어 및 모니터링 시스템. Android 앱 + NestJS 서버 + Vue3 대시보드로 구성된 풀스택 IoT 플랫폼. 석사 학위논문 프로젝트.</description>
     </item>
   </channel>

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>코드리뷰 on bromine1997</title>
-    <link>http://localhost:1313/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/</link>
+    <link>https://bromine1997.github.io/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/</link>
     <description>Recent content in 코드리뷰 on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Sat, 25 Apr 2026 20:58:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>시작하며</title>
-      <link>http://localhost:1313/posts/atmega/atmega-code-review-intro/</link>
+      <link>https://bromine1997.github.io/posts/atmega/atmega-code-review-intro/</link>
       <pubDate>Sat, 25 Apr 2026 20:58:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/atmega/atmega-code-review-intro/</guid>
-      <description>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작합니다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정입니다.</description>
+      <guid>https://bromine1997.github.io/posts/atmega/atmega-code-review-intro/</guid>
+      <description>학부 시절 ATmega4809로 작성했던 펌웨어 코드를 다시 꺼내 코드리뷰 형태로 정리하는 시리즈를 시작한다. 단순히 동작하는 코드가 아닌, 잘 짜여진 코드를 찾아가는 과정이다.</description>
     </item>
   </channel>
 </rss>

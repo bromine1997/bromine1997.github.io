@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Peak-and-Hold on bromine1997</title>
+    <link>https://bromine1997.github.io/tags/peak-and-hold/</link>
+    <description>Recent content in Peak-and-Hold on bromine1997</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Fri, 12 Jun 2026 21:00:00 +0900</lastBuildDate>
+    <atom:link href="https://bromine1997.github.io/tags/peak-and-hold/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DRV110으로 솔레노이드 밸브 전력 낭비 줄이기</title>
+      <link>https://bromine1997.github.io/posts/basics/drv110-solenoid-driver/</link>
+      <pubDate>Fri, 12 Jun 2026 21:00:00 +0900</pubDate>
+      <guid>https://bromine1997.github.io/posts/basics/drv110-solenoid-driver/</guid>
+      <description>솔레노이드 밸브의 동작 원리를 이해하고, 피크-앤-홀드 구동 방식으로 소비전력을 66% 줄인 과정을 정리했다. HBOT 챔버 밸브 제어에 DRV110을 적용한 실제 사례.</description>
+    </item>
+  </channel>
+</rss>

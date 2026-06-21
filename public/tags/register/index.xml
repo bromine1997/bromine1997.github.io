@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Register on bromine1997</title>
-    <link>http://localhost:1313/tags/register/</link>
+    <link>https://bromine1997.github.io/tags/register/</link>
     <description>Recent content in Register on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Wed, 22 Apr 2026 20:19:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/register/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/register/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</title>
-      <link>http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/</link>
+      <link>https://bromine1997.github.io/posts/stm32/stm32-hal-gpio-internals/</link>
       <pubDate>Wed, 22 Apr 2026 20:19:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/</guid>
+      <guid>https://bromine1997.github.io/posts/stm32/stm32-hal-gpio-internals/</guid>
       <description>HAL_GPIO_ReadPin()과 HAL_GPIO_WritePin()이 내부에서 어떻게 동작하는지 분석하고, ODR 대신 BSRR을 사용하는 이유와 레지스터 직접 제어 방법까지 정리한 글</description>
     </item>
     <item>
       <title>GPIO 기본개념 및 입출력 실습</title>
-      <link>http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/</link>
+      <link>https://bromine1997.github.io/posts/stm32/stm32-gpio-basic-with-image-placeholders/</link>
       <pubDate>Sat, 18 Apr 2026 20:42:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/</guid>
+      <guid>https://bromine1997.github.io/posts/stm32/stm32-gpio-basic-with-image-placeholders/</guid>
       <description>GPIO의 기본 개념과 Push-Pull, Open-Drain, Pull-up, Pull-down, 그리고 STM32F411 Nucleo에서 버튼 입력과 LED 출력을 실습한 글</description>
     </item>
   </channel>

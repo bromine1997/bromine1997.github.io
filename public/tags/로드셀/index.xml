@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>로드셀 on bromine1997</title>
-    <link>http://localhost:1313/tags/%EB%A1%9C%EB%93%9C%EC%85%80/</link>
+    <link>https://bromine1997.github.io/tags/%EB%A1%9C%EB%93%9C%EC%85%80/</link>
     <description>Recent content in 로드셀 on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Wed, 27 May 2026 20:28:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/%EB%A1%9C%EB%93%9C%EC%85%80/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/%EB%A1%9C%EB%93%9C%EC%85%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>4개의 로드셀을 동시에 측정하기 - 소프트웨어</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-isr/</link>
       <pubDate>Wed, 27 May 2026 20:28:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-isr/</guid>
       <description>ADS1232 4채널을 왜 Hardware SPI 대신 GPIO 인터럽트로 읽었는가. IRAM_ATTR가 필요한 이유, 4채널 동시 비트 수집 구조, 24비트 2의 보수 부호 처리까지 정리했다.</description>
     </item>
     <item>
       <title>PSRAM 버퍼링과 센서 데이터 저장 구조</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/</link>
       <pubDate>Sat, 23 May 2026 20:53:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/</guid>
       <description>40 SPS로 4채널 센서 데이터를 최대 36분간 끊김 없이 기록하기 위해 PSRAM을 버퍼로 사용했다. 구조체 설계부터 포인터 기반 저장, 분할 전송, 실시간 표시 분리까지 정리했다.</description>
     </item>
     <item>
       <title>4개의 로드셀을 동시에 측정하기 - 하드웨어</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-hardware/</link>
       <pubDate>Wed, 20 May 2026 20:16:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-hardware/</guid>
       <description>ESP32 내장 ADC 대신 ADS1232를 4개 사용해 로드셀 4채널을 동시에 측정한 이유, 그리고 크랭크 각도를 측정하는 AS5600까지. 하드웨어 설계 과정을 정리했다.</description>
     </item>
     <item>
       <title>로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</title>
-      <link>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-calibration/</link>
       <pubDate>Fri, 17 Apr 2026 02:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-calibration/</guid>
       <description>ADS1232 4채널 로드셀과 AS5600 각도 센서의 영점을 버튼 하나로 잡고, 분동으로 게인을 맞추고, EEPROM에 저장해 전원을 꺼도 유지되게 한 과정을 정리했다.</description>
     </item>
   </channel>

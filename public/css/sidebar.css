@@ -17,7 +17,7 @@
 /* list 페이지 main 너비 */
 html body.list main.main {
   max-width: 1160px !important;
-  padding: 0 1.5rem !important;
+  padding: 1.5rem !important;  /* 상하 1.5rem: 헤더 간격 확보 + 좌우 컬럼 시작점 일치 */
 }
 
 /* 콘텐츠 컬럼이 절대 사이드바를 밀지 못하게 */
@@ -35,7 +35,7 @@ article.post-single {
   top: calc(var(--header-height, 60px) + 1rem);
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: var(--card-gap, 1.2rem);
 }
 
 /* ── 프로필 카드 ────────────────────────────────────────── */
@@ -44,7 +44,7 @@ article.post-single {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 1.4rem 1rem !important;
+  padding: 1.4rem 1rem;
   gap: 0;
 }
 
@@ -104,6 +104,15 @@ article.post-single {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0.9rem 1.1rem;
+}
+
+/* 카테고리 섹션 — 최소 높이 확보 + 내용 세로 중앙 정렬
+   → 포스트 카드가 섹션 쌍보다 항상 짧도록 보장 (JS min-height가 효과 있으려면 필수) */
+.sidebar-section:not(.sidebar-profile) {
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sidebar-title {
@@ -246,6 +255,14 @@ article.post-single {
 .sidebar-cat-list {
   padding-left: 0.5rem;
   margin-top: 0.1rem;
+}
+
+/* ── 다크모드 보정 ──────────────────────────────────────── */
+:root[data-theme="dark"] .sidebar-count {
+  background: var(--tertiary);   /* 어두운 배경에서 뱃지 가시성 확보 */
+}
+:root[data-theme="dark"] .sidebar-cat-header::before {
+  color: var(--primary);         /* 화살표 대비 향상 */
 }
 
 /* ── 모바일 ─────────────────────────────────────────────── */

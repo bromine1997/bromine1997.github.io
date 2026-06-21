@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -9,16 +9,16 @@
 <meta name="keywords" content="embedded, firmware, MCU, DSP, FPGA">
 <meta name="description" content="임베디드 시스템과 펌웨어의 정의, 일반 소프트웨어와의 차이, 그리고 MCU/DSP/FPGA 비교까지 기초 개념을 정리한다.">
 <meta name="author" content="서보민">
-<link rel="canonical" href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/">
+<link rel="canonical" href="https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.af4fd10edced5cde27845f6d5fb13fe22f91519ea59c982a3d07e0dd4ec2d891.css" integrity="sha256-r0/RDtztXN4nhF9tX7E/4i&#43;RUZ6lnJgqPQfg3U7C2JE=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://bromine1997.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://bromine1997.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://bromine1997.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://bromine1997.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://bromine1997.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/">
+<link rel="alternate" hreflang="en" href="https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/">
 <noscript>
     <style>
         #theme-toggle,
@@ -73,8 +73,75 @@
 </script><link rel="stylesheet" href="/css/custom.css">
 <link rel="stylesheet" href="/css/sidebar.css">
 
+<script>
+function alignHomeLayout() {
+  var homeInfo = document.querySelector('.first-entry.home-info');
+  var posts    = Array.from(document.querySelectorAll('.post-entry'));
 
-<meta property="og:url" content="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/">
+  
+  if (window.innerWidth <= 900) {
+    if (homeInfo) homeInfo.style.minHeight = '';
+    posts.forEach(function(p) { p.style.minHeight = ''; });
+    return;
+  }
+
+  var sidebar = document.querySelector('.sidebar');
+  if (!sidebar) return;
+
+  var profile     = sidebar.querySelector('.sidebar-profile');
+  var catSections = Array.from(sidebar.querySelectorAll('.sidebar-section:not(.sidebar-profile)'));
+
+  
+  if (homeInfo) homeInfo.style.minHeight = '';
+  posts.forEach(function(p) { p.style.minHeight = ''; });
+
+  
+  if (profile && homeInfo) {
+    homeInfo.style.minHeight = profile.offsetHeight + 'px';
+  }
+
+  
+  
+  var sidebarGap = parseFloat(getComputedStyle(sidebar).gap) || 19.2;
+  posts.forEach(function(post, i) {
+    var sec1 = catSections[i * 2];
+    var sec2 = catSections[i * 2 + 1];
+    if (!sec1) return;
+    var h = sec1.offsetHeight + (sec2 ? sidebarGap + sec2.offsetHeight : 0);
+    if (h > 0) post.style.minHeight = h + 'px';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', alignHomeLayout);
+window.addEventListener('load', alignHomeLayout);
+window.addEventListener('resize', alignHomeLayout);
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(alignHomeLayout);
+}
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  
+  var active = document.querySelector('.sidebar-link.active');
+  if (active) {
+    var details = active.closest('details.sidebar-category');
+    if (details) details.open = true;
+  }
+
+  
+  document.querySelectorAll('.post-content table').forEach(function (t) {
+    var wrap = document.createElement('div');
+    wrap.className = 'table-scroll-wrap';
+    t.parentNode.insertBefore(wrap, t);
+    wrap.appendChild(t);
+  });
+});
+</script>
+
+
+<meta property="og:url" content="https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/">
   <meta property="og:site_name" content="bromine1997">
   <meta property="og:title" content="임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가">
   <meta property="og:description" content="임베디드 시스템과 펌웨어의 정의, 일반 소프트웨어와의 차이, 그리고 MCU/DSP/FPGA 비교까지 기초 개념을 정리한다.">
@@ -103,19 +170,19 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "http://localhost:1313/posts/"
+      "item": "https://bromine1997.github.io/posts/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "임베디드 기초",
-      "item": "http://localhost:1313/posts/basics/"
+      "item": "https://bromine1997.github.io/posts/basics/"
     }, 
     {
       "@type": "ListItem",
       "position":  3 ,
       "name": "임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가",
-      "item": "http://localhost:1313/posts/basics/embedded-01-what-is-embedded/"
+      "item": "https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/"
     }
   ]
 }
@@ -141,14 +208,14 @@
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "http://localhost:1313/posts/basics/embedded-01-what-is-embedded/"
+    "@id": "https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "bromine1997",
     "logo": {
       "@type": "ImageObject",
-      "url": "http://localhost:1313/favicon.ico"
+      "url": "https://bromine1997.github.io/favicon.ico"
     }
   }
 }
@@ -158,7 +225,7 @@
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
+            <a href="https://bromine1997.github.io/" accesskey="h" title="bromine1997 (Alt + H)">bromine1997</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -184,56 +251,51 @@
         </div>
         <ul id="menu">
             <li class="has-dropdown">
-                <a href="http://localhost:1313/categories/embedded/" title="Embedded">
+                <a href="https://bromine1997.github.io/" title="Embedded">
                     <span>Embedded<span class="dropdown-caret">▾</span>
                     </span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="http://localhost:1313/posts/basics/" title="Basics">
+                        <a href="https://bromine1997.github.io/posts/basics/" title="Basics">
                             <span>Basics</span>
                         </a>
                     </li>
                     <li>
-                        <a href="http://localhost:1313/posts/esp32/" title="ESP32">
+                        <a href="https://bromine1997.github.io/posts/esp32/" title="ESP32">
                             <span>ESP32</span>
                         </a>
                     </li>
                     <li>
-                        <a href="http://localhost:1313/posts/stm32/" title="STM32">
+                        <a href="https://bromine1997.github.io/posts/stm32/" title="STM32">
                             <span>STM32</span>
                         </a>
                     </li>
                     <li>
-                        <a href="http://localhost:1313/posts/atmega/" title="ATmega">
+                        <a href="https://bromine1997.github.io/posts/atmega/" title="ATmega">
                             <span>ATmega</span>
                         </a>
                     </li>
                     <li>
-                        <a href="http://localhost:1313/posts/troubleshooting/" title="Troubleshooting">
+                        <a href="https://bromine1997.github.io/posts/troubleshooting/" title="Troubleshooting">
                             <span>Troubleshooting</span>
                         </a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="http://localhost:1313/categories/algorithm/" title="Algorithm">
+                <a href="https://bromine1997.github.io/categories/algorithm/" title="Algorithm">
                     <span>Algorithm</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/categories/paper-review/" title="Paper Review">
+                <a href="https://bromine1997.github.io/categories/paper-review/" title="Paper Review">
                     <span>Paper Review</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/projects/" title="Projects">
+                <a href="https://bromine1997.github.io/projects/" title="Projects">
                     <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/search/" title="Search">
-                    <span>Search</span>
                 </a>
             </li>
         </ul>
@@ -256,6 +318,15 @@
           <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
         </svg>
       </a>
+      <a href="https://bromine1997.github.io/portfolio/" target="_blank" rel="noopener" aria-label="Portfolio">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <line x1="10" y1="9" x2="8" y2="9"/>
+        </svg>
+      </a>
     </div>
   </section>
 
@@ -268,7 +339,7 @@
       </summary>
       <ul class="sidebar-list sidebar-cat-list">
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/algorithm/algorithm-01-array/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/algorithm/algorithm-01-array/" class="sidebar-link">
             <span class="sidebar-item-title">자료구조 1편 - 배열과 동적 배열: 메모리를 직접 다루다</span>
           </a>
         </li>
@@ -283,12 +354,12 @@
       </summary>
       <ul class="sidebar-list sidebar-cat-list">
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/atmega/atmega-code-review-01-environment/" class="sidebar-link">
             <span class="sidebar-item-title">MCU 소개 및 개발환경 설정</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/atmega/atmega-code-review-intro/" class="sidebar-link">
             <span class="sidebar-item-title">시작하며</span>
           </a>
         </li>
@@ -303,42 +374,42 @@
       </summary>
       <ul class="sidebar-list sidebar-cat-list">
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-retrospective/" class="sidebar-link">
             <span class="sidebar-item-title">상하지 재활 자전거 모니터링 시스템 — 프로젝트를 돌아보며</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-websocket/" class="sidebar-link">
             <span class="sidebar-item-title">Wi-Fi, WebSocket, 실시간 UI와 데이터 저장</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-isr/" class="sidebar-link">
             <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 소프트웨어</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-psram/" class="sidebar-link">
             <span class="sidebar-item-title">PSRAM 버퍼링과 센서 데이터 저장 구조</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-hardware/" class="sidebar-link">
             <span class="sidebar-item-title">4개의 로드셀을 동시에 측정하기 - 하드웨어</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/esp32/esp32-rehabilitation-bicycle-calibration/" class="sidebar-link">
             <span class="sidebar-item-title">로드셀 영점 잡기와 분동 캘리브레이션 - EEPROM으로 저장하기</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/esp32/esp32-setup-loop-internals/" class="sidebar-link">
             <span class="sidebar-item-title">setup()과 loop()는 어떻게 실행되는가</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/esp32/esp32-intro-feather-v2/" class="sidebar-link">
             <span class="sidebar-item-title">ESP32가 뭐길래?</span>
           </a>
         </li>
@@ -353,27 +424,27 @@
       </summary>
       <ul class="sidebar-list sidebar-cat-list">
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/paper-review/review-naaji2026-hbot/" class="sidebar-link">
             <span class="sidebar-item-title">Advances in Hyperbaric Oxygen Therapy: Medical Benefits and Technical Perspectives</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/paper-review/review-lee2025-hbot-meb/" class="sidebar-link">
             <span class="sidebar-item-title">Risk Factors Associated with Middle Ear Barotrauma in Patients Undergoing Monoplace Hyperbaric Oxygen Therapy</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/paper-review/kalman-filter-intuitive-derivation/" class="sidebar-link">
             <span class="sidebar-item-title">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/paper-review/zn-paper-review/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/paper-review/zn-paper-review/" class="sidebar-link">
             <span class="sidebar-item-title">Optimum Settings for Automatic Controllers</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/paper-review/pid-paper-review/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/paper-review/pid-paper-review/" class="sidebar-link">
             <span class="sidebar-item-title">PID Control System Analysis, Design, and Technology</span>
           </a>
         </li>
@@ -388,12 +459,12 @@
       </summary>
       <ul class="sidebar-list sidebar-cat-list">
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/stm32/stm32-hal-gpio-internals/" class="sidebar-link">
             <span class="sidebar-item-title">HAL GPIO 내부 뜯어보기 및 레지스터 직접 제어</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/stm32/stm32-gpio-basic-with-image-placeholders/" class="sidebar-link">
             <span class="sidebar-item-title">GPIO 기본개념 및 입출력 실습</span>
           </a>
         </li>
@@ -408,22 +479,22 @@
       </summary>
       <ul class="sidebar-list sidebar-cat-list">
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/troubleshooting/ad5420-daisy-chain-dummy-data/" class="sidebar-link">
             <span class="sidebar-item-title">AD5420 Daisy Chain 출력이 안 나온 이유 — 오실로스코프로 쓰레기값을 잡기까지</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/troubleshooting/ad5420-exposed-pad-short/" class="sidebar-link">
             <span class="sidebar-item-title">만능기판 테스트 중 계속 발열이 생긴 이유</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/troubleshooting/esp32-gpio12-strapping-pin/" class="sidebar-link">
             <span class="sidebar-item-title">GPIO 12에 외부 회로를 연결했더니 부팅이 안 됐다</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/troubleshooting/tinkerboard2s-spi-frequency-issue/" class="sidebar-link">
             <span class="sidebar-item-title">SPI 파형이 왜곡됐던 이유 — Digital Isolator 주파수 제한</span>
           </a>
         </li>
@@ -434,41 +505,56 @@
     <details class="sidebar-category">
       <summary class="sidebar-cat-header">
         <span class="sidebar-cat-name">임베디드 기초</span>
-        <span class="sidebar-count">7</span>
+        <span class="sidebar-count">10</span>
       </summary>
       <ul class="sidebar-list sidebar-cat-list">
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/basics/hbot-power-supply/" class="sidebar-link">
+            <span class="sidebar-item-title">HBOT 챔버 PCB 전원부 설계: 24V→5V→3.3V와 절연</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="https://bromine1997.github.io/posts/basics/drv110-solenoid-driver/" class="sidebar-link">
+            <span class="sidebar-item-title">DRV110으로 솔레노이드 밸브 전력 낭비 줄이기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="https://bromine1997.github.io/posts/basics/pid-control-basics/" class="sidebar-link">
+            <span class="sidebar-item-title">PID 제어 이론 기초: 고압산소챔버 압력 제어로 이해하기</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="https://bromine1997.github.io/posts/basics/embedded-07-clock-rcc-advanced/" class="sidebar-link">
             <span class="sidebar-item-title">임베디드 기초 7편 - 클럭 심화: 보드레이트와 SPI 속도는 어떻게 계산되는가</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/basics/embedded-06-clock-rcc/" class="sidebar-link">
             <span class="sidebar-item-title">임베디드 기초 6편 - 클럭 트리와 RCC: 주파수는 어디서 오는가</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/basics/embedded-05-interrupt-nvic/" class="sidebar-link">
             <span class="sidebar-item-title">임베디드 기초 5편 - 인터럽트와 NVIC: CPU를 기다리게 하지 마라</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/basics/embedded-04-boot-process/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/basics/embedded-04-boot-process/" class="sidebar-link">
             <span class="sidebar-item-title">임베디드 기초 4편 - ARM Cortex-M 부팅 과정: 전원 인가에서 main()까지</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/basics/embedded-03-build-process/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/basics/embedded-03-build-process/" class="sidebar-link">
             <span class="sidebar-item-title">임베디드 기초 3편 - 빌드 과정: 소스 코드가 플래시에 올라가기까지</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
+          <a href="https://bromine1997.github.io/posts/basics/embedded-02-memory-structure/" class="sidebar-link">
             <span class="sidebar-item-title">임베디드 기초 2편 - 메모리 구조와 변수 저장 원리</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a href="http://localhost:1313/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link active">
+          <a href="https://bromine1997.github.io/posts/basics/embedded-01-what-is-embedded/" class="sidebar-link active">
             <span class="sidebar-item-title">임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가</span>
           </a>
         </li>
@@ -481,7 +567,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/basics/">임베디드 기초</a></div>
+    <div class="breadcrumbs"><a href="https://bromine1997.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://bromine1997.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://bromine1997.github.io/posts/basics/">임베디드 기초</a></div>
     <h1 class="post-title entry-hint-parent">
       임베디드 기초 1편 - 임베디드 시스템과 펌웨어란 무엇인가
     </h1>
@@ -493,7 +579,8 @@
 </span>
 
 </div>
-  </header> <div class="toc">
+  </header> 
+  <div class="toc-inline"><div class="toc">
     <details >
         <summary accesskey="c" title="(Alt + C)">
             <span class="details">Table of Contents</span>
@@ -523,6 +610,7 @@
     </details>
 </div>
 
+  </div>
   <div class="post-content"><h2 id="들어가며">들어가며<a hidden class="anchor" aria-hidden="true" href="#들어가며">#</a></h2>
 <p>학부 때 ESP32로 재활 자전거 IoT 모니터링 시스템을 만들고, 석사에서는 Tinker Board 2S와 STM32를 써서 HBOT 챔버 제어 시스템을 구축했다. 그 과정에서 꽤 다양한 것들을 다뤘다.</p>
 <p>근데 기술 스택을 쌓는 데 집중하다 보면 정작 가장 기본적인 개념들이 흐릿해지기 마련이다.</p>
@@ -645,19 +733,19 @@
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="http://localhost:1313/tags/embedded/">Embedded</a></li>
-      <li><a href="http://localhost:1313/tags/firmware/">Firmware</a></li>
-      <li><a href="http://localhost:1313/tags/mcu/">MCU</a></li>
-      <li><a href="http://localhost:1313/tags/dsp/">DSP</a></li>
-      <li><a href="http://localhost:1313/tags/fpga/">FPGA</a></li>
+      <li><a href="https://bromine1997.github.io/tags/embedded/">Embedded</a></li>
+      <li><a href="https://bromine1997.github.io/tags/firmware/">Firmware</a></li>
+      <li><a href="https://bromine1997.github.io/tags/mcu/">MCU</a></li>
+      <li><a href="https://bromine1997.github.io/tags/dsp/">DSP</a></li>
+      <li><a href="https://bromine1997.github.io/tags/fpga/">FPGA</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/paper-review/kalman-filter-intuitive-derivation/">
+  <a class="prev" href="https://bromine1997.github.io/posts/paper-review/kalman-filter-intuitive-derivation/">
     <span class="title">« Prev</span>
     <br>
     <span>Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation</span>
   </a>
-  <a class="next" href="http://localhost:1313/posts/paper-review/zn-paper-review/">
+  <a class="next" href="https://bromine1997.github.io/posts/paper-review/zn-paper-review/">
     <span class="title">Next »</span>
     <br>
     <span>Optimum Settings for Automatic Controllers</span>
@@ -684,30 +772,93 @@
 </div>
 
 </article>
-
+<aside class="toc-sidebar">
+  <div class="toc-sidebar-inner">
+    <div class="toc-sidebar-title">목차</div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#들어가며">들어가며</a></li>
+    <li><a href="#임베디드-시스템">임베디드 시스템</a></li>
+    <li><a href="#펌웨어">펌웨어</a>
+      <ul>
+        <li><a href="#펌웨어-vs-일반-애플리케이션">펌웨어 vs 일반 애플리케이션</a></li>
+        <li><a href="#펌웨어는-항상-os-없이-동작할까">펌웨어는 항상 OS 없이 동작할까?</a></li>
+      </ul>
+    </li>
+    <li><a href="#mcu--dsp--fpga-비교">MCU / DSP / FPGA 비교</a>
+      <ul>
+        <li><a href="#mcu-microcontroller-unit">MCU (Microcontroller Unit)</a></li>
+        <li><a href="#dsp-digital-signal-processor">DSP (Digital Signal Processor)</a></li>
+        <li><a href="#fpga-field-programmable-gate-array">FPGA (Field Programmable Gate Array)</a></li>
+        <li><a href="#언제-뭘-쓸까">언제 뭘 쓸까?</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</aside>
 
 </div>
 
 <script>
 (function () {
+  
   var bar = document.getElementById('reading-progress-bar');
-  if (!bar) return;
-  function update() {
-    var content = document.querySelector('.post-content');
-    if (!content) return;
-    var top = content.getBoundingClientRect().top + window.scrollY;
-    var end = top + content.offsetHeight - window.innerHeight;
-    var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
-    bar.style.width = pct + '%';
+  if (bar) {
+    function updateBar() {
+      var content = document.querySelector('.post-content');
+      if (!content) return;
+      var top = content.getBoundingClientRect().top + window.scrollY;
+      var end = top + content.offsetHeight - window.innerHeight;
+      var pct = end <= 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY - top) / (end - top) * 100));
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateBar, { passive: true });
+    updateBar();
   }
-  window.addEventListener('scroll', update, { passive: true });
-  update();
+
+  
+  var tocLinks = Array.from(document.querySelectorAll('.toc-sidebar #TableOfContents a'));
+  if (!tocLinks.length) return;
+
+  var headings = Array.from(document.querySelectorAll('.post-content h2, .post-content h3'))
+    .filter(function (h) { return h.id; });
+
+  function setActive(id) {
+    tocLinks.forEach(function (l) { l.classList.remove('toc-active'); });
+    var a = document.querySelector('.toc-sidebar a[href="#' + id + '"]');
+    if (a) {
+      a.classList.add('toc-active');
+      
+      var sidebar = document.querySelector('.toc-sidebar');
+      if (sidebar) {
+        var aTop = a.offsetTop;
+        var sTop = sidebar.scrollTop;
+        var sH   = sidebar.offsetHeight;
+        if (aTop < sTop + 40)          sidebar.scrollTop = aTop - 40;
+        else if (aTop > sTop + sH - 60) sidebar.scrollTop = aTop - sH + 60;
+      }
+    }
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    
+    var visible = entries.filter(function (e) { return e.isIntersecting; });
+    if (visible.length) {
+      visible.sort(function (a, b) {
+        return a.boundingClientRect.top - b.boundingClientRect.top;
+      });
+      setActive(visible[0].target.id);
+    }
+  }, { rootMargin: '-56px 0px -60% 0px', threshold: 0 });
+
+  headings.forEach(function (h) { observer.observe(h); });
 })();
 </script>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">bromine1997</a></span> · 
+        <span>&copy; 2026 <a href="https://bromine1997.github.io/">bromine1997</a></span> · 
 
     <span>
         Powered by

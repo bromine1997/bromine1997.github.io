@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>C&#43;&#43; on bromine1997</title>
-    <link>http://localhost:1313/tags/c&#43;&#43;/</link>
+    <link>https://bromine1997.github.io/tags/c&#43;&#43;/</link>
     <description>Recent content in C&#43;&#43; on bromine1997</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Sat, 11 Apr 2026 20:55:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bromine1997.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>setup()과 loop()는 어떻게 실행되는가</title>
-      <link>http://localhost:1313/posts/esp32/esp32-setup-loop-internals/</link>
+      <link>https://bromine1997.github.io/posts/esp32/esp32-setup-loop-internals/</link>
       <pubDate>Sat, 11 Apr 2026 20:55:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/esp32/esp32-setup-loop-internals/</guid>
+      <guid>https://bromine1997.github.io/posts/esp32/esp32-setup-loop-internals/</guid>
       <description>ESP32를 Arduino IDE로 개발하면 setup()과 loop()만 보인다. 그런데 실제로 전원이 켜진 순간부터 loop()가 돌기까지, 내부에서는 어떤 일이 일어날까.</description>
     </item>
   </channel>
