@@ -28,7 +28,7 @@
   {{- $postsSection := site.GetPage "/posts" }}
   {{- if and $postsSection $postsSection.Sections }}
   {{- range $postsSection.Sections.ByTitle }}
-  {{- if gt (len .RegularPages) 0 }}
+  {{- if or (gt (len .RegularPages) 0) (eq .Title "Notes") }}
   <section class="sidebar-section">
     <details class="sidebar-category">
       <summary class="sidebar-cat-header">

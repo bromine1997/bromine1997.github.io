@@ -114,6 +114,10 @@ menu:
       name: Paper Review
       url: /categories/paper-review/
       weight: 30
+    - identifier: nav-notes
+      name: Notes
+      url: /posts/notes/
+      weight: 38
     - identifier: nav-projects
       name: Projects
       url: /projects/
