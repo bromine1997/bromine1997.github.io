@@ -18,7 +18,7 @@ summary: "연세대학교 마이크로컴퓨터시스템 수업 실습 프로젝
 
 | 항목 | 내용 |
 |------|------|
-| 기간 | 학부 재학 중 |
+| 기간 | 2021 |
 | 소속 | 연세대학교 의공학부 수업 |
 | 역할 | PCB 납땜 + 펌웨어 전체 구현 |
 | GitHub | [atmega4809-project](https://github.com/bromine1997/atmega4809-project) |
@@ -36,14 +36,20 @@ summary: "연세대학교 마이크로컴퓨터시스템 수업 실습 프로젝
 | SPI | Master mode, clock polarity/phase 설정 |
 | I2C (TWI) | Start/stop condition, ACK/NACK 처리 |
 | ADC | 기준 전압 설정, 변환 트리거, 결과 읽기 |
-| Timer | CTC 모드, 인터럽트 |
+| Timer | TCB periodic interrupt 모드 |
+| LCD (16×2) | 문자 출력 드라이버 |
+| 7-Segment / Keypad | 4×3 키패드 스캔, 7-세그먼트 표시 |
+| 스텝모터 | TCB1 인터럽트 기반 구동 |
+| RTC (PCF8563) | I2C 실시간 시계 연동 |
+| 외부 EEPROM (25FC512) | I2C 비휘발성 저장 |
+| HC-SR04 | TCA PWM 트리거 + TCB 펄스폭 측정 + EVSYS(이벤트 시스템)로 하드웨어 연동 |
 
 ---
 
 ## 기술 스택
 
-- MCU: ATmega4809 (AVR, 8-bit, 48MHz)
+- MCU: ATmega4809 (AVR, 8-bit, 5MHz)
 - 보드: 커스텀 PCB (직접 납땜)
 - 개발 환경: Microchip Studio
-- 언어: C 
+- 언어: C
 - 제어 방식: 레지스터 직접 제어

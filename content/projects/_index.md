@@ -161,7 +161,7 @@ comments: false
     <div class="project-thumb-placeholder" style="display:none;">🫁</div>
     <div class="project-body">
       <div class="project-name">IoT 고압산소챔버 시스템</div>
-      <div class="project-period">2023~2024 · 석사 학위논문 프로젝트</div>
+      <div class="project-period">2024 · 석사 학위논문 프로젝트</div>
       <div class="project-desc">
         Tinker Board 2S 기반 고압산소챔버 원격 제어 및 모니터링 플랫폼.
         Android 앱이 SBC 위에서 직접 실행되며 GPIO·SPI·I2C로 하드웨어를 제어하고,
@@ -196,7 +196,7 @@ comments: false
       <div class="project-period">2022 ~ 2023 · 학부연구 / 석사</div>
       <div class="project-desc">
         ESP32 Feather V2 기반 4채널 로드셀 동기화 수집 시스템.
-        ADS1232를 4개 병렬 운용해 팔·다리 페달의 힘을 동시에 측정하고,
+        ADS1232를 4개 병렬 운용해 SCLK 인터럽트로 팔·다리 페달의 힘을 동시에 측정하고,
         PSRAM에 버퍼링 후 WebSocket으로 브라우저 기반 실시간 모니터링 및 CSV 다운로드 제공.
       </div>
       <div class="project-tags">
@@ -228,7 +228,7 @@ comments: false
     <div class="project-thumb-placeholder" style="display:none;">⚙️</div>
     <div class="project-body">
       <div class="project-name">ATmega4809 Peripheral Driver</div>
-      <div class="project-period">2021 · 마이크로컴퓨터시스템 수업 </div>
+      <div class="project-period">2021 · 마이크로컴퓨터시스템 수업</div>
       <div class="project-desc">
         커스텀 PCB 직접 납땜 후 ATmega4809 펌웨어 구현.
         GPIO, UART, SPI, I2C, ADC 등 주변장치 드라이버를 외부 라이브러리 없이

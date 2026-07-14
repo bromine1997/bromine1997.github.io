@@ -76,21 +76,21 @@ SPI를 초기화한 뒤, 파형 확인을 위해 `SPI.write()`를 호출하고 �
 
 ## 수정 결과
 
-코드에서 SPI1 Frequency를 **1MHz**로 낮춘 뒤 파형을 다시 확인했다.
+코드에서 SPI1 Frequency를 **500kHz**로 낮춘 뒤 파형을 다시 확인했다.
 
 <!-- 이미지: Frequency 수정 후 SPI1 MOSI/CLK 파형 -->
 ![SPI1 수정 후 파형](/images/tinkerboard/spi1-waveform-after.png)
-*Frequency 1MHz로 수정 후 SPI1 파형 — 정상적인 사각파 확인*
+*Frequency 500kHz로 수정 후 SPI1 파형 — 정상적인 사각파 확인*
 
 정상 사각파가 나왔다.
 
-다만 **SPI5(MAX1032)** 쪽은 1MHz로는 부족했고, **50kHz**까지 낮춰야 정상 파형이 나왔다. 같은 보드에서 두 SPI 라인이 이렇게 큰 차이를 보이는 이유는 아직 잘 모르겠다. 나중에 기회가 되면 더 파봐야겠다.
+다만 **SPI5(MAX1032)** 쪽은 500kHz로는 부족했고, **20kHz**까지 낮춰야 정상 파형이 나왔다. 같은 보드에서 두 SPI 라인이 이렇게 큰 차이를 보이는 이유는 아직 잘 모르겠다. 나중에 기회가 되면 더 파봐야겠다.
 
 | 항목 | 기존 | 수정 후 |
 |---|---|---|
-| SPI1 Frequency | 20MHz | 1MHz |
+| SPI1 Frequency | 20MHz | 500kHz |
 | SPI1 파형 | 삼각파 (왜곡) | 정상 사각파 |
-| SPI5 Frequency | 20MHz | 50kHz |
+| SPI5 Frequency | 20MHz | 20kHz |
 | SPI5 파형 | 오실레이션 | 정상 사각파 |
 
 Digital Isolator를 쓸 때는 해당 소자의 Maximum pulse width를 먼저 확인해야 한다. 하드웨어를 의심하며 Bypass Capacitor를 하나씩 교체하느라 시간을 꽤 날렸는데, 데이터시트를 먼저 봤으면 금방 잡았을 문제였다.
