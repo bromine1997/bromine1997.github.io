@@ -104,7 +104,7 @@ comments: false
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.2rem 0.55rem;
-  border-radius: 4px;
+  border-radius: var(--radius);
   background: var(--code-bg);
   color: var(--secondary);
   white-space: nowrap;
@@ -121,7 +121,7 @@ comments: false
   font-size: 0.73rem;
   font-weight: 600;
   padding: 0.3rem 0.75rem;
-  border-radius: 20px;
+  border-radius: var(--radius);
   text-decoration: none !important;
   border: 1.5px solid var(--tertiary);
   color: var(--secondary);

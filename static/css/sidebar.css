@@ -53,9 +53,9 @@ article.post-single {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--accent-border, #ddd6fe);
+  border: 2px solid var(--accent-border, #d1d5db);
   margin-bottom: 0.75rem;
-  box-shadow: 0 2px 8px rgba(99,102,241,0.15);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .sidebar-profile-name {
@@ -84,7 +84,7 @@ article.post-single {
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--radius, 2px);
   background: var(--code-bg);
   color: var(--secondary);
   text-decoration: none;
@@ -94,15 +94,15 @@ article.post-single {
 
 .sidebar-profile-links a:hover {
   color: var(--accent);
-  border-color: var(--accent-border, #ddd6fe);
-  background: var(--accent-subtle, #f0eeff);
+  border-color: var(--accent-border, #d1d5db);
+  background: var(--accent-subtle, #f2f2f2);
 }
 
 /* ── 섹션 카드 ──────────────────────────────────────────── */
 .sidebar-section {
   background: var(--entry);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius, 2px);
   padding: 0.9rem 1.1rem;
 }
 
@@ -143,7 +143,7 @@ article.post-single {
   align-items: center;
   justify-content: space-between;
   padding: 0.28rem 0.4rem;
-  border-radius: 5px;
+  border-radius: var(--radius, 2px);
   font-size: 0.82rem;
   color: var(--primary);
   text-decoration: none;
@@ -153,7 +153,7 @@ article.post-single {
 
 .sidebar-link:hover,
 .sidebar-link.active {
-  background: var(--accent-subtle, #f0eeff);
+  background: var(--accent-subtle, #f2f2f2);
   color: var(--accent);
 }
 
@@ -169,7 +169,7 @@ article.post-single {
   font-size: 0.72rem;
   color: var(--secondary);
   background: var(--code-bg);
-  border-radius: 10px;
+  border-radius: var(--radius, 2px);
   padding: 0.1rem 0.45rem;
   margin-left: 0.4rem;
 }
@@ -187,7 +187,7 @@ article.post-single {
   gap: 0.2rem;
   font-size: 0.75rem;
   padding: 0.18rem 0.5rem;
-  border-radius: 4px;
+  border-radius: var(--radius, 2px);
   background: var(--code-bg);
   color: var(--primary);
   text-decoration: none;
@@ -196,8 +196,8 @@ article.post-single {
 }
 
 .sidebar-tag:hover {
-  background: var(--accent-subtle, #f0eeff);
-  border-color: var(--accent-border, #ddd6fe);
+  background: var(--accent-subtle, #f2f2f2);
+  border-color: var(--accent-border, #d1d5db);
   color: var(--accent);
 }
 
@@ -223,7 +223,7 @@ article.post-single {
   align-items: center;
   justify-content: space-between;
   padding: 0.2rem 0.1rem;
-  border-radius: 5px;
+  border-radius: var(--radius, 2px);
   transition: color 0.12s;
   margin-bottom: 0.3rem;
 }

@@ -1,0 +1,64 @@
+<!-- ============ Signal Path 배경 데코 — 전 페이지 공통 (extend_footer 훅) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="deco-res" viewBox="0 0 64 64">
+      <path d="M4 32 H14 L18 24 L26 40 L34 24 L42 40 L46 32 H60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="deco-cap" viewBox="0 0 64 64">
+      <path d="M4 32 H26 M26 18 V46 M38 18 V46 M38 32 H60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="deco-ind" viewBox="0 0 64 64">
+      <path d="M4 32 h8 a6 6 0 0 1 12 0 a6 6 0 0 1 12 0 a6 6 0 0 1 12 0 h8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="deco-dio" viewBox="0 0 64 64">
+      <path d="M4 32 H20 M20 20 L20 44 L42 32 Z M42 20 V44 M42 32 H60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="deco-xtl" viewBox="0 0 64 64">
+      <path d="M4 32 H16 M16 22 V42 M22 16 h20 v32 h-20 z M48 22 V42 M48 32 H60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="deco-ic" viewBox="0 0 64 64">
+      <path d="M18 14 h28 v36 h-28 z M18 21 H9 M18 30 H9 M18 39 H9 M18 48 H9 M46 21 H55 M46 30 H55 M46 39 H55 M46 48 H55" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="32" cy="20" r="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+    </symbol>
+    <symbol id="deco-trans" viewBox="0 0 64 64">
+      <circle cx="30" cy="32" r="19" fill="none" stroke="currentColor" stroke-width="2.4"/>
+      <path d="M17,21 V15 M17,21 L34,32 M17,35 L34,32 L52,44 M52,44 V50" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="deco-led" viewBox="0 0 64 64">
+      <path d="M4 32 H18 M18 18 V46 L38 32 L18 18 M38 18 V46 M38 32 H50" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M42 12 L50 4 M48 16 L57 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="deco-qfp" viewBox="0 0 64 64">
+      <rect x="18" y="18" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4"/>
+      <path d="M22 18 V9 M32 18 V9 M42 18 V9 M22 46 V55 M32 46 V55 M42 46 V55 M18 22 H9 M18 32 H9 M18 42 H9 M46 22 H55 M46 32 H55 M46 42 H55" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="deco-header" viewBox="0 0 64 64">
+      <rect x="6" y="24" width="52" height="16" fill="none" stroke="currentColor" stroke-width="2.4"/>
+      <path d="M14 24 V16 M24 24 V16 M34 24 V16 M44 24 V16 M54 24 V16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="bg-deco" aria-hidden="true">
+  <!-- 위치는 1920×1400 캔버스, 층화(계층) 랜덤 배치로 산출 — 세로 전 구간에 고르게 흩어지도록
+       18개 아이템을 세로 18구간으로 나눠 각 구간 안에서 랜덤 배치(겹침 검사 포함), inset 1~13% -->
+  <svg class="deco-icon" width="54" height="54" style="left:2.7%;top:89.2%;transform:rotate(-11deg)"><use href="#deco-res"/></svg>
+  <svg class="deco-icon" width="59" height="59" style="left:6.2%;top:13.3%;transform:rotate(34deg)"><use href="#deco-cap"/></svg>
+  <svg class="deco-icon" width="62" height="62" style="right:1.4%;top:80.3%;transform:rotate(57deg)"><use href="#deco-ind"/></svg>
+  <svg class="deco-icon" width="65" height="65" style="left:8.8%;top:57.3%;transform:rotate(-65deg)"><use href="#deco-dio"/></svg>
+  <svg class="deco-icon" width="68" height="68" style="left:9.9%;top:94.7%;transform:rotate(-65deg)"><use href="#deco-xtl"/></svg>
+  <svg class="deco-icon" width="70" height="70" style="right:2.9%;top:6.2%;transform:rotate(32deg)"><use href="#deco-ic"/></svg>
+  <svg class="deco-icon" width="73" height="73" style="right:2.8%;top:38.5%;transform:rotate(50deg)"><use href="#deco-trans"/></svg>
+  <svg class="deco-icon" width="76" height="76" style="left:1.9%;top:62.6%;transform:rotate(-52deg)"><use href="#deco-led"/></svg>
+  <svg class="deco-icon" width="57" height="57" style="right:3.4%;top:18.3%;transform:rotate(67deg)"><use href="#deco-qfp"/></svg>
+  <svg class="deco-icon" width="62" height="62" style="right:4.5%;top:51.9%;transform:rotate(58deg)"><use href="#deco-header"/></svg>
+  <svg class="deco-icon" width="59" height="59" style="right:4.8%;top:70.4%;transform:rotate(-2deg)"><use href="#deco-res"/></svg>
+  <svg class="deco-icon" width="65" height="65" style="left:11.0%;top:17.9%;transform:rotate(56deg)"><use href="#deco-cap"/></svg>
+
+  <img class="deco-photo" src="/images/deco/parts/resistor.png" style="left:6.9%;top:43.2%;width:82px;transform:rotate(8deg)" alt="">
+  <img class="deco-photo" src="/images/deco/parts/dip8.png" style="left:7.9%;top:24.7%;width:76px;transform:rotate(-5deg)" alt="">
+  <img class="deco-photo" src="/images/deco/parts/inductor.png" style="right:5.2%;top:60.2%;width:80px;transform:rotate(1deg)" alt="">
+  <img class="deco-photo" src="/images/deco/parts/qfp.png" style="right:9.0%;top:96.2%;width:76px;transform:rotate(-1deg)" alt="">
+  <img class="deco-photo" src="/images/deco/parts/crystal.png" style="left:7.7%;top:75.6%;width:64px;transform:rotate(5deg)" alt="">
+  <img class="deco-photo" src="/images/deco/parts/transistor.png" style="right:8.9%;top:28.0%;width:52px;transform:rotate(-1deg)" alt="">
+</div>

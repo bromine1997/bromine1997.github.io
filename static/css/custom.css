@@ -17,15 +17,16 @@
   --code-bg:         #f3f4f6;
   --border:          #e5e7eb;
 
-  --accent:          #6366f1;
-  --accent-hover:    #4f46e5;
-  --accent-subtle:   #f0eeff;
-  --accent-border:   #ddd6fe;
+  --accent:          #111111;   /* 잉크 블랙 — 이 팔레트의 유일한 액센트 */
+  --accent-hover:    #000000;
+  --accent-subtle:   #f2f2f2;   /* 무채색 라이트 그레이 */
+  --accent-border:   #d1d5db;   /* 무채색 그레이 */
 
-  --card-shadow:     0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
-  --card-shadow-md:  0 4px 12px rgba(99,102,241,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --card-shadow:     0 1px 2px rgba(0,0,0,0.05);
+  --card-shadow-md:  0 2px 6px rgba(0,0,0,0.06);
 
   --card-gap:        1.2rem;   /* 사이드바 gap = 카드 margin-bottom — 세 곳에서 공유 */
+  --radius:          2px;      /* Signal Path 그래머: 도면풍 near-zero 코너 */
 }
 
 /* ── CSS 변수 오버라이드 (다크) ─────────────────────── */
@@ -40,10 +41,10 @@
   --code-bg:         #1e2030;
   --border:          #2a2d38;
 
-  --accent:          #818cf8;
-  --accent-hover:    #a5b4fc;
-  --accent-subtle:   #1e2040;
-  --accent-border:   #3730a3;
+  --accent:          #f2f2f2;
+  --accent-hover:    #ffffff;
+  --accent-subtle:   #202124;
+  --accent-border:   #2d3138;
 
   --card-shadow:     0 1px 3px rgba(0,0,0,0.3);
   --card-shadow-md:  0 4px 12px rgba(0,0,0,0.3);
@@ -84,7 +85,7 @@ html body:not(.list) main.main {
   left: 0;
   width: 0%;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent) 0%, #8b5cf6 100%);
+  background: var(--accent);
   z-index: 9999;
   transition: width 0.08s linear;
   border-radius: 0 2px 2px 0;
@@ -106,18 +107,10 @@ html body:not(.list) main.main {
   background: rgba(15,17,23,0.9) !important;
 }
 
-/* 로고 그라디언트 */
+/* 로고 — 솔리드 잉크 (그라디언트 제거) */
 .logo a {
-  background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary);
   font-weight: 700 !important;
-}
-:root[data-theme="dark"] .logo a {
-  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
 }
 
 /* ── 메뉴 링크 ─────────────────────────────────────────── */
@@ -125,7 +118,7 @@ html body:not(.list) main.main {
   font-size: 0.88rem;
   font-weight: 500;
   padding: 0.4rem 0.7rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   transition: background 0.15s, color 0.15s;
 }
 #menu > li > a:hover { background: var(--accent-subtle); color: var(--accent); }
@@ -145,7 +138,7 @@ html body:not(.list) main.main {
   transform: translateX(-50%);
   background: var(--entry);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06);
   padding: 0.4rem 0;
   min-width: 160px;
@@ -179,7 +172,7 @@ html body:not(.list) main.main {
   font-weight: 500;
   color: var(--primary);
   text-decoration: none;
-  border-radius: 0;
+  border-radius: var(--radius);
   line-height: 1.5;
   transition: background 0.12s, color 0.12s;
 }
@@ -203,10 +196,10 @@ html body:not(.list) main.main {
 .post-entry {
   background: var(--entry);
   border: 1px solid var(--border);
-  border-radius: 12px !important;
+  border-radius: var(--radius) !important;
   box-shadow: var(--card-shadow);
   transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
-  overflow: hidden;
+  /* overflow: hidden 제거 — 코너 틱(::before/::after)이 -1px 위치라 클리핑됨 */
 }
 .post-entry:hover {
   box-shadow: var(--card-shadow-md);
@@ -218,8 +211,31 @@ html body:not(.list) main.main {
 .first-entry {
   background: var(--entry);
   border: 1px solid var(--border);
-  border-radius: 12px !important;
+  border-radius: var(--radius) !important;
   box-shadow: var(--card-shadow);
+}
+
+/* ── 코너 틱 (도면 crop mark) — 카드 좌상단·우하단 ─────── */
+.post-entry, .first-entry, .post-single { position: relative; }
+.post-entry::before, .first-entry::before, .post-single::before,
+.post-entry::after, .first-entry::after, .post-single::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+.post-entry::before, .first-entry::before, .post-single::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--primary);
+  border-left: 1px solid var(--primary);
+}
+.post-entry::after, .first-entry::after, .post-single::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid var(--primary);
+  border-right: 1px solid var(--primary);
 }
 
 /* 홈 인사 카드 — 프로필 카드 높이 맞춤 (JS로 min-height 동적 설정) */
@@ -246,26 +262,18 @@ html body:not(.list) main.main {
 .post-single {
   background: var(--entry);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius);
   padding: 2.5rem 2.5rem !important;
   box-shadow: var(--card-shadow-md);
 }
 
-/* 포스트 제목 그라디언트 */
+/* 포스트 제목 — 솔리드 잉크 (그라디언트 제거) */
 .post-title {
   font-size: 1.75rem !important;
   font-weight: 800 !important;
   line-height: 1.35 !important;
-  background: linear-gradient(135deg, var(--primary) 55%, var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary);
   margin-bottom: 0.6rem !important;
-}
-:root[data-theme="dark"] .post-title {
-  background: linear-gradient(135deg, var(--primary) 55%, #818cf8);
-  -webkit-background-clip: text;
-  background-clip: text;
 }
 
 /* ── 본문 타이포그래피 ─────────────────────────────────── */
@@ -306,7 +314,7 @@ html body:not(.list) main.main {
 
 /* ── 코드 블록 ─────────────────────────────────────────── */
 .post-content pre, .highlight > pre, .chroma {
-  border-radius: 10px !important;
+  border-radius: var(--radius) !important;
   border: 1px solid var(--accent-border) !important;
 }
 :root[data-theme="dark"] .post-content pre,
@@ -320,23 +328,25 @@ html body:not(.list) main.main {
   background: var(--accent-subtle) !important;
   color: var(--accent) !important;
   border: 1px solid var(--accent-border) !important;
-  border-radius: 5px;
+  border-radius: var(--radius);
   font-size: 0.87em;
   padding: 0.12em 0.48em;
   white-space: nowrap;
 }
 :root[data-theme="dark"] .post-content code:not(.chroma *) {
   background: var(--accent-subtle) !important;
-  color: #a5b4fc !important;
+  color: var(--accent) !important;
   border-color: var(--accent-border) !important;
 }
 
-/* ── 태그 — .tag-entry a 제거 (entry-link 오버레이 버그 방지) */
+/* ── 태그 — 사각 아웃라인 칩 (.tag-entry a 제거 — entry-link 오버레이 버그 방지) */
 .post-tags a {
-  background: var(--accent-subtle) !important;
-  color: var(--accent) !important;
-  border: 1px solid var(--accent-border) !important;
-  border-radius: 20px !important;
+  background: transparent !important;
+  color: var(--primary) !important;
+  border: 1px solid var(--accent) !important;
+  border-radius: var(--radius) !important;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  letter-spacing: 0.02em;
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.25rem 0.8rem !important;
@@ -344,7 +354,7 @@ html body:not(.list) main.main {
 }
 .post-tags a:hover {
   background: var(--accent) !important;
-  color: #fff !important;
+  color: var(--entry) !important;
   border-color: var(--accent) !important;
 }
 
@@ -352,21 +362,27 @@ html body:not(.list) main.main {
 .toc {
   background: var(--accent-subtle) !important;
   border: 1px solid var(--accent-border) !important;
-  border-radius: 10px !important;
+  border-radius: var(--radius) !important;
 }
 .toc details summary { color: var(--accent); font-weight: 700; }
 
 /* ── 브레드크럼 ────────────────────────────────────────── */
 .breadcrumbs a { color: var(--accent); }
 
-/* ── 포스트 메타 ───────────────────────────────────────── */
+/* ── 포스트 메타 — 실크스크린 라벨 (mono·uppercase) ────── */
+.post-meta,
+.post-meta a {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
 .post-meta a { color: var(--secondary); text-decoration: none; }
 .post-meta a:hover { color: var(--accent); }
 
 /* ── 페이지네이션 ──────────────────────────────────────── */
 .pagination a {
   border: 1px solid var(--accent-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   color: var(--accent) !important;
   background: var(--entry) !important;
   padding: 0.4rem 0.9rem;
@@ -392,7 +408,7 @@ html body:not(.list) main.main {
 /* ── 검색 ──────────────────────────────────────────────── */
 #searchbox input {
   border: 1px solid var(--accent-border) !important;
-  border-radius: 8px !important;
+  border-radius: var(--radius) !important;
   background: var(--entry) !important;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 0.95rem;
@@ -403,11 +419,11 @@ html body:not(.list) main.main {
 }
 
 /* ── 스크롤바 ──────────────────────────────────────────── */
-::-webkit-scrollbar-thumb { background: var(--accent-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--accent-border); border-radius: var(--radius); }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* ── 코드 블록 ─────────────────────────────────────────── */
-.highlight { border-radius: 10px; overflow: hidden; }
+.highlight { border-radius: var(--radius); overflow: hidden; }
 
 /* 포스트 카드 margin을 사이드바 gap과 통일 → 연속 grid 정렬 유지 */
 .list-content .post-entry {
@@ -446,7 +462,7 @@ html body:not(.list) main.main {
   border-left: 3px solid var(--accent);
   background: var(--accent-subtle);
   padding: 0.8rem 1.2rem;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 2px 2px 0;
   margin: 1.5rem 0;
   font-style: normal;
 }
@@ -466,12 +482,13 @@ html body:not(.list) main.main {
   display: inline-block;
   font-size: 0.70rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--accent);
   background: var(--accent-subtle);
   border: 1px solid var(--accent-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: 0.15rem 0.55rem;
 }
 
@@ -487,16 +504,18 @@ html body:not(.list) main.main {
   align-items: center;
   font-size: 0.78rem;
   font-weight: 600;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  letter-spacing: 0.02em;
   padding: 0.28rem 0.7rem;
-  border-radius: 6px;
-  background: var(--accent-subtle);
-  color: var(--accent);
-  border: 1px solid var(--accent-border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--accent);
   transition: background 0.15s, color 0.15s;
 }
 .tech-badge:hover {
   background: var(--accent);
-  color: #fff;
+  color: var(--entry);
   border-color: var(--accent);
 }
 
@@ -507,7 +526,7 @@ html body:not(.list) main.main {
 .codeblock-wrapper > .highlight,
 .codeblock-wrapper > pre {
   margin: 0 !important;
-  border-radius: 0 0 10px 10px !important;
+  border-radius: 0 0 2px 2px !important;
 }
 .codeblock-filename {
   display: flex;
@@ -518,7 +537,7 @@ html body:not(.list) main.main {
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   font-size: 0.78rem;
   padding: 0.45rem 1rem;
-  border-radius: 10px 10px 0 0;
+  border-radius: 2px 2px 0 0;
   border: 1px solid var(--accent-border);
   border-bottom: none;
 }
@@ -563,7 +582,7 @@ html body:not(.list) main.main {
 .toc-sidebar-inner {
   background: var(--entry);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius);
   padding: 1rem 1.1rem;
 }
 
@@ -596,7 +615,7 @@ html body:not(.list) main.main {
   color: var(--secondary);
   text-decoration: none;
   padding: 0.32rem 0.5rem;
-  border-radius: 4px;
+  border-radius: var(--radius);
   border-left: 2px solid transparent;
   line-height: 1.5;
   transition: color 0.12s, background 0.12s, border-color 0.12s;
@@ -612,7 +631,7 @@ html body:not(.list) main.main {
   color: var(--secondary);
   text-decoration: none;
   padding: 0.26rem 0.5rem;
-  border-radius: 4px;
+  border-radius: var(--radius);
   border-left: 2px solid transparent;
   line-height: 1.5;
   transition: color 0.12s, background 0.12s, border-color 0.12s;
@@ -631,7 +650,7 @@ html body:not(.list) main.main {
   overflow: hidden;
   overflow-x: auto;
   margin: 1.5rem 0;
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 1px solid #d1d5db;
   line-height: 0;
 }
@@ -644,7 +663,7 @@ html body:not(.list) main.main {
   margin-bottom: 0 !important;
 }
 .post-content table thead tr {
-  background: #1a2035;
+  background: #111111;
 }
 .post-content table th {
   padding: 0.48rem 0.875rem;
@@ -686,7 +705,7 @@ html body:not(.list) main.main {
 
 /* ── 이미지 ─────────────────────────────────────────────── */
 .post-content img {
-  border-radius: 8px;
+  border-radius: var(--radius);
   max-width: 100%;
   height: auto;
   display: block;
@@ -707,5 +726,31 @@ html body:not(.list) main.main {
   color: var(--secondary);
   font-style: italic;
   line-height: 1.5;
+}
+
+/* ── 배경 데코 (소자 아이콘 + 실제 부품 사진) — 전 페이지 공통 ─────── */
+.bg-deco {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-deco .deco-icon {
+  position: absolute;
+  color: #000000;   /* 흰 배경 위에서는 순수 블랙으로 진하게 */
+  opacity: .32;
+}
+.bg-deco .deco-photo {
+  position: absolute;
+  object-fit: contain;
+  opacity: .82;
+}
+:root[data-theme="dark"] .bg-deco .deco-icon {
+  color: var(--primary);   /* 다크모드에서는 토큰이 밝은색으로 뒤집힘 */
+  opacity: .24;
+}
+@media (max-width: 1300px) {
+  .bg-deco { display: none; }
 }
 
