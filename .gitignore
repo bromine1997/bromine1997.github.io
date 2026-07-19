@@ -1,2 +1,5 @@
 # 데이터시트 / 매뉴얼 (로컬 전용)
 datasheets/*.pdf
+
+# Hugo 빌드 산출물 — GitHub Actions가 push마다 새로 빌드해서 배포하므로 추적 불필요
+public/
