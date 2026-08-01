@@ -19,7 +19,7 @@ params:
   env: production
   analytics:
     google:
-      SiteVerificationTag: "X5L0OUaB6BxB6r3HlObaSu-z3fILH4VNgoJ6zN-m1dY"
+      SiteVerificationTag: "0786SIojjozYD-97AEpEiWpWSQ4u_RjSaEgxOlC1gto"
   title: bromine1997
   description: "임베디드 / 펌웨어 개발자 서보민의 기술 블로그"
   author: 서보민
