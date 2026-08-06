@@ -14,7 +14,7 @@ series: ["HBOT Troubleshooting"]
 summary: "AD5420 두 개를 Daisy Chain으로 연결했는데 출력이 아예 안 나왔다. 오실로스코프로 MISO를 확인했더니 쓰레기값이 보였다. 데이터시트에는 이미 UNDEFINED라고 적혀 있었다."
 ---
 
-HBOT 챔버 제어 시스템에서 압력 밸브와 환기 밸브를 각각 4~20mA 전류로 제어해야 했다. 소자를 두 개 쓰면 SPI 핀을 두 세트 써야 하는데, Tinker Board 2S의 핀 구성상 여유가 없어서 AD5420 두 개를 Daisy Chain으로 연결하기로 했다.
+HBOT 챔버 제어 시스템에서 가압 밸브와 감압 밸브를 각각 4~20mA 전류로 제어해야 했다. 소자를 두 개 쓰면 SPI 핀을 두 세트 써야 하는데, Tinker Board 2S의 핀 구성상 여유가 없어서 AD5420 두 개를 Daisy Chain으로 연결하기로 했다.
 
 회로를 구성하고 코드를 짰는데, 출력이 아예 안 나왔다.
 
