@@ -12,7 +12,7 @@ math: true
 
 ## 들어가며
 
-고압산소챔버(HBOT) 제어 PCB를 설계하면서 전원 구조를 먼저 정리했다. 시스템에는 여러 전압 레벨이 공존한다.
+고압산소챔버(HBOT) 제어 PCB를 설계하면서 전원 구조를 먼저 정리했다. 시스템에는 여러 전압 레벨이 사용된다.
 
 - **24V**: 솔레노이드 밸브, 비례제어 밸브, 센서류
 - **5V**: ADC 아날로그 전원(AVDD), OP-AMP
@@ -78,7 +78,7 @@ Tinkerboard는 상용 전원 어댑터로 동작하고 PCB 밸브·센서 측은
 MAX1032 ADC와 Tinkerboard 사이의 SPI 통신을 절연한다.
 
 - **ADUM1400**: 단방향 4채널 디지털 아이솔레이터. CS, CLK, MOSI 등 Tinkerboard→ADC 방향 신호를 담당한다.
-- **ADUM1200**: 양방향 2채널 디지털 아이솔레이터. MISO(ADC→Tinkerboard) 및 추가 신호를 담당한다.
+- **ADUM1200**: 단방향 2채널 디지털 아이솔레이터. MISO(ADC→Tinkerboard) 및 추가 신호를 담당한다.
 
 VCC1(DVCC_3.3V)과 VCC2(AVCC_3.3V)가 독립적으로 공급되어 두 GND 간 전위 차가 발생해도 신호가 안전하게 전달된다.
 
@@ -88,7 +88,7 @@ MAX1032는 DVDD(3.3V, 디지털 측)와 AVDD(5V, 아날로그 측)를 분리해�
 
 ![ISO7421 UART 절연 회로](/images/hardware/circuit-uart-iso7421.png)
 
-UART 시리얼 통신도 절연했다. ISO7421은 2채널 디지털 아이솔레이터로 VCC1/VCC2 듀얼 전원을 지원한다. Tinkerboard의 UART0_TX/RX 신호가 절연 경계를 넘어 외부 직렬 장치로 연결된다.
+UART 시리얼 통신도 절연했다. ISO7421은 2채널 디지털 아이솔레이터로 VCC1/VCC2 듀얼 전원을 지원한다. Tinkerboard의 UART0_TX/RX 신호가 절연 경계를 넘어 외부 장치로 연결된다.
 
 ### DRV110 EN 절연 — VO1400AEFTR
 
